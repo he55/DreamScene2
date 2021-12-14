@@ -12,6 +12,9 @@
 
 ![](imgs/2.jpg)
 
+## Download
+[Release](https://github.com/he55/DreamScene2/releases)
+
 ## TODO
 - [ ] GIF 和 APNG 播放
 - [ ] [Live2D](https://www.live2d.com/) 播放
