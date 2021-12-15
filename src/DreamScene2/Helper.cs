@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using Microsoft.Win32;
 
 namespace DreamScene2
 {
@@ -24,7 +24,7 @@ namespace DreamScene2
         {
             if (s_appPath == null)
             {
-                s_appPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constant.projectName);
+                s_appPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constant.ProjectName);
                 if (!Directory.Exists(s_appPath))
                 {
                     Directory.CreateDirectory(s_appPath);
@@ -46,7 +46,7 @@ namespace DreamScene2
         public static bool CheckStartOnBoot()
         {
             RegistryKey startupKey = Registry.CurrentUser.OpenSubKey(registryStartupLocation);
-            bool startOnBoot = startupKey.GetValue(Constant.projectName) != null;
+            bool startOnBoot = startupKey.GetValue(Constant.ProjectName) != null;
             startupKey.Close();
             return startOnBoot;
         }
@@ -54,14 +54,14 @@ namespace DreamScene2
         public static void SetStartOnBoot()
         {
             RegistryKey startupKey = Registry.CurrentUser.OpenSubKey(registryStartupLocation, true);
-            startupKey.SetValue(Constant.projectName, $"{Application.ExecutablePath} {Constant.cmd}");
+            startupKey.SetValue(Constant.ProjectName, $"{Application.ExecutablePath} {Constant.Cmd}");
             startupKey.Close();
         }
 
         public static void RemoveStartOnBoot()
         {
             RegistryKey startupKey = Registry.CurrentUser.OpenSubKey(registryStartupLocation, true);
-            startupKey.DeleteValue(Constant.projectName);
+            startupKey.DeleteValue(Constant.ProjectName);
             startupKey.Close();
         }
     }

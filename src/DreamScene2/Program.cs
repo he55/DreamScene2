@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace DreamScene2
@@ -14,9 +13,11 @@ namespace DreamScene2
         [STAThread]
         static void Main(string[] args)
         {
-            Mutex obj = new Mutex(true, "Global\\{2EA411F1-BFE2-4EA9-8768-0CFCD6EED87B}", out bool createdNew);
-            if (!createdNew)
+            IntPtr hWnd = PInvoke.FindWindow(null, Constant.MainWindowTitle);
+            if (hWnd != IntPtr.Zero)
             {
+                PInvoke.ShowWindow(hWnd, WindowShowStyle.SW_RESTORE);
+                PInvoke.SetForegroundWindow(hWnd);
                 return;
             }
 
@@ -31,12 +32,11 @@ namespace DreamScene2
 #endif
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
 
             MainDialog mainDialog = new MainDialog();
             mainDialog.Show();
 
-            if (args.Length != 0 && args[0] == Constant.cmd)
+            if (args.Length != 0 && args[0] == Constant.Cmd)
             {
                 mainDialog.Hide();
             }

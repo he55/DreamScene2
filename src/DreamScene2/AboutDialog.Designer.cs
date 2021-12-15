@@ -83,7 +83,7 @@ namespace DreamScene2
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(23, 12);
             this.label2.TabIndex = 4;
-            this.label2.Text = "1.0";
+            this.label2.Text = "1.1";
             // 
             // AboutDialog
             // 

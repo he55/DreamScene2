@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.Web.WebView2.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Web.WebView2.Core;
 
 namespace DreamScene2
 {
@@ -25,6 +25,7 @@ namespace DreamScene2
         public MainDialog()
         {
             InitializeComponent();
+            this.Text = Constant.MainWindowTitle;
             this.Icon = DreamScene2.Properties.Resources.icon;
             notifyIcon1.Icon = this.Icon;
             trackBar1.Value = _settings.Volume;
