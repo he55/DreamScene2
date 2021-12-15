@@ -13,7 +13,7 @@
 ![](imgs/2.jpg)
 
 ## Download
-[Release](https://github.com/he55/DreamScene2/releases)
+下载地址：https://github.com/he55/DreamScene2/releases/latest
 
 ## TODO
 - [ ] GIF 和 APNG 播放
