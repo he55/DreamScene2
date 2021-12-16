@@ -54,6 +54,20 @@ namespace DreamScene2
             toolStripMenuItem2.Text = "播放";
         }
 
+        static bool TryGetWebView2Version(out string version)
+        {
+            try
+            {
+                version = CoreWebView2Environment.GetAvailableBrowserVersionString();
+                return true;
+            }
+            catch
+            {
+                version = null;
+                return false;
+            }
+        }
+
         void SaveRecentFile(string path)
         {
             if (_recentFiles.Count == 0 || _recentFiles[0] != path)
@@ -119,6 +133,11 @@ namespace DreamScene2
 
         void OpenWeb(string url)
         {
+            if (!TryGetWebView2Version(out _))
+            {
+                return;
+            }
+
             CloseWindow(WindowType.Web);
 
             if (_webWindow == null)
@@ -554,22 +573,15 @@ namespace DreamScene2
         {
             toolStripMenuItem18.DropDownItems.Clear();
 
-            string version = "";
-            try
-            {
-                version = CoreWebView2Environment.GetAvailableBrowserVersionString();
-            }
-            catch { }
-
-            if (string.IsNullOrEmpty(version))
-            {
-                toolStripMenuItem18.DropDownItems.Add(toolStripMenuItem19);
-            }
-            else
+            if (TryGetWebView2Version(out string version))
             {
                 toolStripMenuItem21.Text = $"WebView2 {version}";
                 toolStripMenuItem18.DropDownItems.Add(toolStripMenuItem21);
                 toolStripMenuItem18.DropDownItems.Add(toolStripMenuItem20);
+            }
+            else
+            {
+                toolStripMenuItem18.DropDownItems.Add(toolStripMenuItem19);
             }
         }
 
