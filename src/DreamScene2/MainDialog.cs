@@ -38,22 +38,6 @@ namespace DreamScene2
 
         #region 私有方法
 
-        void PlayVideo()
-        {
-            _isPlaying = true;
-            _videoWindow.Play();
-            button4.Text = "暂停";
-            toolStripMenuItem2.Text = "暂停";
-        }
-
-        void PauseVideo()
-        {
-            _isPlaying = false;
-            _videoWindow.Pause();
-            button4.Text = "播放";
-            toolStripMenuItem2.Text = "播放";
-        }
-
         static bool TryGetWebView2Version(out string version)
         {
             try
@@ -78,6 +62,22 @@ namespace DreamScene2
 
                 File.WriteAllLines(_recentPath, _recentFiles);
             }
+        }
+
+        void PlayVideo()
+        {
+            _isPlaying = true;
+            _videoWindow.Play();
+            button4.Text = "暂停";
+            toolStripMenuItem2.Text = "暂停";
+        }
+
+        void PauseVideo()
+        {
+            _isPlaying = false;
+            _videoWindow.Pause();
+            button4.Text = "播放";
+            toolStripMenuItem2.Text = "播放";
         }
 
         void OpenFile(string path)
