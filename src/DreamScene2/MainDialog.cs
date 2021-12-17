@@ -32,6 +32,7 @@ namespace DreamScene2
             toolStripMenuItem23.Checked = _settings.AutoPause1;
             toolStripMenuItem24.Checked = _settings.AutoPause2;
             toolStripMenuItem25.Checked = _settings.AutoPause3;
+            toolStripMenuItem26.Checked = _settings.DisableWebSecurity;
             toolStripMenuItem3.Checked = checkBox1.Checked = _settings.IsMuted;
         }
 
