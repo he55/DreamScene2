@@ -142,7 +142,11 @@ namespace DreamScene2
 
             if (_webWindow == null)
             {
-                _webWindow = new WebWindow();
+                WebWindowOptions webWindowOptions = new WebWindowOptions();
+                webWindowOptions.UserDataFolder = Helper.GetPath("");
+                webWindowOptions.DisableWebSecurity = _settings.DisableWebSecurity;
+
+                _webWindow = new WebWindow(webWindowOptions);
                 _webWindow.SetPosition(_screen.Bounds);
                 _webWindow.Show();
 
@@ -577,6 +581,7 @@ namespace DreamScene2
             {
                 toolStripMenuItem21.Text = $"WebView2 {version}";
                 toolStripMenuItem18.DropDownItems.Add(toolStripMenuItem21);
+                toolStripMenuItem18.DropDownItems.Add(toolStripMenuItem26);
                 toolStripMenuItem18.DropDownItems.Add(toolStripMenuItem20);
             }
             else
@@ -624,6 +629,11 @@ namespace DreamScene2
                     if (!_isPlaying) PlayVideo();
                 }
             }
+        }
+
+        private void toolStripMenuItem26_Click(object sender, EventArgs e)
+        {
+            _settings.DisableWebSecurity = toolStripMenuItem26.Checked = !toolStripMenuItem26.Checked;
         }
 
         #endregion

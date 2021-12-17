@@ -4,20 +4,26 @@ using System.Windows;
 
 namespace DreamScene2
 {
-    /// <summary>
-    /// Interaction logic for WebWindow.xaml
-    /// </summary>
     public partial class WebWindow : Window
     {
-        public WebWindow()
+        WebWindowOptions _webWindowOptions;
+
+        public WebWindow(WebWindowOptions webWindowOptions)
         {
+            _webWindowOptions = webWindowOptions;
             InitializeComponent();
             WebView2EnvironmentInit();
         }
 
         async void WebView2EnvironmentInit()
         {
-            var webView2Environment = await CoreWebView2Environment.CreateAsync(null, Helper.GetPath(""));
+            string args = null;
+            if (_webWindowOptions.DisableWebSecurity)
+            {
+                args = "--disable-web-security";
+            }
+
+            var webView2Environment = await CoreWebView2Environment.CreateAsync(null, _webWindowOptions.UserDataFolder, new CoreWebView2EnvironmentOptions(args));
             await webView2.EnsureCoreWebView2Async(webView2Environment);
         }
 

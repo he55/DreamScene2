@@ -8,9 +8,7 @@ namespace DreamScene2
         static string settingsFilePath = Helper.GetPath("settings.xml");
         static Settings s_settings;
 
-        private Settings()
-        {
-        }
+        private Settings() { }
 
         public bool FirstRun { get; set; } = true;
         public bool AutoPlay { get; set; }
@@ -21,6 +19,7 @@ namespace DreamScene2
 
         public bool IsMuted { get; set; }
         public int Volume { get; set; } = 3;
+        public bool DisableWebSecurity { get; set; }
 
         public static Settings Load()
         {

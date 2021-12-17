@@ -3,9 +3,6 @@ using System.Windows;
 
 namespace DreamScene2
 {
-    /// <summary>
-    /// Interaction logic for VideoWindow.xaml
-    /// </summary>
     public partial class VideoWindow : Window
     {
         public VideoWindow()
