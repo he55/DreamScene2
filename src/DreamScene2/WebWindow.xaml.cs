@@ -12,10 +12,10 @@ namespace DreamScene2
         {
             _webWindowOptions = webWindowOptions;
             InitializeComponent();
-            WebView2EnvironmentInit();
+            InitializeCoreWebView2Environment();
         }
 
-        async void WebView2EnvironmentInit()
+        async void InitializeCoreWebView2Environment()
         {
             string args = null;
             if (_webWindowOptions.DisableWebSecurity)

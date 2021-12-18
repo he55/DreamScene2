@@ -13,7 +13,7 @@ namespace DreamScene2
         VideoWindow _videoWindow;
         WebWindow _webWindow;
         IntPtr _desktopWindowHandle;
-        string _recentPath = Helper.GetPath("recent.txt");
+        string _recentPath = Helper.GetPathForAppFolder("recent.txt");
         List<string> _recentFiles = new List<string>();
         bool _isPlaying;
         PerformanceCounter _performanceCounter;
@@ -29,11 +29,13 @@ namespace DreamScene2
             this.Icon = DreamScene2.Properties.Resources.icon;
             notifyIcon1.Icon = this.Icon;
             trackBar1.Value = _settings.Volume;
+            toolStripMenuItem3.Checked = checkBox1.Checked = _settings.IsMuted;
+            toolStripMenuItem6.Checked = checkBox2.Checked = _settings.AutoPlay;
+            toolStripMenuItem12.Checked = Helper.CheckStartOnBoot();
             toolStripMenuItem23.Checked = _settings.AutoPause1;
             toolStripMenuItem24.Checked = _settings.AutoPause2;
             toolStripMenuItem25.Checked = _settings.AutoPause3;
             toolStripMenuItem26.Checked = _settings.DisableWebSecurity;
-            toolStripMenuItem3.Checked = checkBox1.Checked = _settings.IsMuted;
         }
 
 
@@ -144,7 +146,7 @@ namespace DreamScene2
             if (_webWindow == null)
             {
                 WebWindowOptions webWindowOptions = new WebWindowOptions();
-                webWindowOptions.UserDataFolder = Helper.GetPath("");
+                webWindowOptions.UserDataFolder = Helper.GetPathForAppFolder("");
                 webWindowOptions.DisableWebSecurity = _settings.DisableWebSecurity;
 
                 _webWindow = new WebWindow(webWindowOptions);
@@ -251,16 +253,8 @@ namespace DreamScene2
                 _recentFiles.AddRange(paths);
             }
 
-            if (_settings.AutoPlay)
-            {
-                checkBox2.Checked = true;
-                toolStripMenuItem6.Checked = true;
-
-                if (_recentFiles.Count != 0)
-                    OpenFile(_recentFiles[0]);
-            }
-
-            toolStripMenuItem12.Checked = Helper.CheckStartOnBoot();
+            if (_settings.AutoPlay && _recentFiles.Count != 0)
+                OpenFile(_recentFiles[0]);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -467,7 +461,6 @@ namespace DreamScene2
             for (int i = 0; i < _recentFiles.Count; i++)
             {
                 string filePath = _recentFiles[i];
-                //string v = filePath.Truncate(50);
                 ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem($"{i + 1}. {filePath}");
                 toolStripMenuItem.Tag = filePath;
                 toolStripMenuItem.Click += ToolStripMenuItem_Click1;

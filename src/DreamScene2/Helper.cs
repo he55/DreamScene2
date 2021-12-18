@@ -20,7 +20,7 @@ namespace DreamScene2
             });
         }
 
-        public static string GetPath(string subPath)
+        public static string GetPathForAppFolder(string subPath)
         {
             if (s_appPath == null)
             {
@@ -40,7 +40,7 @@ namespace DreamScene2
 
         public static string ExtPath()
         {
-            return GetPath("Ext");
+            return GetPathForAppFolder("Ext");
         }
 
         public static bool CheckStartOnBoot()
