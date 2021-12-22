@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace DreamScene2
@@ -40,6 +40,9 @@ namespace DreamScene2
 
         [DllImport("DS2Native.dll")]
         public static extern void DS2_RefreshDesktop();
+
+        [DllImport("DS2Native.dll")]
+        public static extern void DS2_ToggleDesktopIcons();
     }
 
     /// <summary>Enumeration of the different ways of showing a window using

@@ -3,8 +3,6 @@
 
 #include "framework.h"
 #include "DS2Native.h"
-
-#include <Windows.h>
 #include <ShlObj.h>
 
 
@@ -34,7 +32,7 @@ HWND WINAPI DS2_GetDesktopWindowHandle(void) {
             return FALSE;
         }
         return TRUE;
-    }, NULL);
+        }, NULL);
 
     return g_hWnd;
 }
@@ -101,8 +99,8 @@ void WINAPI DS2_SetWindowPosition(HWND hWnd, RECT rect) {
         HWND_TOP,
         rect.left,
         rect.top,
-        rect.right-rect.left,
-        rect.bottom-rect.top,
+        rect.right - rect.left,
+        rect.bottom - rect.top,
         SWP_SHOWWINDOW);
 }
 
@@ -115,8 +113,8 @@ void WINAPI DS2_RestoreLastWindowPosition(void) {
             HWND_TOP,
             s_lwi.rect.left,
             s_lwi.rect.top,
-            s_lwi.rect.right-s_lwi.rect.left,
-            s_lwi.rect.bottom-s_lwi.rect.top,
+            s_lwi.rect.right - s_lwi.rect.left,
+            s_lwi.rect.bottom - s_lwi.rect.top,
             SWP_SHOWWINDOW);
     }
     s_lwi = { 0 };
@@ -149,5 +147,38 @@ void WINAPI DS2_RefreshDesktop2(void) {
             pDesktopWallpaper->Release();
         }
         CoUninitialize();
+    }
+}
+
+
+void WINAPI DS2_ToggleDesktopIcons(void) {
+    // Thanks: https://stackoverflow.com/a/56812642
+    static HWND hShellViewWin = NULL;
+    if (!hShellViewWin) {
+        HWND hProgman = FindWindow("Progman", "Program Manager");
+        if (hProgman)
+        {
+            // Get and load the main List view window containing the icons.
+            hShellViewWin = FindWindowEx(hProgman, NULL, "SHELLDLL_DefView", NULL);
+            if (!hShellViewWin)
+            {
+                HWND hWorkerW = NULL;
+                HWND hDesktopWnd = GetDesktopWindow();
+
+                // When this fails (picture rotation is turned ON, toggledesktop shell cmd used ), then look for the WorkerW windows list to get the
+                // correct desktop list handle.
+                // As there can be multiple WorkerW windows, iterate through all to get the correct one
+                do
+                {
+                    hWorkerW = FindWindowEx(hDesktopWnd, hWorkerW, "WorkerW", NULL);
+                    hShellViewWin = FindWindowEx(hWorkerW, NULL, "SHELLDLL_DefView", NULL);
+                } while (!hShellViewWin && hWorkerW);
+            }
+        }
+    }
+
+    if (hShellViewWin) {
+        int toggleDesktopCommand = 0x7402;
+        SendMessage(hShellViewWin, WM_COMMAND, toggleDesktopCommand, NULL);
     }
 }

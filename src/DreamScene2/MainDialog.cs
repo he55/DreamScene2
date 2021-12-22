@@ -1,4 +1,4 @@
-﻿using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -628,6 +628,11 @@ namespace DreamScene2
         private void toolStripMenuItem26_Click(object sender, EventArgs e)
         {
             _settings.DisableWebSecurity = toolStripMenuItem26.Checked = !toolStripMenuItem26.Checked;
+        }
+
+        private void toolStripMenuItem13_Click(object sender, EventArgs e)
+        {
+            PInvoke.DS2_ToggleDesktopIcons();
         }
 
         #endregion

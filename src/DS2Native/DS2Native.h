@@ -15,13 +15,14 @@
 extern "C" {
 #endif
 
-DS2NATIVE_API ULONGLONG WINAPI DS2_GetLastInputTickCount(void);
-DS2NATIVE_API HWND WINAPI DS2_GetDesktopWindowHandle(void);
-DS2NATIVE_API int WINAPI DS2_TestScreen(RECT rect);
-DS2NATIVE_API void WINAPI DS2_SetWindowPosition(HWND hWnd, RECT rect);
-DS2NATIVE_API void WINAPI DS2_RestoreLastWindowPosition(void);
-DS2NATIVE_API void WINAPI DS2_RefreshDesktop(void);
-DS2NATIVE_API void WINAPI DS2_RefreshDesktop2(void);
+    DS2NATIVE_API ULONGLONG WINAPI DS2_GetLastInputTickCount(void);
+    DS2NATIVE_API HWND WINAPI DS2_GetDesktopWindowHandle(void);
+    DS2NATIVE_API int WINAPI DS2_TestScreen(RECT rect);
+    DS2NATIVE_API void WINAPI DS2_SetWindowPosition(HWND hWnd, RECT rect);
+    DS2NATIVE_API void WINAPI DS2_RestoreLastWindowPosition(void);
+    DS2NATIVE_API void WINAPI DS2_RefreshDesktop(void);
+    DS2NATIVE_API void WINAPI DS2_RefreshDesktop2(void);
+    DS2NATIVE_API void WINAPI DS2_ToggleDesktopIcons(void);
 
 #ifdef __cplusplus
 }
