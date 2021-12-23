@@ -153,14 +153,14 @@ void WINAPI DS2_RefreshDesktop(BOOL animated) {
 
 void WINAPI DS2_ToggleDesktopIcons(void) {
     // Thanks: https://stackoverflow.com/a/56812642
-    static HWND hShellViewWin = NULL;
-    if (!hShellViewWin) {
+    static HWND g_hShellViewWin = NULL;
+    if (!g_hShellViewWin) {
         HWND hProgman = FindWindow("Progman", "Program Manager");
         if (hProgman)
         {
             // Get and load the main List view window containing the icons.
-            hShellViewWin = FindWindowEx(hProgman, NULL, "SHELLDLL_DefView", NULL);
-            if (!hShellViewWin)
+            g_hShellViewWin = FindWindowEx(hProgman, NULL, "SHELLDLL_DefView", NULL);
+            if (!g_hShellViewWin)
             {
                 HWND hWorkerW = NULL;
                 HWND hDesktopWnd = GetDesktopWindow();
@@ -171,14 +171,14 @@ void WINAPI DS2_ToggleDesktopIcons(void) {
                 do
                 {
                     hWorkerW = FindWindowEx(hDesktopWnd, hWorkerW, "WorkerW", NULL);
-                    hShellViewWin = FindWindowEx(hWorkerW, NULL, "SHELLDLL_DefView", NULL);
-                } while (!hShellViewWin && hWorkerW);
+                    g_hShellViewWin = FindWindowEx(hWorkerW, NULL, "SHELLDLL_DefView", NULL);
+                } while (!g_hShellViewWin && hWorkerW);
             }
         }
     }
 
-    if (hShellViewWin) {
+    if (g_hShellViewWin) {
         int toggleDesktopCommand = 0x7402;
-        SendMessage(hShellViewWin, WM_COMMAND, toggleDesktopCommand, NULL);
+        SendMessage(g_hShellViewWin, WM_COMMAND, toggleDesktopCommand, NULL);
     }
 }
