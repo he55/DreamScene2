@@ -121,32 +121,32 @@ void WINAPI DS2_RestoreLastWindowPosition(void) {
 }
 
 
-void WINAPI DS2_RefreshDesktop(void) {
-    char path[MAX_PATH + 1] = { 0 };
-    SystemParametersInfo(SPI_GETDESKWALLPAPER, MAX_PATH, &path, 0);
-    SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, path, 0);
-}
-
-
-void WINAPI DS2_RefreshDesktop2(void) {
-    HRESULT nRet = CoInitialize(NULL);
-    if (SUCCEEDED(nRet)) {
-        IDesktopWallpaper* pDesktopWallpaper = NULL;
-        nRet = CoCreateInstance(CLSID_DesktopWallpaper, 0, CLSCTX_LOCAL_SERVER, IID_IDesktopWallpaper, (void**)&pDesktopWallpaper);
+void WINAPI DS2_RefreshDesktop(BOOL animated) {
+    if (animated) {
+        HRESULT nRet = CoInitialize(NULL);
         if (SUCCEEDED(nRet)) {
-            LPWSTR path = NULL;
-            pDesktopWallpaper->GetWallpaper(NULL, &path);
-            if (path && wcslen(path)) {
-                pDesktopWallpaper->SetWallpaper(NULL, path);
+            IDesktopWallpaper* pDesktopWallpaper = NULL;
+            nRet = CoCreateInstance(CLSID_DesktopWallpaper, 0, CLSCTX_LOCAL_SERVER, IID_IDesktopWallpaper, (void**)&pDesktopWallpaper);
+            if (SUCCEEDED(nRet)) {
+                LPWSTR path = NULL;
+                pDesktopWallpaper->GetWallpaper(NULL, &path);
+                if (path && wcslen(path)) {
+                    pDesktopWallpaper->SetWallpaper(NULL, path);
+                }
+                else {
+                    COLORREF color;
+                    pDesktopWallpaper->GetBackgroundColor(&color);
+                    pDesktopWallpaper->SetBackgroundColor(color);
+                }
+                pDesktopWallpaper->Release();
             }
-            else {
-                COLORREF color;
-                pDesktopWallpaper->GetBackgroundColor(&color);
-                pDesktopWallpaper->SetBackgroundColor(color);
-            }
-            pDesktopWallpaper->Release();
+            CoUninitialize();
         }
-        CoUninitialize();
+    }
+    else {
+        char path[MAX_PATH + 1] = { 0 };
+        SystemParametersInfo(SPI_GETDESKWALLPAPER, MAX_PATH, &path, 0);
+        SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, path, 0);
     }
 }
 

@@ -39,7 +39,7 @@ namespace DreamScene2
         public static extern void DS2_RestoreLastWindowPosition();
 
         [DllImport("DS2Native.dll")]
-        public static extern void DS2_RefreshDesktop();
+        public static extern void DS2_RefreshDesktop(int animated = 0);
 
         [DllImport("DS2Native.dll")]
         public static extern void DS2_ToggleDesktopIcons();
