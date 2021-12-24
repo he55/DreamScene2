@@ -2,7 +2,7 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/he55/DreamScene2)](https://github.com/he55/DreamScene2/releases/latest)
 [![License](https://img.shields.io/github/license/he55/DreamScene2)](https://github.com/he55/DreamScene2/blob/main/LICENSE)
 
-**DreamScene2** 是使用 C# 编写的一个小巧快速的 Windows 动态桌面软件。集成了 [WebView2](https://docs.microsoft.com/en-us/microsoft-edge/webview2/) 支持播放网页动画。支持 Windows10/11 系统。
+一个小而快并且功能强大的 Windows 动态桌面软件。支持视频和网页动画播放，支持 Windows10/11 系统。
 
 ![](images/Hiyori.gif)
 
