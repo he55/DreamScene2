@@ -36,6 +36,7 @@ namespace DreamScene2
             toolStripMenuItem24.Checked = _settings.AutoPause2;
             toolStripMenuItem25.Checked = _settings.AutoPause3;
             toolStripMenuItem26.Checked = _settings.DisableWebSecurity;
+            toolStripMenuItem27.Checked = _settings.DesktopInteraction;
         }
 
 
@@ -159,6 +160,15 @@ namespace DreamScene2
             _webWindow.Source = new Uri(url);
             button5.Enabled = true;
             toolStripMenuItem5.Enabled = true;
+
+            if (_settings.DesktopInteraction)
+            {
+                Task.Run(async () =>
+                {
+                    await Task.Delay(500);
+                    this.Invoke((Action)ForwardMessage);
+                });
+            }
         }
 
         void SetWindow(IntPtr hWnd)
@@ -192,6 +202,11 @@ namespace DreamScene2
             button5.Enabled = false;
             toolStripMenuItem5.Enabled = false;
 
+            if (lxc == WindowType.Web && _settings.DesktopInteraction)
+            {
+                PInvoke.DS2_EndForwardMouseKeyboardMessage();
+            }
+
             if (lxc == WindowType.Video && lxc != xc)
             {
                 timer1.Enabled = false;
@@ -224,6 +239,20 @@ namespace DreamScene2
 
             GC.Collect();
             PInvoke.DS2_RefreshDesktop();
+        }
+
+        void ForwardMessage()
+        {
+            IntPtr tmpHwnd = _webWindow.webView2.Handle;
+            IntPtr chrome_WidgetWin_0 = PInvoke.FindWindowEx(tmpHwnd, IntPtr.Zero, "Chrome_WidgetWin_0", null);
+            if (chrome_WidgetWin_0 != IntPtr.Zero)
+            {
+                IntPtr chrome_WidgetWin_1 = PInvoke.FindWindowEx(chrome_WidgetWin_0, IntPtr.Zero, "Chrome_WidgetWin_1", null);
+                if (chrome_WidgetWin_1 != IntPtr.Zero)
+                {
+                    PInvoke.DS2_StartForwardMouseKeyboardMessage(chrome_WidgetWin_1);
+                }
+            }
         }
 
         #endregion
@@ -633,6 +662,18 @@ namespace DreamScene2
         private void toolStripMenuItem13_Click(object sender, EventArgs e)
         {
             PInvoke.DS2_ToggleDesktopIcons();
+        }
+
+        private void toolStripMenuItem27_Click(object sender, EventArgs e)
+        {
+            _settings.DesktopInteraction = toolStripMenuItem27.Checked = !toolStripMenuItem27.Checked;
+            if (_webWindow != null)
+            {
+                if (_settings.DesktopInteraction)
+                    ForwardMessage();
+                else
+                    PInvoke.DS2_EndForwardMouseKeyboardMessage();
+            }
         }
 
         #endregion

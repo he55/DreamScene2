@@ -242,6 +242,7 @@ LRESULT CALLBACK LowLevelMouseProc(int    nCode, WPARAM wParam, LPARAM lParam) {
             PostMessage(g_hWnd, (UINT)wParam, MK_LBUTTON, lp);
         }
         else  if (wParam == WM_MOUSEWHEEL) {
+            // TODO:
         }
     }
     else  if (wParam == WM_MOUSEMOVE) {

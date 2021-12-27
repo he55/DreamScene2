@@ -9,6 +9,13 @@ namespace DreamScene2
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         [DllImport("User32.dll", SetLastError = true)]
+        public static extern IntPtr FindWindowEx(
+            IntPtr parentHandle,
+            IntPtr childAfter,
+            string className,
+            string windowTitle);
+
+        [DllImport("User32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hWnd, WindowShowStyle nCmdShow);
 
@@ -43,6 +50,12 @@ namespace DreamScene2
 
         [DllImport("DS2Native.dll")]
         public static extern void DS2_ToggleDesktopIcons();
+
+        [DllImport("DS2Native.dll")]
+        public static extern int DS2_StartForwardMouseKeyboardMessage(IntPtr hWnd);
+
+        [DllImport("DS2Native.dll")]
+        public static extern void DS2_EndForwardMouseKeyboardMessage();
     }
 
     /// <summary>Enumeration of the different ways of showing a window using
