@@ -182,3 +182,106 @@ void WINAPI DS2_ToggleDesktopIcons(void) {
         SendMessage(g_hShellViewWin, WM_COMMAND, toggleDesktopCommand, NULL);
     }
 }
+
+
+BOOL DS2_IsDesktop(void) {
+    // Thanks: https://stackoverflow.com/a/56812642
+    HWND hProgman = FindWindow("Progman", "Program Manager");
+    HWND hWorkerW = NULL;
+
+    // Get and load the main List view window containing the icons.
+    HWND   hShellViewWin = FindWindowEx(hProgman, NULL, "SHELLDLL_DefView", NULL);
+    if (!hShellViewWin)
+    {
+        HWND hDesktopWnd = GetDesktopWindow();
+
+        // When this fails (picture rotation is turned ON, toggledesktop shell cmd used ), then look for the WorkerW windows list to get the
+        // correct desktop list handle.
+        // As there can be multiple WorkerW windows, iterate through all to get the correct one
+        do
+        {
+            hWorkerW = FindWindowEx(hDesktopWnd, hWorkerW, "WorkerW", NULL);
+            hShellViewWin = FindWindowEx(hWorkerW, NULL, "SHELLDLL_DefView", NULL);
+        } while (!hShellViewWin && hWorkerW);
+    }
+
+    HWND hForegroundWindow = GetForegroundWindow();
+    return hForegroundWindow == hWorkerW || hForegroundWindow == hProgman;
+}
+
+
+HWND g_hWnd = NULL;
+
+LRESULT CALLBACK LowLevelKeyboardProc(int    nCode, WPARAM wParam, LPARAM lParam) {
+    if (DS2_IsDesktop()) {
+        KBDLLHOOKSTRUCT* p = (KBDLLHOOKSTRUCT*)lParam;
+
+        if (wParam == WM_KEYDOWN) {
+            int lp = 1 | (p->scanCode << 16) | (1 << 24) | (0 << 29) | (0 << 30) | (0 << 31);
+            PostMessage(g_hWnd, (UINT)wParam, p->vkCode, lp);
+        }
+        else if (wParam == WM_KEYUP) {
+            int lp = 1 | (p->scanCode << 16) | (1 << 24) | (0 << 29) | (1 << 30) | (1 << 31);
+            PostMessage(g_hWnd, (UINT)wParam, p->vkCode, lp);
+        }
+    }
+
+    return CallNextHookEx(NULL, nCode, wParam, lParam);
+}
+
+
+LRESULT CALLBACK LowLevelMouseProc(int    nCode, WPARAM wParam, LPARAM lParam) {
+    MSLLHOOKSTRUCT* p = (MSLLHOOKSTRUCT*)lParam;
+    LONG lp = MAKELONG(p->pt.x, p->pt.y);
+
+    if (DS2_IsDesktop()) {
+        if (wParam == WM_MOUSEMOVE) {
+            PostMessage(g_hWnd, (UINT)wParam, MK_XBUTTON1, lp);
+        }
+        else  if (wParam == WM_LBUTTONDOWN || wParam == WM_LBUTTONUP) {
+            PostMessage(g_hWnd, (UINT)wParam, MK_LBUTTON, lp);
+        }
+        else  if (wParam == WM_MOUSEWHEEL) {
+        }
+    }
+    else  if (wParam == WM_MOUSEMOVE) {
+        RECT rect;
+        GetWindowRect(GetForegroundWindow(), &rect);
+
+        if (!PtInRect(&rect, p->pt)) {
+            PostMessage(g_hWnd, (UINT)wParam, MK_XBUTTON1, lp);
+        }
+    }
+
+    return CallNextHookEx(NULL, nCode, wParam, lParam);
+}
+
+
+HHOOK g_hLowLevelMouseHook = NULL;
+HHOOK g_hLowLevelKeyboardHook = NULL;
+
+BOOL WINAPI DS2_StartForwardMouseKeyboardMessage(HWND hWnd) {
+    g_hWnd = hWnd;
+
+    HMODULE hm = GetModuleHandle(NULL);
+    g_hLowLevelMouseHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, hm, NULL);
+    if (!g_hLowLevelMouseHook) {
+        return FALSE;
+    }
+
+    g_hLowLevelKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, hm, NULL);
+    return TRUE;
+}
+
+
+void WINAPI DS2_EndForwardMouseKeyboardMessage(void) {
+    if (g_hLowLevelMouseHook) {
+        UnhookWindowsHookEx(g_hLowLevelMouseHook);
+        g_hLowLevelMouseHook = NULL;
+    }
+
+    if (g_hLowLevelKeyboardHook) {
+        UnhookWindowsHookEx(g_hLowLevelKeyboardHook);
+        g_hLowLevelKeyboardHook = NULL;
+    }
+}
