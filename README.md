@@ -21,7 +21,7 @@ https://github.com/he55/DreamScene2/releases/latest
 ## 🌍 Roadmap
 - [ ] GIF 和 APNG 播放
 - [ ] [Live2D](https://www.live2d.com/) 播放
-- [ ] 鼠标和桌面交互
+- [x] 鼠标和桌面交互
 - [ ] 屏幕保护程序
 - [ ] 更多视频格式
 - [ ] 重新设计 UI
