@@ -8,11 +8,11 @@ namespace DreamScene2
         public AboutDialog()
         {
             InitializeComponent();
-            label2.Text = Constant.Version;
+            lblVersion.Text = Constant.Version;
             this.Icon = DreamScene2.Properties.Resources.icon;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnColose_Click(object sender, EventArgs e)
         {
             this.Close();
         }

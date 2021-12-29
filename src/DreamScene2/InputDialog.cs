@@ -9,22 +9,22 @@ namespace DreamScene2
         {
             InitializeComponent();
             this.Icon = DreamScene2.Properties.Resources.icon;
-            label2.Text = "";
+            lblTipMsg.Text = "";
         }
 
-        public string URL => textBox1.Text;
+        public string URL => txtUrl.Text;
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnConfirm_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBox1.Text))
+            if (!string.IsNullOrEmpty(txtUrl.Text))
             {
                 try
                 {
-                    _ = new Uri(textBox1.Text);
+                    _ = new Uri(txtUrl.Text);
                 }
                 catch
                 {
-                    label2.Text = "输入的 URL 无效";
+                    lblTipMsg.Text = "输入的 URL 无效";
                     return;
                 }
 
@@ -33,7 +33,7 @@ namespace DreamScene2
             }
             else
             {
-                label2.Text = "输入不能为空";
+                lblTipMsg.Text = "输入不能为空";
             }
         }
     }
