@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,6 +22,9 @@ namespace DreamScene2
         Screen _screen;
         int _screenIndex;
         IntPtr _windowHandle;
+
+        string[] HtmlFileTypes = new string[] { ".htm", ".html", ".mhtml" };
+        string[] VideoFileTypes = new string[] { ".mp4", ".mov" };
 
         public MainDialog()
         {
@@ -95,7 +99,7 @@ namespace DreamScene2
             }
             else if (uri.Scheme == "file" && File.Exists(path))
             {
-                if (Path.GetExtension(path) == ".html")
+                if (HtmlFileTypes.Contains(Path.GetExtension(path).ToLower()))
                     OpenWeb(uri.AbsoluteUri);
                 else
                     OpenVideo(path);
@@ -309,7 +313,10 @@ namespace DreamScene2
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "All Types|*.mp4;*.mov;*.html|Video Files (*.mp4;*.mov)|*.mp4;*.mov|HTML Files (*.html)|*.html";
+            var htmlTypes = string.Join(";", HtmlFileTypes.Select(x => $"*{x}"));
+            var videoTypes = string.Join(";", VideoFileTypes.Select(x => $"*{x}"));
+            var allTypes = $"{htmlTypes};{videoTypes}";
+            openFileDialog.Filter = $"All Types|{allTypes}|Video Files|{videoTypes}|HTML Files|{htmlTypes}";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 OpenFile(openFileDialog.FileName);
         }
