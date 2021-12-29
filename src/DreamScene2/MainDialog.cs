@@ -29,8 +29,8 @@ namespace DreamScene2
             this.Icon = DreamScene2.Properties.Resources.icon;
             notifyIcon1.Icon = this.Icon;
             trackBar1.Value = _settings.Volume;
-            toolStripMenuItem3.Checked = checkBox1.Checked = _settings.IsMuted;
-            toolStripMenuItem6.Checked = checkBox2.Checked = _settings.AutoPlay;
+            toolStripMenuItem3.Checked = checkMute.Checked = _settings.IsMuted;
+            toolStripMenuItem6.Checked = checkAutoPlay.Checked = _settings.AutoPlay;
             toolStripMenuItem12.Checked = Helper.CheckStartOnBoot();
             toolStripMenuItem23.Checked = _settings.AutoPause1;
             toolStripMenuItem24.Checked = _settings.AutoPause2;
@@ -72,7 +72,7 @@ namespace DreamScene2
         {
             _isPlaying = true;
             _videoWindow.Play();
-            button4.Text = "暂停";
+            btnPlay.Text = "暂停";
             toolStripMenuItem2.Text = "暂停";
         }
 
@@ -80,7 +80,7 @@ namespace DreamScene2
         {
             _isPlaying = false;
             _videoWindow.Pause();
-            button4.Text = "播放";
+            btnPlay.Text = "播放";
             toolStripMenuItem2.Text = "播放";
         }
 
@@ -120,9 +120,9 @@ namespace DreamScene2
             _videoWindow.Source = new Uri(path, UriKind.Absolute);
             _videoWindow.Play();
 
-            button4.Enabled = true;
-            button5.Enabled = true;
-            checkBox1.Enabled = true;
+            btnPlay.Enabled = true;
+            btnClose.Enabled = true;
+            checkMute.Enabled = true;
             trackBar1.Enabled = !_settings.IsMuted;
 
             toolStripMenuItem2.Enabled = true;
@@ -130,7 +130,7 @@ namespace DreamScene2
             toolStripMenuItem5.Enabled = true;
 
             _isPlaying = true;
-            button4.Text = "暂停";
+            btnPlay.Text = "暂停";
             toolStripMenuItem2.Text = "暂停";
             timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
         }
@@ -158,7 +158,7 @@ namespace DreamScene2
             }
 
             _webWindow.Source = new Uri(url);
-            button5.Enabled = true;
+            btnClose.Enabled = true;
             toolStripMenuItem5.Enabled = true;
 
             if (_settings.DesktopInteraction)
@@ -183,7 +183,7 @@ namespace DreamScene2
                 PInvoke.SetParent(hWnd, _desktopWindowHandle);
             }
 
-            button5.Enabled = true;
+            btnClose.Enabled = true;
             toolStripMenuItem5.Enabled = true;
         }
 
@@ -199,7 +199,7 @@ namespace DreamScene2
 
         void CloseWindow(WindowType xc)
         {
-            button5.Enabled = false;
+            btnClose.Enabled = false;
             toolStripMenuItem5.Enabled = false;
 
             if (lxc == WindowType.Web && _settings.DesktopInteraction)
@@ -211,11 +211,11 @@ namespace DreamScene2
             {
                 timer1.Enabled = false;
                 _isPlaying = false;
-                button4.Text = "播放";
+                btnPlay.Text = "播放";
                 toolStripMenuItem2.Text = "播放";
 
-                button4.Enabled = false;
-                checkBox1.Enabled = false;
+                btnPlay.Enabled = false;
+                checkMute.Enabled = false;
                 trackBar1.Enabled = false;
 
                 toolStripMenuItem2.Enabled = false;
@@ -272,7 +272,7 @@ namespace DreamScene2
             _desktopWindowHandle = PInvoke.DS2_GetDesktopWindowHandle();
             if (_desktopWindowHandle == IntPtr.Zero)
             {
-                button2.Enabled = false;
+                btnOpenFile.Enabled = false;
                 label1.Visible = true;
             }
 
@@ -306,15 +306,15 @@ namespace DreamScene2
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnOpenFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Video Files (*.mp4;*.mov)|*.mp4;*.mov|HTML Files (*.html)|*.html";
+            openFileDialog.Filter = "All Types|*.mp4;*.mov;*.html|Video Files (*.mp4;*.mov)|*.mp4;*.mov|HTML Files (*.html)|*.html";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 OpenFile(openFileDialog.FileName);
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnPlay_Click(object sender, EventArgs e)
         {
             if (_isPlaying)
             {
@@ -328,16 +328,16 @@ namespace DreamScene2
             }
         }
 
-        private void checkBox1_Click(object sender, EventArgs e)
+        private void checkMute_Click(object sender, EventArgs e)
         {
-            _settings.IsMuted = toolStripMenuItem3.Checked = checkBox1.Checked;
+            _settings.IsMuted = toolStripMenuItem3.Checked = checkMute.Checked;
             trackBar1.Enabled = !_settings.IsMuted;
             _videoWindow.IsMuted = _settings.IsMuted;
         }
 
-        private void checkBox2_Click(object sender, EventArgs e)
+        private void checkAutoPlay_Click(object sender, EventArgs e)
         {
-            _settings.AutoPlay = toolStripMenuItem6.Checked = checkBox2.Checked;
+            _settings.AutoPlay = toolStripMenuItem6.Checked = checkAutoPlay.Checked;
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -346,7 +346,7 @@ namespace DreamScene2
             _videoWindow.Volume = _settings.Volume / 10.0;
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void btnClose_Click(object sender, EventArgs e)
         {
             CloseWindow(WindowType.None);
         }
@@ -459,13 +459,13 @@ namespace DreamScene2
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            button4_Click(null, null);
+            btnPlay_Click(null, null);
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            checkBox1.Checked = !checkBox1.Checked;
-            checkBox1_Click(null, null);
+            checkMute.Checked = !checkMute.Checked;
+            checkMute_Click(null, null);
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
@@ -475,13 +475,13 @@ namespace DreamScene2
 
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
-            button5_Click(null, null);
+            btnClose_Click(null, null);
         }
 
         private void toolStripMenuItem6_Click(object sender, EventArgs e)
         {
-            checkBox2.Checked = !checkBox2.Checked;
-            checkBox2_Click(null, null);
+            checkAutoPlay.Checked = !checkAutoPlay.Checked;
+            checkAutoPlay_Click(null, null);
         }
 
         private void toolStripMenuItem7_DropDownOpening(object sender, EventArgs e)
@@ -513,7 +513,7 @@ namespace DreamScene2
 
         private void toolStripMenuItem9_Click(object sender, EventArgs e)
         {
-            button2_Click(null, null);
+            btnOpenFile_Click(null, null);
         }
 
         private void toolStripMenuItem12_Click(object sender, EventArgs e)
