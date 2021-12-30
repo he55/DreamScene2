@@ -143,6 +143,7 @@ namespace DreamScene2
         {
             if (!TryGetWebView2Version(out _))
             {
+                MessageBox.Show("打开网页功能需要 WebView2 支持。请在托盘图标找到 DreamScene2 然后右键菜单，依次点击 [打开 URL] > [安装 WebView2...] 安装");
                 return;
             }
 
@@ -277,7 +278,10 @@ namespace DreamScene2
             if (_desktopWindowHandle == IntPtr.Zero)
             {
                 btnOpenFile.Enabled = false;
+                checkAutoPlay.Enabled = false;
+                notifyIcon1.Visible = false;
                 label1.Visible = true;
+                return;
             }
 
             if (File.Exists(_recentPath))
@@ -292,6 +296,12 @@ namespace DreamScene2
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (_desktopWindowHandle == IntPtr.Zero)
+            {
+                Environment.Exit(0);
+                return;
+            }
+
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
