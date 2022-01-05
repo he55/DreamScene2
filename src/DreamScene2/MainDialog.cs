@@ -699,6 +699,16 @@ namespace DreamScene2
             }
         }
 
+        private void toolStripMenuItem28_Click(object sender, EventArgs e)
+        {
+            Type shellType = Type.GetTypeFromProgID("Shell.Application");
+            if (shellType != null)
+            {
+                object shellObject = Activator.CreateInstance(shellType);
+                shellType.InvokeMember("ToggleDesktop", System.Reflection.BindingFlags.InvokeMethod, null, shellObject, null);
+            }
+        }
+
         #endregion
 
 
