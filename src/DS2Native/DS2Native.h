@@ -21,7 +21,8 @@ extern "C" {
     DS2NATIVE_API void WINAPI DS2_SetWindowPosition(HWND hWnd, RECT rect);
     DS2NATIVE_API void WINAPI DS2_RestoreLastWindowPosition(void);
     DS2NATIVE_API void WINAPI DS2_RefreshDesktop(BOOL animated = FALSE);
-    DS2NATIVE_API void WINAPI DS2_ToggleDesktopIcons(void);
+    DS2NATIVE_API void WINAPI DS2_ToggleShowDesktopIcons(void);
+    DS2NATIVE_API BOOL WINAPI DS2_IsVisibleDesktopIcons(void);
     DS2NATIVE_API BOOL WINAPI DS2_StartForwardMouseKeyboardMessage(HWND hWnd);
     DS2NATIVE_API void WINAPI DS2_EndForwardMouseKeyboardMessage(void);
 

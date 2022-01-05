@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "DS2Native.h"
+#include <tchar.h>
 #include <ShlObj.h>
 
 
@@ -151,7 +152,48 @@ void WINAPI DS2_RefreshDesktop(BOOL animated) {
 }
 
 
-void WINAPI DS2_ToggleDesktopIcons(void) {
+HWND GetDesktopListViewHWND()
+{
+    HWND hDesktopListView = NULL;
+    HWND hWorkerW = NULL;
+
+    HWND hProgman = FindWindow(_T("Progman"), NULL);
+    HWND hDesktopWnd = GetDesktopWindow();
+
+    // If the main Program Manager window is found
+    if (hProgman)
+    {
+        // Get and load the main List view window containing the icons (found using Spy++).
+        HWND hShellViewWin = FindWindowEx(hProgman, NULL, _T("SHELLDLL_DefView"), NULL);
+        if (hShellViewWin)
+            hDesktopListView = FindWindowEx(hShellViewWin, NULL, _T("SysListView32"), NULL);
+        else
+            // When this fails (happens in Windows-7 when picture rotation is turned ON), then look for the WorkerW windows list to get the
+            // correct desktop list handle.
+            // As there can be multiple WorkerW windows, so iterate through all to get the correct one
+            do
+            {
+                hWorkerW = FindWindowEx(hDesktopWnd, hWorkerW, _T("WorkerW"), NULL);
+                hShellViewWin = FindWindowEx(hWorkerW, NULL, _T("SHELLDLL_DefView"), NULL);
+            } while (!hShellViewWin && hWorkerW);
+
+            // Get the ListView control
+            hDesktopListView = FindWindowEx(hShellViewWin, NULL, _T("SysListView32"), NULL);
+    }
+
+    return hDesktopListView;
+}
+
+
+BOOL WINAPI DS2_IsVisibleDesktopIcons(void) {
+    HWND hWnd = GetDesktopListViewHWND();
+    WINDOWINFO info = { 0 };
+    GetWindowInfo(hWnd, &info);
+    return (info.dwStyle & WS_VISIBLE) == WS_VISIBLE;
+}
+
+
+void WINAPI DS2_ToggleShowDesktopIcons(void) {
     // Thanks: https://stackoverflow.com/a/56812642
     static HWND g_hShellViewWin = NULL;
     if (!g_hShellViewWin) {

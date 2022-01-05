@@ -49,7 +49,10 @@ namespace DreamScene2
         public static extern void DS2_RefreshDesktop(int animated = 0);
 
         [DllImport("DS2Native.dll")]
-        public static extern void DS2_ToggleDesktopIcons();
+        public static extern void DS2_ToggleShowDesktopIcons();
+
+        [DllImport("DS2Native.dll")]
+        public static extern int DS2_IsVisibleDesktopIcons();
 
         [DllImport("DS2Native.dll")]
         public static extern int DS2_StartForwardMouseKeyboardMessage(IntPtr hWnd);

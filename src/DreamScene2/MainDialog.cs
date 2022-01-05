@@ -35,7 +35,6 @@ namespace DreamScene2
             trackBar1.Value = _settings.Volume;
             toolStripMenuItem3.Checked = checkMute.Checked = _settings.IsMuted;
             toolStripMenuItem6.Checked = checkAutoPlay.Checked = _settings.AutoPlay;
-            toolStripMenuItem12.Checked = Helper.CheckStartOnBoot();
             toolStripMenuItem23.Checked = _settings.AutoPause1;
             toolStripMenuItem24.Checked = _settings.AutoPause2;
             toolStripMenuItem25.Checked = _settings.AutoPause3;
@@ -469,6 +468,13 @@ namespace DreamScene2
 
         #region 菜单事件
 
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            toolStripMenuItem12.Checked = Helper.CheckStartOnBoot();
+            int val = PInvoke.DS2_IsVisibleDesktopIcons();
+            toolStripMenuItem13.Text = val != 0 ? "隐藏桌面图标" : "显示桌面图标";
+        }
+
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             notifyIcon1_MouseDoubleClick(null, null);
@@ -678,7 +684,7 @@ namespace DreamScene2
 
         private void toolStripMenuItem13_Click(object sender, EventArgs e)
         {
-            PInvoke.DS2_ToggleDesktopIcons();
+            PInvoke.DS2_ToggleShowDesktopIcons();
         }
 
         private void toolStripMenuItem27_Click(object sender, EventArgs e)
