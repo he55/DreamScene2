@@ -75,16 +75,14 @@ namespace DreamScene2
         {
             _isPlaying = true;
             _videoWindow.Play();
-            btnPlay.Text = "暂停";
-            toolStripMenuItem2.Text = "暂停";
+            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
         }
 
         void PauseVideo()
         {
             _isPlaying = false;
             _videoWindow.Pause();
-            btnPlay.Text = "播放";
-            toolStripMenuItem2.Text = "播放";
+            toolStripMenuItem2.Text = btnPlay.Text = "播放";
         }
 
         void OpenFile(string path)
@@ -123,18 +121,13 @@ namespace DreamScene2
             _videoWindow.Source = new Uri(path, UriKind.Absolute);
             _videoWindow.Play();
 
-            btnPlay.Enabled = true;
-            btnClose.Enabled = true;
-            checkMute.Enabled = true;
+            toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
+            toolStripMenuItem3.Enabled = checkMute.Enabled = true;
+            toolStripMenuItem5.Enabled = btnClose.Enabled = true;
             trackBar1.Enabled = !_settings.IsMuted;
 
-            toolStripMenuItem2.Enabled = true;
-            toolStripMenuItem3.Enabled = true;
-            toolStripMenuItem5.Enabled = true;
-
             _isPlaying = true;
-            btnPlay.Text = "暂停";
-            toolStripMenuItem2.Text = "暂停";
+            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
             timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
         }
 
@@ -162,8 +155,7 @@ namespace DreamScene2
             }
 
             _webWindow.Source = new Uri(url);
-            btnClose.Enabled = true;
-            toolStripMenuItem5.Enabled = true;
+            toolStripMenuItem5.Enabled = btnClose.Enabled = true;
 
             if (_settings.DesktopInteraction)
             {
@@ -187,8 +179,7 @@ namespace DreamScene2
                 PInvoke.SetParent(hWnd, _desktopWindowHandle);
             }
 
-            btnClose.Enabled = true;
-            toolStripMenuItem5.Enabled = true;
+            toolStripMenuItem5.Enabled = btnClose.Enabled = true;
         }
 
         enum WindowType
@@ -203,8 +194,7 @@ namespace DreamScene2
 
         void CloseWindow(WindowType xc)
         {
-            btnClose.Enabled = false;
-            toolStripMenuItem5.Enabled = false;
+            toolStripMenuItem5.Enabled = btnClose.Enabled = false;
 
             if (lxc == WindowType.Web && _settings.DesktopInteraction)
             {
@@ -215,15 +205,12 @@ namespace DreamScene2
             {
                 timer1.Enabled = false;
                 _isPlaying = false;
-                btnPlay.Text = "播放";
-                toolStripMenuItem2.Text = "播放";
+                toolStripMenuItem2.Text = btnPlay.Text = "播放";
 
-                btnPlay.Enabled = false;
-                checkMute.Enabled = false;
+                toolStripMenuItem2.Enabled = btnPlay.Enabled = false;
+                toolStripMenuItem3.Enabled = checkMute.Enabled = false;
+                toolStripMenuItem5.Enabled = btnClose.Enabled = false;
                 trackBar1.Enabled = false;
-
-                toolStripMenuItem2.Enabled = false;
-                toolStripMenuItem3.Enabled = false;
 
                 _videoWindow.Close();
                 _videoWindow = null;
