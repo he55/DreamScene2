@@ -25,6 +25,7 @@ extern "C" {
     DS2NATIVE_API BOOL WINAPI DS2_IsVisibleDesktopIcons(void);
     DS2NATIVE_API BOOL WINAPI DS2_StartForwardMouseKeyboardMessage(HWND hWnd);
     DS2NATIVE_API void WINAPI DS2_EndForwardMouseKeyboardMessage(void);
+    DS2NATIVE_API void WINAPI DS2_ToggleProcess(DWORD dwPID, BOOL bResumeProcess);
 
 #ifdef __cplusplus
 }

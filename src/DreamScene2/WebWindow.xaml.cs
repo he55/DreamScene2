@@ -33,6 +33,28 @@ namespace DreamScene2
             set => webView2.Source = value;
         }
 
+        public IntPtr GetChromeWidgetWin1Handle()
+        {
+            IntPtr chrome_WidgetWin_0 = PInvoke.FindWindowEx(webView2.Handle, IntPtr.Zero, "Chrome_WidgetWin_0", null);
+            if (chrome_WidgetWin_0 == IntPtr.Zero)
+            {
+                return IntPtr.Zero;
+            }
+            return PInvoke.FindWindowEx(chrome_WidgetWin_0, IntPtr.Zero, "Chrome_WidgetWin_1", null);
+        }
+
+        public uint GetD3DRenderingSubProcessPid()
+        {
+            IntPtr chrome_WidgetWin_1 = GetChromeWidgetWin1Handle();
+            if (chrome_WidgetWin_1 != IntPtr.Zero)
+            {
+                IntPtr d3dWindowHandle = PInvoke.FindWindowEx(chrome_WidgetWin_1, IntPtr.Zero, "Intermediate D3D Window", null);
+                PInvoke.GetWindowThreadProcessId(d3dWindowHandle, out uint pid);
+                return pid;
+            }
+            return 0;
+        }
+
         protected override void OnClosed(EventArgs e)
         {
             webView2.Dispose();

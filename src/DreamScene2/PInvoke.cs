@@ -30,6 +30,10 @@ namespace DreamScene2
         [DllImport("User32.dll", SetLastError = true)]
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
+        [DllImport("User32.dll", SetLastError = true)]
+        public static extern int GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+
         [DllImport("DS2Native.dll")]
         public static extern ulong DS2_GetLastInputTickCount();
 
@@ -59,6 +63,9 @@ namespace DreamScene2
 
         [DllImport("DS2Native.dll")]
         public static extern void DS2_EndForwardMouseKeyboardMessage();
+
+        [DllImport("DS2Native.dll")]
+        public static extern void DS2_ToggleProcess(uint dwPID, int bResumeProcess);
     }
 
     /// <summary>Enumeration of the different ways of showing a window using

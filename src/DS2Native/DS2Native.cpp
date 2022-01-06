@@ -328,3 +328,26 @@ void WINAPI DS2_EndForwardMouseKeyboardMessage(void) {
         g_hLowLevelKeyboardHook = NULL;
     }
 }
+
+
+typedef LONG(NTAPI* NtSuspendProcess)(IN HANDLE ProcessHandle);
+typedef LONG(NTAPI* NtResumeProcess)(IN HANDLE ProcessHandle);
+
+void WINAPI DS2_ToggleProcess(DWORD dwPID, BOOL bResumeProcess) {
+    HMODULE hModule = GetModuleHandle("ntdll");
+    if (hModule) {
+        HANDLE processHandle = OpenProcess(PROCESS_SUSPEND_RESUME, FALSE, dwPID);
+
+        if (bResumeProcess)
+        {
+            NtResumeProcess pfnNtResumeProcess = (NtResumeProcess)GetProcAddress(hModule, "NtResumeProcess");
+            pfnNtResumeProcess(processHandle);
+        }
+        else
+        {
+            NtSuspendProcess pfnNtSuspendProcess = (NtSuspendProcess)GetProcAddress(hModule, "NtSuspendProcess");
+            pfnNtSuspendProcess(processHandle);
+        }
+        CloseHandle(processHandle);
+    }
+}

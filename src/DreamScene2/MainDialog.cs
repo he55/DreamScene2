@@ -22,6 +22,8 @@ namespace DreamScene2
         Screen _screen;
         int _screenIndex;
         IntPtr _windowHandle;
+        bool _isSuspend;
+        uint _d3dRenderingSubProcessPid;
 
         string[] HtmlFileTypes = new string[] { ".htm", ".html", ".mhtml" };
         string[] VideoFileTypes = new string[] { ".mp4", ".mov" };
@@ -155,7 +157,12 @@ namespace DreamScene2
             }
 
             _webWindow.Source = new Uri(url);
+
+            toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
+            toolStripMenuItem3.Enabled = checkMute.Enabled = true;
             toolStripMenuItem5.Enabled = btnClose.Enabled = true;
+
+            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
 
             if (_settings.DesktopInteraction)
             {
@@ -196,6 +203,15 @@ namespace DreamScene2
         {
             toolStripMenuItem5.Enabled = btnClose.Enabled = false;
 
+            if (lxc == WindowType.Web)
+            {
+                if (_isSuspend)
+                {
+                    PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 1);
+                    _isSuspend = false;
+                }
+            }
+
             if (lxc == WindowType.Web && _settings.DesktopInteraction)
             {
                 PInvoke.DS2_EndForwardMouseKeyboardMessage();
@@ -217,6 +233,12 @@ namespace DreamScene2
             }
             else if (lxc == WindowType.Web && lxc != xc)
             {
+                toolStripMenuItem2.Text = btnPlay.Text = "播放";
+
+                toolStripMenuItem2.Enabled = btnPlay.Enabled = false;
+                toolStripMenuItem3.Enabled = checkMute.Enabled = false;
+                toolStripMenuItem5.Enabled = btnClose.Enabled = false;
+
                 _webWindow.Close();
                 _webWindow = null;
             }
@@ -234,15 +256,10 @@ namespace DreamScene2
 
         void ForwardMessage()
         {
-            IntPtr tmpHwnd = _webWindow.webView2.Handle;
-            IntPtr chrome_WidgetWin_0 = PInvoke.FindWindowEx(tmpHwnd, IntPtr.Zero, "Chrome_WidgetWin_0", null);
-            if (chrome_WidgetWin_0 != IntPtr.Zero)
+            IntPtr hWnd = _webWindow.GetChromeWidgetWin1Handle();
+            if (hWnd != IntPtr.Zero)
             {
-                IntPtr chrome_WidgetWin_1 = PInvoke.FindWindowEx(chrome_WidgetWin_0, IntPtr.Zero, "Chrome_WidgetWin_1", null);
-                if (chrome_WidgetWin_1 != IntPtr.Zero)
-                {
-                    PInvoke.DS2_StartForwardMouseKeyboardMessage(chrome_WidgetWin_1);
-                }
+                PInvoke.DS2_StartForwardMouseKeyboardMessage(hWnd);
             }
         }
 
@@ -319,15 +336,38 @@ namespace DreamScene2
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            if (_isPlaying)
+            if (_videoWindow != null)
             {
-                timer1.Enabled = false;
-                PauseVideo();
+                if (_isPlaying)
+                {
+                    timer1.Enabled = false;
+                    PauseVideo();
+                }
+                else
+                {
+                    PlayVideo();
+                    timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
+                }
             }
-            else
+
+            if (_webWindow != null)
             {
-                PlayVideo();
-                timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
+                if (_isSuspend)
+                {
+                    PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 1);
+                    _isSuspend = false;
+                    toolStripMenuItem2.Text = btnPlay.Text = "暂停";
+                }
+                else
+                {
+                    _d3dRenderingSubProcessPid = _webWindow.GetD3DRenderingSubProcessPid();
+                    if (_d3dRenderingSubProcessPid != 0)
+                    {
+                        PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 0);
+                        _isSuspend = true;
+                        toolStripMenuItem2.Text = btnPlay.Text = "播放";
+                    }
+                }
             }
         }
 
