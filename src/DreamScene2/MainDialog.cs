@@ -205,16 +205,16 @@ namespace DreamScene2
 
             if (lxc == WindowType.Web)
             {
+                if (_settings.DesktopInteraction)
+                {
+                    PInvoke.DS2_EndForwardMouseKeyboardMessage();
+                }
+
                 if (_isSuspend)
                 {
                     PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 1);
                     _isSuspend = false;
                 }
-            }
-
-            if (lxc == WindowType.Web && _settings.DesktopInteraction)
-            {
-                PInvoke.DS2_EndForwardMouseKeyboardMessage();
             }
 
             if (lxc == WindowType.Video && lxc != xc)
