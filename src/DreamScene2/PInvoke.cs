@@ -34,6 +34,15 @@ namespace DreamScene2
         public static extern int GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
 
+        [DllImport("User32.dll", SetLastError = true, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        [DllImport("User32.dll", SetLastError = true, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+
         [DllImport("DS2Native.dll")]
         public static extern ulong DS2_GetLastInputTickCount();
 

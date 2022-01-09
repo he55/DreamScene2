@@ -11,6 +11,18 @@ namespace DreamScene2
 {
     public partial class MainDialog : Form
     {
+        const int WM_HOTKEY = 0x0312;
+        const int WM_USER = 0x0400;
+
+        const int MOD_ALT = 0x0001;
+        const int MOD_CONTROL = 0x0002;
+        const int MOD_SHIFT = 0x0004;
+        const int MOD_WIN = 0x0008;
+        const int MOD_NOREPEAT = 0x4000;
+
+        const int PLAY_HOTKEY_ID = 10;
+
+
         VideoWindow _videoWindow;
         WebWindow _webWindow;
         IntPtr _desktopWindowHandle;
@@ -295,6 +307,8 @@ namespace DreamScene2
 
             if (_settings.AutoPlay && _recentFiles.Count != 0)
                 OpenFile(_recentFiles[0]);
+
+            PInvoke.RegisterHotKey(this.Handle, PLAY_HOTKEY_ID, MOD_NOREPEAT | MOD_CONTROL | MOD_ALT, (int)'P');
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -318,6 +332,7 @@ namespace DreamScene2
             }
             else
             {
+                PInvoke.UnregisterHotKey(this.Handle, PLAY_HOTKEY_ID);
                 CloseWindow(WindowType.None);
                 Settings.Save();
             }
@@ -741,11 +756,17 @@ namespace DreamScene2
 
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == (0x0400 + 1001))
+            if (m.Msg == WM_HOTKEY && (int)m.WParam == PLAY_HOTKEY_ID)
+            {
+                btnPlay_Click(null, null);
+                return;
+            }
+            else if (m.Msg == (WM_USER + 1001))
             {
                 SetWindow(m.WParam);
                 return;
             }
+
             base.WndProc(ref m);
         }
     }
