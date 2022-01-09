@@ -16,7 +16,8 @@ namespace DreamScene2
             IntPtr hWnd = PInvoke.FindWindow(null, Constant.MainWindowTitle);
             if (hWnd != IntPtr.Zero)
             {
-                PInvoke.ShowWindow(hWnd, WindowShowStyle.SW_RESTORE);
+                const int SW_RESTORE = 9;
+                PInvoke.ShowWindow(hWnd, SW_RESTORE);
                 PInvoke.SetForegroundWindow(hWnd);
                 return;
             }
