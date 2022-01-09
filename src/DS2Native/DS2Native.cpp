@@ -83,7 +83,7 @@ typedef struct {
     LONG dwStyle;
 } LASTWINDOWINFO;
 
-LASTWINDOWINFO s_lwi;
+LASTWINDOWINFO g_lwi;
 
 
 void WINAPI DS2_SetWindowPosition(HWND hWnd, RECT rect) {
@@ -93,7 +93,7 @@ void WINAPI DS2_SetWindowPosition(HWND hWnd, RECT rect) {
     GetWindowRect(hWnd, &rect2);
     LONG dwStyle = GetWindowLong(hWnd, GWL_STYLE);
     HWND hWndParent = GetParent(hWnd);
-    s_lwi = { hWnd,hWndParent,rect2,dwStyle };
+    g_lwi = { hWnd,hWndParent,rect2,dwStyle };
 
     SetWindowLong(hWnd, GWL_STYLE, dwStyle & (~WS_CAPTION) & (~WS_SYSMENU) & (~WS_THICKFRAME));
     SetWindowPos(hWnd,
@@ -107,18 +107,18 @@ void WINAPI DS2_SetWindowPosition(HWND hWnd, RECT rect) {
 
 
 void WINAPI DS2_RestoreLastWindowPosition(void) {
-    if (s_lwi.hWnd) {
-        SetParent(s_lwi.hWnd, s_lwi.hWndParent);
-        SetWindowLong(s_lwi.hWnd, GWL_STYLE, s_lwi.dwStyle);
-        SetWindowPos(s_lwi.hWnd,
+    if (g_lwi.hWnd) {
+        SetParent(g_lwi.hWnd, g_lwi.hWndParent);
+        SetWindowLong(g_lwi.hWnd, GWL_STYLE, g_lwi.dwStyle);
+        SetWindowPos(g_lwi.hWnd,
             HWND_TOP,
-            s_lwi.rect.left,
-            s_lwi.rect.top,
-            s_lwi.rect.right - s_lwi.rect.left,
-            s_lwi.rect.bottom - s_lwi.rect.top,
+            g_lwi.rect.left,
+            g_lwi.rect.top,
+            g_lwi.rect.right - g_lwi.rect.left,
+            g_lwi.rect.bottom - g_lwi.rect.top,
             SWP_SHOWWINDOW);
     }
-    s_lwi = { 0 };
+    g_lwi = { 0 };
 }
 
 

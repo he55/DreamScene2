@@ -209,13 +209,13 @@ namespace DreamScene2
             Window
         }
 
-        WindowType lxc;
+        WindowType _lwt;
 
-        void CloseWindow(WindowType xc)
+        void CloseWindow(WindowType wt)
         {
             toolStripMenuItem5.Enabled = btnClose.Enabled = false;
 
-            if (lxc == WindowType.Web)
+            if (_lwt == WindowType.Web)
             {
                 if (_settings.DesktopInteraction)
                 {
@@ -229,7 +229,7 @@ namespace DreamScene2
                 }
             }
 
-            if (lxc == WindowType.Video && lxc != xc)
+            if (_lwt == WindowType.Video && _lwt != wt)
             {
                 timer1.Enabled = false;
                 _isPlaying = false;
@@ -243,7 +243,7 @@ namespace DreamScene2
                 _videoWindow.Close();
                 _videoWindow = null;
             }
-            else if (lxc == WindowType.Web && lxc != xc)
+            else if (_lwt == WindowType.Web && _lwt != wt)
             {
                 toolStripMenuItem2.Text = btnPlay.Text = "播放";
 
@@ -254,13 +254,13 @@ namespace DreamScene2
                 _webWindow.Close();
                 _webWindow = null;
             }
-            else if (lxc == WindowType.Window)
+            else if (_lwt == WindowType.Window)
             {
                 _windowHandle = IntPtr.Zero;
                 PInvoke.DS2_RestoreLastWindowPosition();
             }
 
-            lxc = xc;
+            _lwt = wt;
 
             GC.Collect();
             PInvoke.DS2_RefreshDesktop();
@@ -444,8 +444,8 @@ namespace DreamScene2
             return true;
         }
 
-        int[] cpuarr = new int[5];
-        int[] parr = new int[5];
+        int[] _cpuarr = new int[5];
+        int[] _parr = new int[5];
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -468,9 +468,9 @@ namespace DreamScene2
             if (_settings.AutoPause2)
             {
                 float val = _performanceCounter?.NextValue() ?? 0;
-                array_push(cpuarr, val > 15.0 ? 1 : 0);
+                array_push(_cpuarr, val > 15.0 ? 1 : 0);
 
-                if (array_is_max(cpuarr))
+                if (array_is_max(_cpuarr))
                 {
                     if (_isPlaying)
                         PauseVideo();
@@ -479,15 +479,15 @@ namespace DreamScene2
             }
             else
             {
-                array_push(cpuarr, 0);
+                array_push(_cpuarr, 0);
             }
 
             if (_settings.AutoPause1)
             {
                 bool val = PInvoke.DS2_GetLastInputTickCount() < 500;
-                array_push(parr, val ? 1 : 0);
+                array_push(_parr, val ? 1 : 0);
 
-                if (array_is_max(parr))
+                if (array_is_max(_parr))
                 {
                     if (_isPlaying)
                         PauseVideo();
@@ -496,10 +496,10 @@ namespace DreamScene2
             }
             else
             {
-                array_push(parr, 0);
+                array_push(_parr, 0);
             }
 
-            if (!fullScreen && !_isPlaying && array_sum(cpuarr) == 0 && array_sum(parr) == 0)
+            if (!fullScreen && !_isPlaying && array_sum(_cpuarr) == 0 && array_sum(_parr) == 0)
             {
                 PlayVideo();
             }
