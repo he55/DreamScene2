@@ -31,7 +31,7 @@ namespace DreamScene2
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
         [DllImport("User32.dll", SetLastError = true)]
-        public static extern int GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
 
         [DllImport("User32.dll", SetLastError = true, ExactSpelling = true)]
