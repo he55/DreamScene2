@@ -280,7 +280,7 @@ namespace DreamScene2
 
         #region 控件事件
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainDialog_Load(object sender, EventArgs e)
         {
             Task.Run(() =>
             {
@@ -311,7 +311,7 @@ namespace DreamScene2
             PInvoke.RegisterHotKey(this.Handle, PLAY_HOTKEY_ID, MOD_NOREPEAT | MOD_CONTROL | MOD_ALT, (int)'P');
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (_desktopWindowHandle == IntPtr.Zero)
             {

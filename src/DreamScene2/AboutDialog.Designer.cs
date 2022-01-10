@@ -55,7 +55,7 @@ namespace DreamScene2
             this.linkGit.TabIndex = 4;
             this.linkGit.TabStop = true;
             this.linkGit.Text = "GitHub";
-            this.linkGit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.linkGit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGit_LinkClicked);
             // 
             // btnClose
             // 
