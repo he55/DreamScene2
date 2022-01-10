@@ -43,7 +43,7 @@ namespace DreamScene2
             this.lblName.Location = new System.Drawing.Point(105, 14);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(71, 12);
-            this.lblName.TabIndex = 1;
+            this.lblName.TabIndex = 2;
             this.lblName.Text = "DreamScene2";
             // 
             // linkGit
@@ -52,7 +52,7 @@ namespace DreamScene2
             this.linkGit.Location = new System.Drawing.Point(105, 56);
             this.linkGit.Name = "linkGit";
             this.linkGit.Size = new System.Drawing.Size(41, 12);
-            this.linkGit.TabIndex = 2;
+            this.linkGit.TabIndex = 4;
             this.linkGit.TabStop = true;
             this.linkGit.Text = "GitHub";
             this.linkGit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
@@ -62,7 +62,7 @@ namespace DreamScene2
             this.btnClose.Location = new System.Drawing.Point(160, 69);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 3;
+            this.btnClose.TabIndex = 1;
             this.btnClose.Text = "确定";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -82,7 +82,7 @@ namespace DreamScene2
             this.lblVersion.Location = new System.Drawing.Point(105, 35);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(23, 12);
-            this.lblVersion.TabIndex = 4;
+            this.lblVersion.TabIndex = 3;
             this.lblVersion.Text = "1.1";
             // 
             // AboutDialog

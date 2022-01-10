@@ -92,7 +92,7 @@ namespace DreamScene2
             this.btnPlay.Location = new System.Drawing.Point(12, 49);
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(75, 23);
-            this.btnPlay.TabIndex = 3;
+            this.btnPlay.TabIndex = 2;
             this.btnPlay.Text = "播放";
             this.btnPlay.UseVisualStyleBackColor = true;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
@@ -126,7 +126,7 @@ namespace DreamScene2
             this.btnClose.Location = new System.Drawing.Point(100, 49);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 7;
+            this.btnClose.TabIndex = 3;
             this.btnClose.Text = "关闭";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -138,7 +138,7 @@ namespace DreamScene2
             this.label1.Location = new System.Drawing.Point(100, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(101, 12);
-            this.label1.TabIndex = 8;
+            this.label1.TabIndex = 7;
             this.label1.Text = "获取桌面句柄失败";
             this.label1.Visible = false;
             // 
@@ -420,7 +420,7 @@ namespace DreamScene2
             this.checkAutoPlay.Location = new System.Drawing.Point(14, 118);
             this.checkAutoPlay.Name = "checkAutoPlay";
             this.checkAutoPlay.Size = new System.Drawing.Size(108, 16);
-            this.checkAutoPlay.TabIndex = 9;
+            this.checkAutoPlay.TabIndex = 6;
             this.checkAutoPlay.Text = "启动后自动播放";
             this.checkAutoPlay.UseVisualStyleBackColor = true;
             this.checkAutoPlay.Click += new System.EventHandler(this.checkAutoPlay_Click);
