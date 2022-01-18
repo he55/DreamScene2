@@ -255,47 +255,49 @@ BOOL DS2_IsDesktop(void) {
 HWND g_hWnd = NULL;
 
 LRESULT CALLBACK LowLevelKeyboardProc(int    nCode, WPARAM wParam, LPARAM lParam) {
-    if (DS2_IsDesktop()) {
-        KBDLLHOOKSTRUCT* p = (KBDLLHOOKSTRUCT*)lParam;
+    if (nCode == HC_ACTION) {
+        if (DS2_IsDesktop()) {
+            KBDLLHOOKSTRUCT* p = (KBDLLHOOKSTRUCT*)lParam;
 
-        if (wParam == WM_KEYDOWN) {
-            int lp = 1 | (p->scanCode << 16) | (1 << 24) | (0 << 29) | (0 << 30) | (0 << 31);
-            PostMessage(g_hWnd, (UINT)wParam, p->vkCode, lp);
-        }
-        else if (wParam == WM_KEYUP) {
-            int lp = 1 | (p->scanCode << 16) | (1 << 24) | (0 << 29) | (1 << 30) | (1 << 31);
-            PostMessage(g_hWnd, (UINT)wParam, p->vkCode, lp);
+            if (wParam == WM_KEYDOWN) {
+                int lp = 1 | (p->scanCode << 16) | (1 << 24) | (0 << 29) | (0 << 30) | (0 << 31);
+                PostMessage(g_hWnd, (UINT)wParam, p->vkCode, lp);
+            }
+            else if (wParam == WM_KEYUP) {
+                int lp = 1 | (p->scanCode << 16) | (1 << 24) | (0 << 29) | (1 << 30) | (1 << 31);
+                PostMessage(g_hWnd, (UINT)wParam, p->vkCode, lp);
+            }
         }
     }
-
     return CallNextHookEx(NULL, nCode, wParam, lParam);
 }
 
 
 LRESULT CALLBACK LowLevelMouseProc(int    nCode, WPARAM wParam, LPARAM lParam) {
-    MSLLHOOKSTRUCT* p = (MSLLHOOKSTRUCT*)lParam;
-    LONG lp = MAKELONG(p->pt.x, p->pt.y);
+    if (nCode == HC_ACTION) {
+        MSLLHOOKSTRUCT* p = (MSLLHOOKSTRUCT*)lParam;
+        LONG lp = MAKELONG(p->pt.x, p->pt.y);
 
-    if (DS2_IsDesktop()) {
-        if (wParam == WM_MOUSEMOVE) {
-            PostMessage(g_hWnd, (UINT)wParam, MK_XBUTTON1, lp);
+        if (DS2_IsDesktop()) {
+            if (wParam == WM_MOUSEMOVE) {
+                PostMessage(g_hWnd, (UINT)wParam, MK_XBUTTON1, lp);
+            }
+            else  if (wParam == WM_LBUTTONDOWN || wParam == WM_LBUTTONUP) {
+                PostMessage(g_hWnd, (UINT)wParam, MK_LBUTTON, lp);
+            }
+            else  if (wParam == WM_MOUSEWHEEL) {
+                // TODO:
+            }
         }
-        else  if (wParam == WM_LBUTTONDOWN || wParam == WM_LBUTTONUP) {
-            PostMessage(g_hWnd, (UINT)wParam, MK_LBUTTON, lp);
-        }
-        else  if (wParam == WM_MOUSEWHEEL) {
-            // TODO:
+        else  if (wParam == WM_MOUSEMOVE) {
+            RECT rect;
+            GetWindowRect(GetForegroundWindow(), &rect);
+
+            if (!PtInRect(&rect, p->pt)) {
+                PostMessage(g_hWnd, (UINT)wParam, MK_XBUTTON1, lp);
+            }
         }
     }
-    else  if (wParam == WM_MOUSEMOVE) {
-        RECT rect;
-        GetWindowRect(GetForegroundWindow(), &rect);
-
-        if (!PtInRect(&rect, p->pt)) {
-            PostMessage(g_hWnd, (UINT)wParam, MK_XBUTTON1, lp);
-        }
-    }
-
     return CallNextHookEx(NULL, nCode, wParam, lParam);
 }
 
@@ -306,13 +308,13 @@ HHOOK g_hLowLevelKeyboardHook = NULL;
 BOOL WINAPI DS2_StartForwardMouseKeyboardMessage(HWND hWnd) {
     g_hWnd = hWnd;
 
-    HMODULE hm = GetModuleHandle(NULL);
-    g_hLowLevelMouseHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, hm, NULL);
+    HMODULE hModule = GetModuleHandle(NULL);
+    g_hLowLevelMouseHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, hModule, NULL);
     if (!g_hLowLevelMouseHook) {
         return FALSE;
     }
 
-    g_hLowLevelKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, hm, NULL);
+    g_hLowLevelKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, hModule, NULL);
     return TRUE;
 }
 
