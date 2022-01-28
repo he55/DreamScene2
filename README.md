@@ -18,7 +18,7 @@ https://github.com/he55/DreamScene2/releases/latest
 - 支持设置显示器
 - 支持自动暂停播放
 
-![](images/settings.jpg)
+![](images/settings.png)
 
 
 ## 🌍 Roadmap
@@ -32,7 +32,7 @@ https://github.com/he55/DreamScene2/releases/latest
 - [ ] 发布到 Microsoft Store
 
 
-## ❤ Thanks
+## 💗 Thanks
 - [Draw Behind Desktop Icons in Windows 8+](https://www.codeproject.com/Articles/856020/Draw-Behind-Desktop-Icons-in-Windows-plus)
 - [KioskBrowser](https://github.com/mortenbrudvik/KioskBrowser)
 - [Windows Desktop ListView Handle](https://blog.syedgakbar.com/2013/01/19/windows-desktop-listview-handle/)
