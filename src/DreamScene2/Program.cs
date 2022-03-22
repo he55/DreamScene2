@@ -13,12 +13,14 @@ namespace DreamScene2
         [STAThread]
         static void Main(string[] args)
         {
-            IntPtr hWnd = PInvoke.FindWindow(null, Constant.MainWindowTitle);
-            if (hWnd != IntPtr.Zero)
+            try
             {
-                const int SW_RESTORE = 9;
-                PInvoke.ShowWindow(hWnd, SW_RESTORE);
-                PInvoke.SetForegroundWindow(hWnd);
+                string filePath = Helper.GetPathForAppFolder("lock");
+                File.Open(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
+            }
+            catch
+            {
+                MessageBox.Show("当前已经有一个实例在运行。", Constant.ProjectName);
                 return;
             }
 

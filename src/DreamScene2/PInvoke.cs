@@ -6,18 +6,7 @@ namespace DreamScene2
     public static class PInvoke
     {
         [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern IntPtr FindWindowEx(IntPtr hWndParent, IntPtr hWndChildAfter, string lpszClass, string lpszWindow);
-
-        [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -36,8 +25,6 @@ namespace DreamScene2
         [DllImport("User32.dll", SetLastError = true, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-
 
 
         [DllImport("DS2Native.dll")]

@@ -43,7 +43,6 @@ namespace DreamScene2
         public MainDialog()
         {
             InitializeComponent();
-            this.Text = Constant.MainWindowTitle;
             this.Icon = DreamScene2.Properties.Resources.icon;
             notifyIcon1.Icon = this.Icon;
             trackBar1.Value = _settings.Volume;
