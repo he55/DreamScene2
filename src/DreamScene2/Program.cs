@@ -36,15 +36,21 @@ namespace DreamScene2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainDialog mainDialog = new MainDialog();
-            mainDialog.Show();
-
             if (args.Length != 0 && args[0] == Constant.Cmd)
             {
-                mainDialog.Hide();
-            }
+                MainDialog mainDialog = new MainDialog();
+                mainDialog.Opacity = 0;
+                mainDialog.Show();
 
-            Application.Run();
+                mainDialog.Hide();
+                mainDialog.Opacity = 1;
+
+                Application.Run();
+            }
+            else
+            {
+                Application.Run(new MainDialog());
+            }
         }
 
         static void ExtractResources()
