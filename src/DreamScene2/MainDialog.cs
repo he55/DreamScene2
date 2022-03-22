@@ -331,6 +331,7 @@ namespace DreamScene2
             }
             else
             {
+                notifyIcon1.Visible = false;
                 PInvoke.UnregisterHotKey(this.Handle, PLAY_HOTKEY_ID);
                 CloseWindow(WindowType.None);
                 Settings.Save();
