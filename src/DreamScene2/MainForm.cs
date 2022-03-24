@@ -36,15 +36,15 @@ namespace DreamScene2
         IntPtr _windowHandle;
         bool _isSuspend;
         uint _d3dRenderingSubProcessPid;
-
-        string[] HtmlFileTypes = new string[] { ".htm", ".html", ".mhtml" };
-        string[] VideoFileTypes = new string[] { ".mp4", ".mov" };
+        readonly string[] _htmlFiles = new string[] { ".htm", ".html", ".mhtml" };
+        readonly string[] _videoFiles = new string[] { ".mp4", ".mov" };
 
         public MainForm()
         {
             InitializeComponent();
             this.Icon = DreamScene2.Properties.Resources.icon;
             notifyIcon1.Icon = this.Icon;
+
             trackBar1.Value = _settings.Volume;
             toolStripMenuItem3.Checked = checkMute.Checked = _settings.IsMuted;
             toolStripMenuItem6.Checked = checkAutoPlay.Checked = _settings.AutoPlay;
@@ -109,7 +109,7 @@ namespace DreamScene2
             }
             else if (uri.Scheme == "file" && File.Exists(path))
             {
-                if (HtmlFileTypes.Contains(Path.GetExtension(path).ToLower()))
+                if (_htmlFiles.Contains(Path.GetExtension(path).ToLower()))
                     OpenWeb(uri.AbsoluteUri);
                 else
                     OpenVideo(path);
@@ -340,10 +340,9 @@ namespace DreamScene2
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            var htmlTypes = string.Join(";", HtmlFileTypes.Select(x => $"*{x}"));
-            var videoTypes = string.Join(";", VideoFileTypes.Select(x => $"*{x}"));
-            var allTypes = $"{videoTypes};{htmlTypes}";
-            openFileDialog.Filter = $"All Files|{allTypes}|Video Files|{videoTypes}|HTML Files|{htmlTypes}";
+            string htmlFiles = string.Join(";", _htmlFiles.Select(x => $"*{x}"));
+            string videoFiles = string.Join(";", _videoFiles.Select(x => $"*{x}"));
+            openFileDialog.Filter = $"All Files|{videoFiles};{htmlFiles}|Video Files|{videoFiles}|HTML Files|{htmlFiles}";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 OpenFile(openFileDialog.FileName);
         }
