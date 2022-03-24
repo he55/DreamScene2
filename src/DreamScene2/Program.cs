@@ -38,18 +38,18 @@ namespace DreamScene2
 
             if (args.Length != 0 && args[0] == Constant.Cmd)
             {
-                MainDialog mainDialog = new MainDialog();
-                mainDialog.Opacity = 0;
-                mainDialog.Show();
+                MainForm mainForm = new MainForm();
+                mainForm.Opacity = 0;
+                mainForm.Show();
 
-                mainDialog.Hide();
-                mainDialog.Opacity = 1;
+                mainForm.Hide();
+                mainForm.Opacity = 1;
 
                 Application.Run();
             }
             else
             {
-                Application.Run(new MainDialog());
+                Application.Run(new MainForm());
             }
         }
 

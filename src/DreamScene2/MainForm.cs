@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace DreamScene2
 {
-    public partial class MainDialog : Form
+    public partial class MainForm : Form
     {
         const int WM_HOTKEY = 0x0312;
         const int WM_USER = 0x0400;
@@ -40,7 +40,7 @@ namespace DreamScene2
         string[] HtmlFileTypes = new string[] { ".htm", ".html", ".mhtml" };
         string[] VideoFileTypes = new string[] { ".mp4", ".mov" };
 
-        public MainDialog()
+        public MainForm()
         {
             InitializeComponent();
             this.Icon = DreamScene2.Properties.Resources.icon;
@@ -279,7 +279,7 @@ namespace DreamScene2
 
         #region 控件事件
 
-        private void MainDialog_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             Task.Run(() =>
             {
@@ -310,7 +310,7 @@ namespace DreamScene2
             PInvoke.RegisterHotKey(this.Handle, PLAY_HOTKEY_ID, MOD_NOREPEAT | MOD_CONTROL | MOD_ALT, (int)'P');
         }
 
-        private void MainDialog_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (_desktopWindowHandle == IntPtr.Zero)
             {
