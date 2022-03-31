@@ -19,9 +19,7 @@ namespace DreamScene2
         {
             string args = null;
             if (_webWindowOptions.DisableWebSecurity)
-            {
                 args = "--disable-web-security";
-            }
 
             var webView2Environment = await CoreWebView2Environment.CreateAsync(null, _webWindowOptions.UserDataFolder, new CoreWebView2EnvironmentOptions(args));
             await webView2.EnsureCoreWebView2Async(webView2Environment);
@@ -37,9 +35,8 @@ namespace DreamScene2
         {
             IntPtr chrome_WidgetWin_0 = PInvoke.FindWindowEx(webView2.Handle, IntPtr.Zero, "Chrome_WidgetWin_0", null);
             if (chrome_WidgetWin_0 == IntPtr.Zero)
-            {
                 return IntPtr.Zero;
-            }
+
             return PInvoke.FindWindowEx(chrome_WidgetWin_0, IntPtr.Zero, "Chrome_WidgetWin_1", null);
         }
 

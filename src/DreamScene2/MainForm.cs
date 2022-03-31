@@ -78,8 +78,8 @@ namespace DreamScene2
             {
                 if (_recentFiles.Contains(path))
                     _recentFiles.Remove(path);
-                _recentFiles.Insert(0, path);
 
+                _recentFiles.Insert(0, path);
                 File.WriteAllLines(_recentPath, _recentFiles);
             }
         }
@@ -217,9 +217,7 @@ namespace DreamScene2
             if (_lwt == WindowType.Web)
             {
                 if (_settings.DesktopInteraction)
-                {
                     PInvoke.DS2_EndForwardMouseKeyboardMessage();
-                }
 
                 if (_isSuspend)
                 {
@@ -269,9 +267,7 @@ namespace DreamScene2
         {
             IntPtr hWnd = _webWindow.GetChromeWidgetWin1Handle();
             if (hWnd != IntPtr.Zero)
-            {
                 PInvoke.DS2_StartForwardMouseKeyboardMessage(hWnd);
-            }
         }
 
         #endregion
@@ -287,8 +283,8 @@ namespace DreamScene2
             });
 
             _screen = Screen.PrimaryScreen;
-
             _desktopWindowHandle = PInvoke.DS2_GetDesktopWindowHandle();
+
             if (_desktopWindowHandle == IntPtr.Zero)
             {
                 btnOpenFile.Enabled = false;
@@ -313,9 +309,7 @@ namespace DreamScene2
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (_desktopWindowHandle == IntPtr.Zero)
-            {
                 return;
-            }
 
             if (e.CloseReason == CloseReason.UserClosing)
             {
@@ -416,9 +410,8 @@ namespace DreamScene2
         void array_push(int[] arr, int val)
         {
             for (int i = 0; i < arr.Length - 1; i++)
-            {
                 arr[i] = arr[i + 1];
-            }
+
             arr[arr.Length - 1] = val;
         }
 
@@ -426,9 +419,8 @@ namespace DreamScene2
         {
             int sum = 0;
             for (int i = 0; i < arr.Length; i++)
-            {
                 sum += arr[i];
-            }
+
             return sum;
         }
 
@@ -498,9 +490,7 @@ namespace DreamScene2
             }
 
             if (!fullScreen && !_isPlaying && array_sum(_cpuarr) == 0 && array_sum(_parr) == 0)
-            {
                 PlayVideo();
-            }
         }
 
         #endregion
@@ -691,17 +681,11 @@ namespace DreamScene2
         private void toolStripMenuItem23_Click(object sender, EventArgs e)
         {
             if (sender == toolStripMenuItem23)
-            {
                 _settings.AutoPause1 = toolStripMenuItem23.Checked = !toolStripMenuItem23.Checked;
-            }
             else if (sender == toolStripMenuItem24)
-            {
                 _settings.AutoPause2 = toolStripMenuItem24.Checked = !toolStripMenuItem24.Checked;
-            }
             else if (sender == toolStripMenuItem25)
-            {
                 _settings.AutoPause3 = toolStripMenuItem25.Checked = !toolStripMenuItem25.Checked;
-            }
 
             if (_videoWindow != null)
             {

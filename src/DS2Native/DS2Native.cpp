@@ -3,7 +3,6 @@
 
 #include "framework.h"
 #include "DS2Native.h"
-#include <tchar.h>
 #include <ShlObj.h>
 
 
@@ -89,7 +88,7 @@ LASTWINDOWINFO g_lwi;
 void WINAPI DS2_SetWindowPosition(HWND hWnd, RECT rect) {
     ShowWindow(hWnd, SW_RESTORE);
 
-    RECT rect2;
+    RECT rect2 = { 0 };
     GetWindowRect(hWnd, &rect2);
     LONG dwStyle = GetWindowLong(hWnd, GWL_STYLE);
     HWND hWndParent = GetParent(hWnd);
@@ -145,83 +144,51 @@ void WINAPI DS2_RefreshDesktop(BOOL animated) {
         }
     }
     else {
-        char path[MAX_PATH + 1] = { 0 };
-        SystemParametersInfo(SPI_GETDESKWALLPAPER, MAX_PATH, &path, 0);
-        SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, path, 0);
+        SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, NULL, SPIF_UPDATEINIFILE);
     }
-}
-
-
-HWND GetDesktopListViewHWND()
-{
-    HWND hDesktopListView = NULL;
-    HWND hWorkerW = NULL;
-
-    HWND hProgman = FindWindow(_T("Progman"), NULL);
-    HWND hDesktopWnd = GetDesktopWindow();
-
-    // If the main Program Manager window is found
-    if (hProgman)
-    {
-        // Get and load the main List view window containing the icons (found using Spy++).
-        HWND hShellViewWin = FindWindowEx(hProgman, NULL, _T("SHELLDLL_DefView"), NULL);
-        if (hShellViewWin)
-            hDesktopListView = FindWindowEx(hShellViewWin, NULL, _T("SysListView32"), NULL);
-        else
-            // When this fails (happens in Windows-7 when picture rotation is turned ON), then look for the WorkerW windows list to get the
-            // correct desktop list handle.
-            // As there can be multiple WorkerW windows, so iterate through all to get the correct one
-            do
-            {
-                hWorkerW = FindWindowEx(hDesktopWnd, hWorkerW, _T("WorkerW"), NULL);
-                hShellViewWin = FindWindowEx(hWorkerW, NULL, _T("SHELLDLL_DefView"), NULL);
-            } while (!hShellViewWin && hWorkerW);
-
-            // Get the ListView control
-            hDesktopListView = FindWindowEx(hShellViewWin, NULL, _T("SysListView32"), NULL);
-    }
-
-    return hDesktopListView;
 }
 
 
 BOOL WINAPI DS2_IsVisibleDesktopIcons(void) {
-    HWND hWnd = GetDesktopListViewHWND();
-    WINDOWINFO info = { 0 };
-    GetWindowInfo(hWnd, &info);
-    return (info.dwStyle & WS_VISIBLE) == WS_VISIBLE;
+    SHELLSTATE state = { 0 };
+    SHGetSetSettings(&state, SSF_HIDEICONS, FALSE);
+    return !state.fHideIcons;
+}
+
+
+HWND GetDesktopSHELLDLL_DefView()
+{
+    HWND hShellViewWin = NULL;
+    HWND hWorkerW = NULL;
+
+    HWND hProgman = FindWindow("Progman", "Program Manager");
+    HWND hDesktopWnd = GetDesktopWindow();
+
+    // If the main Program Manager window is found
+    if (hProgman != NULL)
+    {
+        // Get and load the main List view window containing the icons.
+        hShellViewWin = FindWindowEx(hProgman, NULL, "SHELLDLL_DefView", NULL);
+        if (hShellViewWin == NULL)
+        {
+            // When this fails (picture rotation is turned ON, toggledesktop shell cmd used ), then look for the WorkerW windows list to get the
+            // correct desktop list handle.
+            // As there can be multiple WorkerW windows, iterate through all to get the correct one
+            do
+            {
+                hWorkerW = FindWindowEx(hDesktopWnd, hWorkerW, "WorkerW", NULL);
+                hShellViewWin = FindWindowEx(hWorkerW, NULL, "SHELLDLL_DefView", NULL);
+            } while (hShellViewWin == NULL && hWorkerW != NULL);
+        }
+    }
+    return hShellViewWin;
 }
 
 
 void WINAPI DS2_ToggleShowDesktopIcons(void) {
-    // Thanks: https://stackoverflow.com/a/56812642
-    static HWND g_hShellViewWin = NULL;
-    if (!g_hShellViewWin) {
-        HWND hProgman = FindWindow("Progman", "Program Manager");
-        if (hProgman)
-        {
-            // Get and load the main List view window containing the icons.
-            g_hShellViewWin = FindWindowEx(hProgman, NULL, "SHELLDLL_DefView", NULL);
-            if (!g_hShellViewWin)
-            {
-                HWND hWorkerW = NULL;
-                HWND hDesktopWnd = GetDesktopWindow();
-
-                // When this fails (picture rotation is turned ON, toggledesktop shell cmd used ), then look for the WorkerW windows list to get the
-                // correct desktop list handle.
-                // As there can be multiple WorkerW windows, iterate through all to get the correct one
-                do
-                {
-                    hWorkerW = FindWindowEx(hDesktopWnd, hWorkerW, "WorkerW", NULL);
-                    g_hShellViewWin = FindWindowEx(hWorkerW, NULL, "SHELLDLL_DefView", NULL);
-                } while (!g_hShellViewWin && hWorkerW);
-            }
-        }
-    }
-
-    if (g_hShellViewWin) {
-        int toggleDesktopCommand = 0x7402;
-        SendMessage(g_hShellViewWin, WM_COMMAND, toggleDesktopCommand, NULL);
+    HWND hShellViewWin = GetDesktopSHELLDLL_DefView();
+    if (hShellViewWin) {
+        SendMessage(hShellViewWin, WM_COMMAND, 0x7402, NULL);
     }
 }
 
@@ -290,7 +257,7 @@ LRESULT CALLBACK LowLevelMouseProc(int    nCode, WPARAM wParam, LPARAM lParam) {
             }
         }
         else  if (wParam == WM_MOUSEMOVE) {
-            RECT rect;
+            RECT rect = { 0 };
             GetWindowRect(GetForegroundWindow(), &rect);
 
             if (!PtInRect(&rect, p->pt)) {
