@@ -149,7 +149,7 @@ namespace DreamScene2
         {
             if (!TryGetWebView2Version(out _))
             {
-                MessageBox.Show("打开网页功能需要 WebView2 支持。请在托盘图标找到 DreamScene2 然后右键菜单，依次点击 [打开 URL] > [安装 WebView2...] 安装");
+                MessageBox.Show("打开网页功能需要 WebView2 支持。请在托盘图标找到 DreamScene2 然后右键菜单，依次点击 [打开 URL] > [安装 WebView2...] 安装。", Constant.ProjectName);
                 return;
             }
 
@@ -315,7 +315,6 @@ namespace DreamScene2
         {
             if (_desktopWindowHandle == IntPtr.Zero)
             {
-                Environment.Exit(0);
                 return;
             }
 
@@ -332,6 +331,7 @@ namespace DreamScene2
             }
             else
             {
+                notifyIcon1.Visible = false;
                 PInvoke.UnregisterHotKey(this.Handle, PLAY_HOTKEY_ID);
                 CloseWindow(WindowType.None);
                 Settings.Save();
