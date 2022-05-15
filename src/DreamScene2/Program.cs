@@ -24,9 +24,7 @@ namespace DreamScene2
 
             string extPath = Helper.ExtPath();
             if (!Directory.Exists(extPath))
-            {
                 Directory.CreateDirectory(extPath);
-            }
 
 #if NET5_0_OR_GREATER
             Application.SetHighDpiMode(HighDpiMode.SystemAware);

@@ -38,8 +38,6 @@ namespace DreamScene2
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
 
-
-
         [DllImport("DS2Native.dll")]
         public static extern ulong DS2_GetLastInputTickCount();
 
