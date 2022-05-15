@@ -34,12 +34,12 @@ namespace DreamScene2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainDialog mainDialog = new MainDialog();
-            mainDialog.Show();
+            MainForm mainForm = new MainForm();
+            mainForm.Show();
 
             if (args.Length != 0 && args[0] == Constant.Cmd)
             {
-                mainDialog.Hide();
+                mainForm.Hide();
             }
 
             Application.Run();
