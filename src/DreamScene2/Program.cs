@@ -32,15 +32,21 @@ namespace DreamScene2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainForm mainForm = new MainForm();
-            mainForm.Show();
-
             if (args.Length != 0 && args[0] == Constant.Cmd)
             {
-                mainForm.Hide();
-            }
+                MainForm mainForm = new MainForm();
+                mainForm.Opacity = 0;
+                mainForm.Show();
 
-            Application.Run();
+                mainForm.Hide();
+                mainForm.Opacity = 1;
+
+                Application.Run();
+            }
+            else
+            {
+                Application.Run(new MainForm());
+            }
         }
 
         static void ExtractResources()
