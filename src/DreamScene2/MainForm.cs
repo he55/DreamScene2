@@ -507,7 +507,8 @@ namespace DreamScene2
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            notifyIcon1_MouseDoubleClick(null, null);
+            this.Show();
+            this.Activate();
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -553,7 +554,7 @@ namespace DreamScene2
             toolStripMenuItem7.DropDownItems.Add(toolStripMenuItem8);
         }
 
-        private void ToolStripMenuItem_Click1(object sender, EventArgs e)
+        void ToolStripMenuItem_Click1(object sender, EventArgs e)
         {
             OpenFile((string)((ToolStripMenuItem)sender).Tag);
         }
@@ -605,7 +606,7 @@ namespace DreamScene2
             }
         }
 
-        private void ToolStripMenuItem_Click2(object sender, EventArgs e)
+        void ToolStripMenuItem_Click2(object sender, EventArgs e)
         {
             _screenIndex = (int)((ToolStripMenuItem)sender).Tag;
             _screen = Screen.AllScreens[_screenIndex];
@@ -643,7 +644,7 @@ namespace DreamScene2
             }
         }
 
-        private void ToolStripMenuItem_Click3(object sender, EventArgs e)
+        void ToolStripMenuItem_Click3(object sender, EventArgs e)
         {
             int hWnd = (int)((ToolStripMenuItem)sender).Tag;
             SetWindow((IntPtr)hWnd);
