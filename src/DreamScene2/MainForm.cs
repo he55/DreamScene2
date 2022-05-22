@@ -315,7 +315,7 @@ namespace DreamScene2
 
                 if (_settings.FirstRun)
                 {
-                    notifyIcon1.ShowBalloonTip(1000, "", "程序正在后台运行", ToolTipIcon.None);
+                    notifyIcon1.ShowBalloonTip(1000, "", "DreamScene2 已被最小化到系统托盘。", ToolTipIcon.None);
                     _settings.FirstRun = false;
                 }
             }
