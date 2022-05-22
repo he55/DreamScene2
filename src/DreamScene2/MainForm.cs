@@ -312,6 +312,7 @@ namespace DreamScene2
             {
                 e.Cancel = true;
                 this.Hide();
+                Settings.Save();
 
                 if (_settings.FirstRun)
                 {
@@ -324,7 +325,6 @@ namespace DreamScene2
                 notifyIcon1.Visible = false;
                 PInvoke.UnregisterHotKey(this.Handle, PLAY_HOTKEY_ID);
                 CloseWindow(WindowType.None);
-                Settings.Save();
             }
         }
 
@@ -498,6 +498,11 @@ namespace DreamScene2
             toolStripMenuItem12.Checked = Helper.CheckStartOnBoot();
             int val = PInvoke.DS2_IsVisibleDesktopIcons();
             toolStripMenuItem13.Text = val != 0 ? "隐藏桌面图标" : "显示桌面图标";
+        }
+
+        private void contextMenuStrip1_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        {
+            Settings.Save();
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
