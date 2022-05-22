@@ -500,8 +500,9 @@ namespace DreamScene2
             toolStripMenuItem13.Text = val != 0 ? "隐藏桌面图标" : "显示桌面图标";
         }
 
-        private void contextMenuStrip1_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        private async void contextMenuStrip1_Closing(object sender, ToolStripDropDownClosingEventArgs e)
         {
+            await Task.Delay(200);
             Settings.Save();
         }
 
