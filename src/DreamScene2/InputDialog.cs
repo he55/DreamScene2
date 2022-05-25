@@ -8,7 +8,7 @@ namespace DreamScene2
         public InputDialog()
         {
             InitializeComponent();
-            this.Icon = DreamScene2.Properties.Resources.icon;
+            this.Icon = DreamScene2.Properties.Resources.AppIcon;
             lblTipMsg.Text = "";
         }
 

@@ -43,7 +43,7 @@ namespace DreamScene2
         {
             InitializeComponent();
             this.Text = Constant.MainWindowTitle;
-            this.Icon = DreamScene2.Properties.Resources.icon;
+            this.Icon = DreamScene2.Properties.Resources.AppIcon;
             notifyIcon1.Icon = this.Icon;
             trackBar1.Value = _settings.Volume;
             toolStripMenuItem3.Checked = checkMute.Checked = _settings.IsMuted;

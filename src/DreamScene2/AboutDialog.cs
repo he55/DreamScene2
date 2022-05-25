@@ -9,7 +9,7 @@ namespace DreamScene2
         {
             InitializeComponent();
             lblVersion.Text = Constant.Version;
-            this.Icon = DreamScene2.Properties.Resources.icon;
+            this.Icon = DreamScene2.Properties.Resources.AppIcon;
         }
 
         private void btnClose_Click(object sender, EventArgs e)

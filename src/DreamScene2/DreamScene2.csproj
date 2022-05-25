@@ -5,9 +5,13 @@
     <TargetFramework>net472</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>True</UseWPF>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
     <Platforms>x64;x86</Platforms>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\AppIcon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1210.39" />
