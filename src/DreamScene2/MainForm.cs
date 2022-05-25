@@ -547,17 +547,15 @@ namespace DreamScene2
                 string filePath = _recentFiles[i];
                 ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem($"{i + 1}. {filePath}");
                 toolStripMenuItem.Tag = filePath;
-                toolStripMenuItem.Click += ToolStripMenuItem_Click1;
+                toolStripMenuItem.Click += (object sender_, EventArgs e_) =>
+                {
+                    OpenFile((string)((ToolStripMenuItem)sender_).Tag);
+                };
                 toolStripMenuItem7.DropDownItems.Add(toolStripMenuItem);
             }
 
             toolStripMenuItem8.Enabled = _recentFiles.Count != 0;
             toolStripMenuItem7.DropDownItems.Add(toolStripMenuItem8);
-        }
-
-        void ToolStripMenuItem_Click1(object sender, EventArgs e)
-        {
-            OpenFile((string)((ToolStripMenuItem)sender).Tag);
         }
 
         private void toolStripMenuItem8_Click(object sender, EventArgs e)
@@ -602,18 +600,16 @@ namespace DreamScene2
                 ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem(allScreens[i].Primary ? allScreens[i].DeviceName + " - Primary" : allScreens[i].DeviceName);
                 toolStripMenuItem.Checked = _screenIndex == i;
                 toolStripMenuItem.Tag = i;
-                toolStripMenuItem.Click += ToolStripMenuItem_Click2;
+                toolStripMenuItem.Click += (object sender_, EventArgs e_) =>
+                {
+                    _screenIndex = (int)((ToolStripMenuItem)sender_).Tag;
+                    _screen = Screen.AllScreens[_screenIndex];
+
+                    PInvoke.DS2_RefreshDesktop();
+                    _videoWindow?.SetPosition(_screen.Bounds);
+                };
                 toolStripMenuItem10.DropDownItems.Add(toolStripMenuItem);
             }
-        }
-
-        void ToolStripMenuItem_Click2(object sender, EventArgs e)
-        {
-            _screenIndex = (int)((ToolStripMenuItem)sender).Tag;
-            _screen = Screen.AllScreens[_screenIndex];
-
-            PInvoke.DS2_RefreshDesktop();
-            _videoWindow?.SetPosition(_screen.Bounds);
         }
 
         private void toolStripMenuItem16_DropDownOpening(object sender, EventArgs e)
@@ -639,16 +635,14 @@ namespace DreamScene2
                     toolStripMenuItem.Enabled = b;
                     toolStripMenuItem.Checked = _windowHandle == ptr;
                     toolStripMenuItem.Tag = val;
-                    toolStripMenuItem.Click += ToolStripMenuItem_Click3;
+                    toolStripMenuItem.Click += (object sender_, EventArgs e_) =>
+                    {
+                        int hWnd = (int)((ToolStripMenuItem)sender_).Tag;
+                        SetWindow((IntPtr)hWnd);
+                    };
                     toolStripMenuItem16.DropDownItems.Add(toolStripMenuItem);
                 }
             }
-        }
-
-        void ToolStripMenuItem_Click3(object sender, EventArgs e)
-        {
-            int hWnd = (int)((ToolStripMenuItem)sender).Tag;
-            SetWindow((IntPtr)hWnd);
         }
 
         private void toolStripMenuItem18_DropDownOpening(object sender, EventArgs e)
