@@ -45,7 +45,6 @@ namespace DreamScene2
             this.Text = Constant.MainWindowTitle;
             this.Icon = DreamScene2.Properties.Resources.AppIcon;
             notifyIcon1.Icon = this.Icon;
-            trackBar1.Value = _settings.Volume;
             toolStripMenuItem3.Checked = checkMute.Checked = _settings.IsMuted;
             toolStripMenuItem6.Checked = checkAutoPlay.Checked = _settings.AutoPlay;
             toolStripMenuItem23.Checked = _settings.AutoPause1;
@@ -122,7 +121,6 @@ namespace DreamScene2
             {
                 _videoWindow = new VideoWindow();
                 _videoWindow.IsMuted = _settings.IsMuted;
-                _videoWindow.Volume = _settings.Volume / 10.0;
                 _videoWindow.SetPosition(_screen.Bounds);
                 _videoWindow.Show();
 
@@ -135,7 +133,6 @@ namespace DreamScene2
             toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
             toolStripMenuItem3.Enabled = checkMute.Enabled = true;
             toolStripMenuItem5.Enabled = btnClose.Enabled = true;
-            trackBar1.Enabled = !_settings.IsMuted;
 
             _isPlaying = true;
             toolStripMenuItem2.Text = btnPlay.Text = "暂停";
@@ -233,7 +230,6 @@ namespace DreamScene2
                 toolStripMenuItem2.Enabled = btnPlay.Enabled = false;
                 toolStripMenuItem3.Enabled = checkMute.Enabled = false;
                 toolStripMenuItem5.Enabled = btnClose.Enabled = false;
-                trackBar1.Enabled = false;
 
                 _videoWindow.Close();
                 _videoWindow = null;
@@ -379,19 +375,14 @@ namespace DreamScene2
         private void checkMute_Click(object sender, EventArgs e)
         {
             _settings.IsMuted = toolStripMenuItem3.Checked = checkMute.Checked;
-            trackBar1.Enabled = !_settings.IsMuted;
-            _videoWindow.IsMuted = _settings.IsMuted;
+
+            if (_videoWindow != null)
+                _videoWindow.IsMuted = _settings.IsMuted;
         }
 
         private void checkAutoPlay_Click(object sender, EventArgs e)
         {
             _settings.AutoPlay = toolStripMenuItem6.Checked = checkAutoPlay.Checked;
-        }
-
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-            _settings.Volume = trackBar1.Value;
-            _videoWindow.Volume = _settings.Volume / 10.0;
         }
 
         private void btnClose_Click(object sender, EventArgs e)

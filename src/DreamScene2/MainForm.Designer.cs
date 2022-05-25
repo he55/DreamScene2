@@ -33,7 +33,6 @@ namespace DreamScene2
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.btnPlay = new System.Windows.Forms.Button();
             this.checkMute = new System.Windows.Forms.CheckBox();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.btnClose = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
@@ -71,7 +70,6 @@ namespace DreamScene2
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.checkAutoPlay = new System.Windows.Forms.CheckBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -107,17 +105,6 @@ namespace DreamScene2
             this.checkMute.Text = "静音";
             this.checkMute.UseVisualStyleBackColor = true;
             this.checkMute.Click += new System.EventHandler(this.checkMute_Click);
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.Enabled = false;
-            this.trackBar1.LargeChange = 1;
-            this.trackBar1.Location = new System.Drawing.Point(69, 80);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(113, 45);
-            this.trackBar1.TabIndex = 5;
-            this.trackBar1.Value = 5;
-            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // btnClose
             // 
@@ -430,7 +417,6 @@ namespace DreamScene2
             this.Controls.Add(this.checkAutoPlay);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.checkMute);
             this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.btnPlay);
@@ -442,7 +428,6 @@ namespace DreamScene2
             this.Text = "DreamScene2";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -453,7 +438,6 @@ namespace DreamScene2
         private System.Windows.Forms.Button btnOpenFile;
         private System.Windows.Forms.Button btnPlay;
         private System.Windows.Forms.CheckBox checkMute;
-        private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
