@@ -40,7 +40,7 @@ namespace DreamScene2
             // lblName
             // 
             this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point(162, 28);
+            this.lblName.Location = new System.Drawing.Point(105, 14);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(71, 12);
             this.lblName.TabIndex = 2;
@@ -49,7 +49,7 @@ namespace DreamScene2
             // linkGit
             // 
             this.linkGit.AutoSize = true;
-            this.linkGit.Location = new System.Drawing.Point(162, 89);
+            this.linkGit.Location = new System.Drawing.Point(105, 56);
             this.linkGit.Name = "linkGit";
             this.linkGit.Size = new System.Drawing.Size(41, 12);
             this.linkGit.TabIndex = 4;
@@ -59,7 +59,7 @@ namespace DreamScene2
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(233, 117);
+            this.btnClose.Location = new System.Drawing.Point(160, 69);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 1;
@@ -72,15 +72,15 @@ namespace DreamScene2
             this.picLogo.Image = global::DreamScene2.Properties.Resources.AppLogo;
             this.picLogo.Location = new System.Drawing.Point(12, 12);
             this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(128, 128);
             this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogo.Size = new System.Drawing.Size(80, 80);
             this.picLogo.TabIndex = 0;
             this.picLogo.TabStop = false;
             // 
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(162, 59);
+            this.lblVersion.Location = new System.Drawing.Point(105, 35);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(23, 12);
             this.lblVersion.TabIndex = 3;
@@ -90,7 +90,7 @@ namespace DreamScene2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(318, 153);
+            this.ClientSize = new System.Drawing.Size(246, 103);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.linkGit);
