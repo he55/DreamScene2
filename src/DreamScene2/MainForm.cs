@@ -535,6 +535,9 @@ namespace DreamScene2
             toolStripMenuItem7.DropDownItems.Clear();
             for (int i = 0; i < _recentFiles.Count; i++)
             {
+                if (i >= 10)
+                    break;
+
                 string filePath = _recentFiles[i];
                 ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem($"{i + 1}. {filePath}");
                 toolStripMenuItem.Tag = filePath;
