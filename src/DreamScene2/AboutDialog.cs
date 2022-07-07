@@ -8,7 +8,7 @@ namespace DreamScene2
         public AboutDialog()
         {
             InitializeComponent();
-            lblVersion.Text = Constant.Version;
+            lblVersion.Text = "Version " + Constant.Version;
             this.Icon = DreamScene2.Properties.Resources.AppIcon;
         }
 

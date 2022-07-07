@@ -72,8 +72,8 @@ namespace DreamScene2
             this.picLogo.Image = global::DreamScene2.Properties.Resources.AppLogo;
             this.picLogo.Location = new System.Drawing.Point(12, 12);
             this.picLogo.Name = "picLogo";
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogo.Size = new System.Drawing.Size(80, 80);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogo.TabIndex = 0;
             this.picLogo.TabStop = false;
             // 
@@ -82,9 +82,9 @@ namespace DreamScene2
             this.lblVersion.AutoSize = true;
             this.lblVersion.Location = new System.Drawing.Point(105, 35);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(23, 12);
+            this.lblVersion.Size = new System.Drawing.Size(71, 12);
             this.lblVersion.TabIndex = 3;
-            this.lblVersion.Text = "1.1";
+            this.lblVersion.Text = "Version 1.0";
             // 
             // AboutDialog
             // 
@@ -100,7 +100,6 @@ namespace DreamScene2
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutDialog";
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "关于 DreamScene2";
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();

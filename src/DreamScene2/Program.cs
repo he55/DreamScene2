@@ -40,7 +40,6 @@ namespace DreamScene2
 
                 mainForm.Hide();
                 mainForm.Opacity = 1;
-
                 Application.Run();
             }
             else
