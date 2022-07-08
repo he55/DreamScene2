@@ -1,12 +1,17 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace DreamScene2
 {
     internal static class Program
     {
+        [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetProcessDPIAware();
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -26,9 +31,12 @@ namespace DreamScene2
             if (!Directory.Exists(extPath))
                 Directory.CreateDirectory(extPath);
 
-#if NET5_0_OR_GREATER
+#if NETCOREAPP3_0_OR_GREATER
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
+#else
+            SetProcessDPIAware();
 #endif
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
