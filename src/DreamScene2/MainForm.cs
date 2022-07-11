@@ -76,6 +76,7 @@ namespace DreamScene2
             {
                 if (_recentFiles.Contains(path))
                     _recentFiles.Remove(path);
+
                 _recentFiles.Insert(0, path);
                 File.WriteAllLines(_recentPath, _recentFiles);
             }
@@ -170,13 +171,20 @@ namespace DreamScene2
 
             toolStripMenuItem2.Text = btnPlay.Text = "暂停";
 
-            if (_settings.DesktopInteraction)
+            if (_webWindow.Source.Host.EndsWith("bilibili.com"))
             {
-                Task.Run(async () =>
+                toolStripMenuItem27.Enabled  = false;
+            }
+            else
+            {
+                if (_settings.DesktopInteraction)
                 {
-                    await Task.Delay(500);
-                    this.Invoke((Action)ForwardMessage);
-                });
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(500);
+                        this.Invoke((Action)ForwardMessage);
+                    });
+                }
             }
         }
 
@@ -208,6 +216,7 @@ namespace DreamScene2
         void CloseWindow(WindowType wt)
         {
             toolStripMenuItem5.Enabled = btnClose.Enabled = false;
+            toolStripMenuItem27.Enabled = true;
 
             if (_lwt == WindowType.Web)
             {

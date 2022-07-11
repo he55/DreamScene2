@@ -1,5 +1,6 @@
 ﻿using Microsoft.Web.WebView2.Core;
 using System;
+using System.IO;
 using System.Windows;
 
 namespace DreamScene2
@@ -20,8 +21,17 @@ namespace DreamScene2
             string args = null;
             if (_webWindowOptions.DisableWebSecurity)
                 args = "--disable-web-security";
+
             CoreWebView2Environment coreWebView2Environment = await CoreWebView2Environment.CreateAsync(null, _webWindowOptions.UserDataFolder, new CoreWebView2EnvironmentOptions(args));
             await webView2.EnsureCoreWebView2Async(coreWebView2Environment);
+
+            LoadScript();
+        }
+
+        async void LoadScript()
+        {
+            string script = File.ReadAllText("script.js");
+            await webView2.CoreWebView2.ExecuteScriptAsync(script);
         }
 
         public Uri Source
