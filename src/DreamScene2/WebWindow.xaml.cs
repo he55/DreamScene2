@@ -18,9 +18,9 @@ namespace DreamScene2
 
         async void InitializeCoreWebView2Environment()
         {
-            string args = null;
+            string args = "--autoplay-policy=no-user-gesture-required ";
             if (_webWindowOptions.DisableWebSecurity)
-                args = "--disable-web-security";
+                args += "--disable-web-security";
 
             CoreWebView2Environment coreWebView2Environment = await CoreWebView2Environment.CreateAsync(null, _webWindowOptions.UserDataFolder, new CoreWebView2EnvironmentOptions(args));
             await webView2.EnsureCoreWebView2Async(coreWebView2Environment);
