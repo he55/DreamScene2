@@ -173,7 +173,7 @@ namespace DreamScene2
 
             if (_webWindow.Source.Host.EndsWith("bilibili.com"))
             {
-                toolStripMenuItem27.Enabled  = false;
+                toolStripMenuItem27.Enabled = false;
             }
             else
             {

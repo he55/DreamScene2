@@ -31,7 +31,7 @@ namespace DreamScene2
         async void LoadScript()
         {
             string script = File.ReadAllText("script.js");
-            await webView2.CoreWebView2.ExecuteScriptAsync(script);
+            await webView2.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(script);
         }
 
         public Uri Source
