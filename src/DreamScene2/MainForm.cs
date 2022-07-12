@@ -51,7 +51,7 @@ namespace DreamScene2
             toolStripMenuItem24.Checked = _settings.AutoPause2;
             toolStripMenuItem25.Checked = _settings.AutoPause3;
             toolStripMenuItem26.Checked = _settings.DisableWebSecurity;
-            toolStripMenuItem27.Checked = _settings.DesktopInteraction;
+            toolStripMenuItem27.Checked = _settings.UseDesktopInteraction;
         }
 
         #region 私有方法
@@ -176,7 +176,7 @@ namespace DreamScene2
             {
                 toolStripMenuItem27.Enabled = false;
             }
-            else if (_settings.DesktopInteraction)
+            else if (_settings.UseDesktopInteraction)
             {
                 Task.Run(async () =>
                 {
@@ -218,7 +218,7 @@ namespace DreamScene2
 
             if (_lwt == WindowType.Web)
             {
-                if (_settings.DesktopInteraction)
+                if (_settings.UseDesktopInteraction)
                     PInvoke.DS2_EndForwardMouseKeyboardMessage();
 
                 if (_isSuspend)
@@ -711,10 +711,10 @@ namespace DreamScene2
 
         private void toolStripMenuItem27_Click(object sender, EventArgs e)
         {
-            _settings.DesktopInteraction = toolStripMenuItem27.Checked = !toolStripMenuItem27.Checked;
+            _settings.UseDesktopInteraction = toolStripMenuItem27.Checked = !toolStripMenuItem27.Checked;
             if (_webWindow != null)
             {
-                if (_settings.DesktopInteraction)
+                if (_settings.UseDesktopInteraction)
                     ForwardMessage();
                 else
                     PInvoke.DS2_EndForwardMouseKeyboardMessage();

@@ -19,7 +19,7 @@ namespace DreamScene2
 
         public bool IsMuted { get; set; }
         public bool DisableWebSecurity { get; set; }
-        public bool DesktopInteraction { get; set; } = true;
+        public bool UseDesktopInteraction { get; set; } = true;
 
         public static Settings Load()
         {
