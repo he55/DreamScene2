@@ -33,7 +33,7 @@ namespace DreamScene2
         Screen _screen;
         int _screenIndex;
         IntPtr _windowHandle;
-        bool _isSuspend;
+        bool _isWebPlaying;
         uint _d3dRenderingSubProcessPid;
 
         string[] HtmlFileTypes = new string[] { ".htm", ".html", ".mhtml" };
@@ -94,6 +94,24 @@ namespace DreamScene2
             _isPlaying = false;
             _videoWindow.Pause();
             toolStripMenuItem2.Text = btnPlay.Text = "播放";
+        }
+
+        void PlayWeb()
+        {
+            PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 1);
+            _isWebPlaying = true;
+            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
+        }
+
+        void PauseWeb()
+        {
+            _d3dRenderingSubProcessPid = _webWindow.GetD3DRenderingSubProcessPid();
+            if (_d3dRenderingSubProcessPid != 0)
+            {
+                PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 0);
+                _isWebPlaying = false;
+                toolStripMenuItem2.Text = btnPlay.Text = "播放";
+            }
         }
 
         void OpenFile(string path)
@@ -221,10 +239,10 @@ namespace DreamScene2
                 if (_settings.UseDesktopInteraction)
                     PInvoke.DS2_EndForwardMouseKeyboardMessage();
 
-                if (_isSuspend)
+                if (!_isWebPlaying)
                 {
                     PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 1);
-                    _isSuspend = false;
+                    _isWebPlaying = true;
                 }
             }
 
@@ -359,21 +377,15 @@ namespace DreamScene2
             }
             else if (_webWindow != null)
             {
-                if (_isSuspend)
+                if (_isWebPlaying)
                 {
-                    PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 1);
-                    _isSuspend = false;
-                    toolStripMenuItem2.Text = btnPlay.Text = "暂停";
+                    timer1.Enabled = false;
+                    PauseWeb();
                 }
                 else
                 {
-                    _d3dRenderingSubProcessPid = _webWindow.GetD3DRenderingSubProcessPid();
-                    if (_d3dRenderingSubProcessPid != 0)
-                    {
-                        PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 0);
-                        _isSuspend = true;
-                        toolStripMenuItem2.Text = btnPlay.Text = "播放";
-                    }
+                    PlayWeb();
+                    timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
                 }
             }
         }
@@ -442,6 +454,8 @@ namespace DreamScene2
                 {
                     if (_isPlaying)
                         PauseVideo();
+                    else if (_isWebPlaying)
+                        PauseWeb();
                     return;
                 }
             }
@@ -459,6 +473,8 @@ namespace DreamScene2
                 {
                     if (_isPlaying)
                         PauseVideo();
+                    else if (_isWebPlaying)
+                        PauseWeb();
                     return;
                 }
             }
@@ -476,6 +492,8 @@ namespace DreamScene2
                 {
                     if (_isPlaying)
                         PauseVideo();
+                    else if (_isWebPlaying)
+                        PauseWeb();
                     return;
                 }
             }
@@ -485,7 +503,12 @@ namespace DreamScene2
             }
 
             if (!fullScreen && !_isPlaying && array_sum(_cpuarr) == 0 && array_sum(_parr) == 0)
-                PlayVideo();
+            {
+                if (_videoWindow != null)
+                    PlayVideo();
+                else if (_webWindow != null)
+                    PlayWeb();
+            }
         }
 
         #endregion
