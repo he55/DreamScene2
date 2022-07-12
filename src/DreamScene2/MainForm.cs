@@ -155,6 +155,7 @@ namespace DreamScene2
                 WebWindowOptions webWindowOptions = new WebWindowOptions();
                 webWindowOptions.UserDataFolder = Helper.GetPathForAppFolder("");
                 webWindowOptions.DisableWebSecurity = _settings.DisableWebSecurity;
+                webWindowOptions.IsMuted = _settings.IsMuted;
 
                 _webWindow = new WebWindow(webWindowOptions);
                 _webWindow.SetPosition(_screen.Bounds);
@@ -387,6 +388,9 @@ namespace DreamScene2
 
             if (_videoWindow != null)
                 _videoWindow.IsMuted = _settings.IsMuted;
+
+            if (_webWindow != null)
+                _webWindow.IsMuted = _settings.IsMuted;
         }
 
         private void checkAutoPlay_Click(object sender, EventArgs e)

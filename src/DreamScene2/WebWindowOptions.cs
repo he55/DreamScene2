@@ -4,5 +4,6 @@
     {
         public string UserDataFolder { get; set; }
         public bool DisableWebSecurity { get; set; }
+        public bool IsMuted { get; set; }
     }
 }

@@ -24,6 +24,7 @@ namespace DreamScene2
 
             CoreWebView2Environment coreWebView2Environment = await CoreWebView2Environment.CreateAsync(null, _webWindowOptions.UserDataFolder, new CoreWebView2EnvironmentOptions(args));
             await webView2.EnsureCoreWebView2Async(coreWebView2Environment);
+            webView2.CoreWebView2.IsMuted = _webWindowOptions.IsMuted;
 
             LoadScript();
         }
@@ -38,6 +39,12 @@ namespace DreamScene2
         {
             get => webView2.Source;
             set => webView2.Source = value;
+        }
+
+        public bool IsMuted
+        {
+            get => webView2.CoreWebView2.IsMuted;
+            set => webView2.CoreWebView2.IsMuted = value;
         }
 
         public IntPtr GetChromeWidgetWin1Handle()
