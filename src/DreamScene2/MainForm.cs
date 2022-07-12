@@ -176,16 +176,13 @@ namespace DreamScene2
             {
                 toolStripMenuItem27.Enabled = false;
             }
-            else
+            else if (_settings.DesktopInteraction)
             {
-                if (_settings.DesktopInteraction)
+                Task.Run(async () =>
                 {
-                    Task.Run(async () =>
-                    {
-                        await Task.Delay(500);
-                        this.Invoke((Action)ForwardMessage);
-                    });
-                }
+                    await Task.Delay(500);
+                    this.Invoke((Action)ForwardMessage);
+                });
             }
         }
 
@@ -360,8 +357,7 @@ namespace DreamScene2
                     timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
                 }
             }
-
-            if (_webWindow != null)
+            else if (_webWindow != null)
             {
                 if (_isSuspend)
                 {
@@ -388,8 +384,7 @@ namespace DreamScene2
 
             if (_videoWindow != null)
                 _videoWindow.IsMuted = _settings.IsMuted;
-
-            if (_webWindow != null)
+            else if (_webWindow != null)
                 _webWindow.IsMuted = _settings.IsMuted;
         }
 
