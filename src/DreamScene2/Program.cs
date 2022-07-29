@@ -40,7 +40,7 @@ namespace DreamScene2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if (args.Length != 0 && args[0] == Constant.Cmd)
+            if (args.Length != 0 && (args[0] == Constant.Cmd || args[0] == "-scr"))
             {
                 MainForm mainForm = new MainForm();
                 mainForm.Opacity = 0;
