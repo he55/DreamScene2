@@ -188,7 +188,9 @@ namespace DreamScene2
             toolStripMenuItem3.Enabled = checkMute.Enabled = true;
             toolStripMenuItem5.Enabled = btnClose.Enabled = true;
 
+            _isWebPlaying = true;
             toolStripMenuItem2.Text = btnPlay.Text = "暂停";
+            timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
 
             if (_webWindow.Source.Host.EndsWith("bilibili.com"))
             {
@@ -261,6 +263,8 @@ namespace DreamScene2
             }
             else if (_lwt == WindowType.Web && _lwt != wt)
             {
+                timer1.Enabled = false;
+                _isWebPlaying = false;
                 toolStripMenuItem2.Text = btnPlay.Text = "播放";
 
                 toolStripMenuItem2.Enabled = btnPlay.Enabled = false;
