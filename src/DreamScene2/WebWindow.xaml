@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DreamScene2"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf" 
         mc:Ignorable="d"
-        Title="WebWindow" Height="450" Width="800">
+        Title="WebWindow" Height="450" Width="800" ShowInTaskbar="False">
     <Grid>
         <wv2:WebView2 x:Name="webView2"/>
     </Grid>
