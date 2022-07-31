@@ -25,8 +25,7 @@ namespace DreamScene2
         VideoWindow _videoWindow;
         WebWindow _webWindow;
         IntPtr _desktopWindowHandle;
-        string _recentPath = Helper.GetPathForAppFolder("recent.txt");
-        List<string> _recentFiles = new List<string>();
+        List<string> _recentFiles;
         bool _isPlaying;
         PerformanceCounter _performanceCounter;
         Settings _settings = Settings.Load();
@@ -70,18 +69,6 @@ namespace DreamScene2
             }
         }
 
-        void SaveRecentFile(string path)
-        {
-            if (_recentFiles.Count == 0 || _recentFiles[0] != path)
-            {
-                if (_recentFiles.Contains(path))
-                    _recentFiles.Remove(path);
-
-                _recentFiles.Insert(0, path);
-                File.WriteAllLines(_recentPath, _recentFiles);
-            }
-        }
-
         void PlayVideo()
         {
             _isPlaying = true;
@@ -117,7 +104,8 @@ namespace DreamScene2
         void OpenFile(string path)
         {
             Uri uri = new Uri(path);
-            SaveRecentFile(path);
+            RecentFile.Update(path);
+            RecentFile.Save();
 
             if (uri.Scheme == "http" || uri.Scheme == "https")
             {
@@ -316,11 +304,7 @@ namespace DreamScene2
                 return;
             }
 
-            if (File.Exists(_recentPath))
-            {
-                string[] paths = File.ReadAllLines(_recentPath);
-                _recentFiles.AddRange(paths);
-            }
+            _recentFiles = RecentFile.Load();
 
             if (_settings.AutoPlay && _recentFiles.Count != 0)
                 OpenFile(_recentFiles[0]);
@@ -589,8 +573,7 @@ namespace DreamScene2
 
         private void toolStripMenuItem8_Click(object sender, EventArgs e)
         {
-            _recentFiles.Clear();
-            File.WriteAllText(_recentPath, "");
+            RecentFile.Clean();
         }
 
         private void toolStripMenuItem9_Click(object sender, EventArgs e)
