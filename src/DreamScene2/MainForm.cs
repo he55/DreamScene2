@@ -287,14 +287,7 @@ namespace DreamScene2
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Task.Run(() =>
-            {
-                _performanceCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-            });
-
-            _screen = Screen.PrimaryScreen;
             _desktopWindowHandle = PInvoke.DS2_GetDesktopWindowHandle();
-
             if (_desktopWindowHandle == IntPtr.Zero)
             {
                 btnOpenFile.Enabled = false;
@@ -304,6 +297,12 @@ namespace DreamScene2
                 return;
             }
 
+            Task.Run(() =>
+            {
+                _performanceCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            });
+
+            _screen = Screen.PrimaryScreen;
             _recentFiles = RecentFile.Load();
 
             if (_settings.AutoPlay && _recentFiles.Count != 0)
