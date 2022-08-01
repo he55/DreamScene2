@@ -40,7 +40,13 @@ namespace DreamScene2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if (args.Length != 0 && args[0] == Constant.Cmd)
+            if (args.Length == 0)
+            {
+                Application.Run(new MainForm());
+                return;
+            }
+
+            if (args[0] == Constant.Cmd)
             {
                 MainForm mainForm = new MainForm();
                 mainForm.Opacity = 0;
@@ -50,9 +56,16 @@ namespace DreamScene2
                 mainForm.Opacity = 1;
                 Application.Run();
             }
-            else
+            else if (args[0] == "/s")
             {
-                Application.Run(new MainForm());
+            }
+            else if (args[0] == "/p")
+            {
+                int p = int.Parse(args[1]);
+            }
+            else if (args[0].StartsWith("/c:"))
+            {
+                int p = int.Parse(args[0].Substring(3));
             }
         }
 
