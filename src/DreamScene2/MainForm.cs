@@ -16,8 +16,6 @@ namespace DreamScene2
 
         const int MOD_ALT = 0x0001;
         const int MOD_CONTROL = 0x0002;
-        const int MOD_SHIFT = 0x0004;
-        const int MOD_WIN = 0x0008;
         const int MOD_NOREPEAT = 0x4000;
 
         const int PLAY_HOTKEY_ID = 10;
@@ -105,7 +103,6 @@ namespace DreamScene2
         {
             Uri uri = new Uri(path);
             RecentFile.Update(path);
-            RecentFile.Save();
 
             if (uri.Scheme == "http" || uri.Scheme == "https")
             {

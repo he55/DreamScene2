@@ -37,6 +37,7 @@ namespace DreamScene2
                     s_recentFiles.Remove(path);
 
                 s_recentFiles.Insert(0, path);
+                Save();
             }
         }
     }
