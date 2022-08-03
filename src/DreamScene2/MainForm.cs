@@ -134,13 +134,8 @@ namespace DreamScene2
             _videoWindow.Source = new Uri(path, UriKind.Absolute);
             _videoWindow.Play();
 
-            toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
-            toolStripMenuItem3.Enabled = checkMute.Enabled = true;
-            toolStripMenuItem5.Enabled = btnClose.Enabled = true;
-
             _isPlaying = true;
-            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
-            timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
+            EnableMenuItem();
         }
 
         void OpenWeb(string url)
@@ -169,13 +164,8 @@ namespace DreamScene2
 
             _webWindow.Source = new Uri(url);
 
-            toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
-            toolStripMenuItem3.Enabled = checkMute.Enabled = true;
-            toolStripMenuItem5.Enabled = btnClose.Enabled = true;
-
             _isWebPlaying = true;
-            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
-            timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
+            EnableMenuItem();
 
             if (_webWindow.Source.Host.EndsWith("bilibili.com"))
             {
@@ -191,6 +181,16 @@ namespace DreamScene2
             }
         }
 
+        void EnableMenuItem()
+        {
+            toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
+            toolStripMenuItem3.Enabled = checkMute.Enabled = true;
+            toolStripMenuItem5.Enabled = btnClose.Enabled = true;
+
+            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
+            timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
+        }
+
         void SetWindow(IntPtr hWnd)
         {
             CloseWindow(WindowType.Window);
@@ -198,7 +198,6 @@ namespace DreamScene2
             if (_windowHandle != hWnd)
             {
                 _windowHandle = hWnd;
-
                 PInvoke.DS2_SetWindowPosition(hWnd, _screen.Bounds.ToRECT());
                 PInvoke.SetParent(hWnd, _desktopWindowHandle);
             }
