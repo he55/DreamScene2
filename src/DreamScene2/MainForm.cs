@@ -699,7 +699,21 @@ namespace DreamScene2
                 else
                 {
                     timer1.Enabled = false;
-                    if (!_isPlaying) PlayVideo();
+                    if (!_isPlaying)
+                        PlayVideo();
+                }
+            }
+            else if (_webWindow != null)
+            {
+                if (_settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3)
+                {
+                    timer1.Enabled = true;
+                }
+                else
+                {
+                    timer1.Enabled = false;
+                    if (!_isWebPlaying)
+                        PlayWeb();
                 }
             }
         }
