@@ -135,7 +135,7 @@ namespace DreamScene2
             _videoWindow.Play();
 
             _isPlaying = true;
-            EnableMenuItem();
+            EnableControl();
         }
 
         void OpenWeb(string url)
@@ -165,7 +165,7 @@ namespace DreamScene2
             _webWindow.Source = new Uri(url);
 
             _isWebPlaying = true;
-            EnableMenuItem();
+            EnableControl();
 
             if (_webWindow.Source.Host.EndsWith("bilibili.com"))
             {
@@ -181,14 +181,14 @@ namespace DreamScene2
             }
         }
 
-        void EnableMenuItem()
+        void EnableControl()
         {
             toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
             toolStripMenuItem3.Enabled = checkMute.Enabled = true;
             toolStripMenuItem5.Enabled = btnClose.Enabled = true;
 
             toolStripMenuItem2.Text = btnPlay.Text = "暂停";
-            timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
+            timer1.Enabled = _settings.CanPause();
         }
 
         void SetWindow(IntPtr hWnd)
@@ -355,7 +355,7 @@ namespace DreamScene2
                 else
                 {
                     PlayVideo();
-                    timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
+                    timer1.Enabled = _settings.CanPause();
                 }
             }
             else if (_webWindow != null)
@@ -368,7 +368,7 @@ namespace DreamScene2
                 else
                 {
                     PlayWeb();
-                    timer1.Enabled = _settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3;
+                    timer1.Enabled = _settings.CanPause();
                 }
             }
         }
@@ -692,7 +692,7 @@ namespace DreamScene2
 
             if (_videoWindow != null)
             {
-                if (_settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3)
+                if (_settings.CanPause())
                 {
                     timer1.Enabled = true;
                 }
@@ -705,7 +705,7 @@ namespace DreamScene2
             }
             else if (_webWindow != null)
             {
-                if (_settings.AutoPause1 || _settings.AutoPause2 || _settings.AutoPause3)
+                if (_settings.CanPause())
                 {
                     timer1.Enabled = true;
                 }

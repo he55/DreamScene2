@@ -5,7 +5,7 @@ namespace DreamScene2
 {
     public class Settings
     {
-        static string settingsFilePath = Helper.GetPathForAppFolder("settings.xml");
+        static string s_filePath = Helper.GetPathForAppFolder("settings.xml");
         static Settings s_settings;
 
         private Settings() { }
@@ -21,13 +21,18 @@ namespace DreamScene2
         public bool DisableWebSecurity { get; set; }
         public bool UseDesktopInteraction { get; set; } = true;
 
+        public bool CanPause()
+        {
+            return AutoPause1 || AutoPause2 || AutoPause3;
+        }
+
         public static Settings Load()
         {
             if (s_settings == null)
             {
-                if (File.Exists(settingsFilePath))
+                if (File.Exists(s_filePath))
                 {
-                    using (FileStream fileStream = File.OpenRead(settingsFilePath))
+                    using (FileStream fileStream = File.OpenRead(s_filePath))
                     {
                         XmlSerializer xmlSerializer = new XmlSerializer(typeof(Settings));
                         s_settings = (Settings)xmlSerializer.Deserialize(fileStream);
@@ -43,7 +48,7 @@ namespace DreamScene2
 
         public static void Save()
         {
-            using (FileStream fileStream = File.Create(settingsFilePath))
+            using (FileStream fileStream = File.Create(s_filePath))
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(Settings));
                 xmlSerializer.Serialize(fileStream, s_settings);
