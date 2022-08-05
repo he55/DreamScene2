@@ -5,7 +5,7 @@ namespace DreamScene2
 {
     public static class RecentFile
     {
-        static readonly string s_recentPath = Helper.GetPathForAppFolder("recent.txt");
+        static readonly string s_recentPath = Helper.GetPathForUserAppDataFolder("recent.txt");
         static readonly List<string> s_recentFiles = new List<string>();
 
         public static List<string> Load()

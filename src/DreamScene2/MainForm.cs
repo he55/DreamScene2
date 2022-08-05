@@ -151,7 +151,7 @@ namespace DreamScene2
             if (_webWindow == null)
             {
                 WebWindowOptions webWindowOptions = new WebWindowOptions();
-                webWindowOptions.UserDataFolder = Helper.GetPathForAppFolder("");
+                webWindowOptions.UserDataFolder = Helper.GetPathForUserAppDataFolder("");
                 webWindowOptions.DisableWebSecurity = _settings.DisableWebSecurity;
                 webWindowOptions.IsMuted = _settings.IsMuted;
 
