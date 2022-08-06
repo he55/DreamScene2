@@ -54,7 +54,7 @@ namespace DreamScene2
         public static void SetStartOnBoot()
         {
             RegistryKey startupKey = Registry.CurrentUser.OpenSubKey(STARTUP_KEY, true);
-            startupKey.SetValue(Constant.ProjectName, $"{Application.ExecutablePath} {Constant.Cmd}");
+            startupKey.SetValue(Constant.ProjectName, $"\"{Application.ExecutablePath}\" {Constant.Cmd}");
             startupKey.Close();
         }
 
