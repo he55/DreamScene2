@@ -24,6 +24,9 @@ namespace DreamScene2
         public static extern bool IsWindowVisible(IntPtr hWnd);
 
         [DllImport("User32.dll", SetLastError = true, ExactSpelling = true)]
+        public static extern IntPtr GetParent(IntPtr hWnd);
+
+        [DllImport("User32.dll", SetLastError = true, ExactSpelling = true)]
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
         [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
