@@ -615,7 +615,13 @@ namespace DreamScene2
                     _screen = Screen.AllScreens[_screenIndex];
 
                     PInvoke.DS2_RefreshDesktop();
-                    _videoWindow?.SetPosition(_screen.Bounds);
+
+                    if (_videoWindow != null)
+                        _videoWindow.SetPosition(_screen.Bounds);
+                    else if (_webWindow != null)
+                        _webWindow.SetPosition(_screen.Bounds);
+                    else if (_windowHandle != IntPtr.Zero)
+                        PInvoke.DS2_SetWindowPosition(_windowHandle, _screen.Bounds.ToRECT());
                 };
                 toolStripMenuItem10.DropDownItems.Add(toolStripMenuItem);
             }
