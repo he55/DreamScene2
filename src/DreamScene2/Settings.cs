@@ -15,7 +15,7 @@ namespace DreamScene2
 
         public bool AutoPause1 { get; set; }
         public bool AutoPause2 { get; set; }
-        public bool AutoPause3 { get; set; } = true;
+        public bool AutoPause3 { get; set; }
 
         public bool IsMuted { get; set; }
         public bool DisableWebSecurity { get; set; }
