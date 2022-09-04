@@ -615,15 +615,16 @@ namespace DreamScene2
                 {
                     _screenIndex = (int)((ToolStripMenuItem)sender_).Tag;
                     _screen = Screen.AllScreens[_screenIndex];
+                    System.Drawing.Rectangle bounds = _screen.Bounds;
 
                     PInvoke.DS2_RefreshDesktop();
 
                     if (_videoWindow != null)
-                        _videoWindow.SetPosition(_screen.Bounds);
+                        _videoWindow.SetPosition(bounds);
                     else if (_webWindow != null)
-                        _webWindow.SetPosition(_screen.Bounds);
+                        _webWindow.SetPosition(bounds);
                     else if (_windowHandle != IntPtr.Zero)
-                        PInvoke.DS2_SetWindowPosition(_windowHandle, _screen.Bounds.ToRECT());
+                        PInvoke.DS2_SetWindowPosition(_windowHandle, bounds.ToRECT());
                 };
                 toolStripMenuItem10.DropDownItems.Add(toolStripMenuItem);
             }
