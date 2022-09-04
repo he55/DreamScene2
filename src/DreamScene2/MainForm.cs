@@ -92,15 +92,21 @@ namespace DreamScene2
 
         void OpenFile(string path)
         {
-            Uri uri = new Uri(path);
             RecentFile.Update(path);
 
+            Uri uri = new Uri(path);
             if (uri.Scheme == "http" || uri.Scheme == "https")
             {
                 OpenWeb(path);
             }
-            else if (uri.Scheme == "file" && File.Exists(path))
+            else if (uri.Scheme == "file")
             {
+                if (!File.Exists(path))
+                {
+                    MessageBox.Show($"找不到文件 \"{path}\"", Constant.ProjectName);
+                    return;
+                }
+
                 if (HtmlFileTypes.Contains(Path.GetExtension(path).ToLower()))
                     OpenWeb(uri.AbsoluteUri);
                 else
