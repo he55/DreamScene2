@@ -1,10 +1,14 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace DreamScene2
 {
     public static class PInvoke
     {
+        [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
         [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 

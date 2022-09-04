@@ -27,10 +27,6 @@ namespace DreamScene2
                 return;
             }
 
-            string extPath = Helper.ExtPath();
-            if (!Directory.Exists(extPath))
-                Directory.CreateDirectory(extPath);
-
 #if NETCOREAPP3_0_OR_GREATER
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 #else

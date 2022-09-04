@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,6 +22,7 @@ namespace DreamScene2
         Screen _screen;
         int _screenIndex;
         IntPtr _windowHandle;
+        HashSet<IntPtr> _hWndSet = new HashSet<IntPtr>();
         bool _isWebPlaying;
         uint _d3dRenderingSubProcessPid;
 
@@ -631,32 +633,30 @@ namespace DreamScene2
         {
             toolStripMenuItem16.DropDownItems.Clear();
 
-            string[] files = Directory.GetFiles(Helper.ExtPath());
-            if (files.Length == 0)
+            if (_hWndSet.Count == 0)
             {
                 toolStripMenuItem16.DropDownItems.Add(toolStripMenuItem17);
                 return;
             }
 
-            foreach (string filePath in files)
+            foreach (var val in _hWndSet)
             {
-                string fileName = Path.GetFileName(filePath);
-                string[] arr = fileName.Split(new string[] { "-" }, StringSplitOptions.RemoveEmptyEntries);
-                if (int.TryParse(arr[0], System.Globalization.NumberStyles.HexNumber, null, out int val))
+                IntPtr ptr = val;
+                bool b = PInvoke.IsWindowVisible(ptr);
+
+                StringBuilder sb = new StringBuilder(128);
+                PInvoke.GetWindowText(ptr, sb, sb.Capacity);
+                string title = sb.ToString();
+
+                ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem(title + (b ? "" : " (Invalidate)"));
+                toolStripMenuItem.Enabled = b;
+                toolStripMenuItem.Checked = _windowHandle == ptr;
+                toolStripMenuItem.Tag = val;
+                toolStripMenuItem.Click += (object sender_, EventArgs e_) =>
                 {
-                    IntPtr ptr = (IntPtr)val;
-                    bool b = PInvoke.IsWindowVisible(ptr);
-                    ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem(arr[1] + (b ? "" : " (Invalidate)"));
-                    toolStripMenuItem.Enabled = b;
-                    toolStripMenuItem.Checked = _windowHandle == ptr;
-                    toolStripMenuItem.Tag = val;
-                    toolStripMenuItem.Click += (object sender_, EventArgs e_) =>
-                    {
-                        int hWnd = (int)((ToolStripMenuItem)sender_).Tag;
-                        SetWindow((IntPtr)hWnd);
-                    };
-                    toolStripMenuItem16.DropDownItems.Add(toolStripMenuItem);
-                }
+                    SetWindow((IntPtr)((ToolStripMenuItem)sender_).Tag);
+                };
+                toolStripMenuItem16.DropDownItems.Add(toolStripMenuItem);
             }
         }
 
@@ -762,6 +762,7 @@ namespace DreamScene2
             }
             else if (m.Msg == (WM_USER + 1001))
             {
+                _hWndSet.Add(m.WParam);
                 SetWindow(m.WParam);
                 return;
             }
