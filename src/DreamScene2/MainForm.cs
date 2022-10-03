@@ -752,12 +752,23 @@ namespace DreamScene2
 
         #endregion
 
+        bool _flag;
         protected override void WndProc(ref Message m)
         {
+            const int WM_DISPLAYCHANGE = 0x007E;
             const int WM_HOTKEY = 0x0312;
             const int WM_USER = 0x0400;
 
-            if (m.Msg == WM_HOTKEY && (int)m.WParam == PLAY_HOTKEY_ID)
+            if (m.Msg == WM_DISPLAYCHANGE)
+            {
+                if (_flag && (_videoWindow != null || _webWindow != null))
+                {
+                    CloseWindow(WindowType.None);
+                    OpenFile(_recentFiles[0]);
+                }
+                _flag = true;
+            }
+            else if (m.Msg == WM_HOTKEY && (int)m.WParam == PLAY_HOTKEY_ID)
             {
                 btnPlay_Click(null, null);
                 return;
