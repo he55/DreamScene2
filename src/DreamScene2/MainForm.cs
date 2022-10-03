@@ -320,7 +320,6 @@ namespace DreamScene2
             {
                 e.Cancel = true;
                 this.Hide();
-                Settings.Save();
 
                 if (_settings.FirstRun)
                 {
@@ -334,6 +333,8 @@ namespace DreamScene2
                 PInvoke.UnregisterHotKey(this.Handle, PLAY_HOTKEY_ID);
                 CloseWindow(WindowType.None);
             }
+
+            Settings.Save();
         }
 
         private void btnOpenFile_Click(object sender, EventArgs e)
