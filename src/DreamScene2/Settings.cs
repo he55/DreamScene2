@@ -11,14 +11,14 @@ namespace DreamScene2
         private Settings() { }
 
         public bool FirstRun { get; set; } = true;
-        public bool AutoPlay { get; set; }
+        public bool AutoPlay { get; set; } = true;
 
         public bool AutoPause1 { get; set; }
         public bool AutoPause2 { get; set; }
         public bool AutoPause3 { get; set; }
 
         public bool IsMuted { get; set; }
-        public bool DisableWebSecurity { get; set; }
+        public bool DisableWebSecurity { get; set; } = true;
         public bool UseDesktopInteraction { get; set; } = true;
 
         public bool CanPause()
