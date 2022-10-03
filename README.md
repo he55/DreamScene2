@@ -34,6 +34,5 @@ https://github.com/he55/DreamScene2/releases/latest
 
 ## 💗 Thanks
 - [Draw Behind Desktop Icons in Windows 8+](https://www.codeproject.com/Articles/856020/Draw-Behind-Desktop-Icons-in-Windows-plus)
-- [KioskBrowser](https://github.com/mortenbrudvik/KioskBrowser)
 - [Windows Desktop ListView Handle](https://blog.syedgakbar.com/2013/01/19/windows-desktop-listview-handle/)
 - [Vanara](https://github.com/dahall/Vanara)
