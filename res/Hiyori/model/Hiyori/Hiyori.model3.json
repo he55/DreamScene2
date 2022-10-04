@@ -9,6 +9,7 @@
 		"Physics": "Hiyori.physics3.json",
 		"Pose": "Hiyori.pose3.json",
 		"UserData": "Hiyori.userdata3.json",
+		"DisplayInfo": "Hiyori.cdi3.json",
 		"Motions": {
 			"Idle": [
 				{

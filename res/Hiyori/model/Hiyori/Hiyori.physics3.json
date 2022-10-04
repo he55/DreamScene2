@@ -17,54 +17,54 @@
 		},
 		"PhysicsDictionary": [
 			{
-				"Id": "PhysicsSetting2",
+				"Id": "PhysicsSetting1",
 				"Name": "前髪"
 			},
 			{
-				"Id": "PhysicsSetting4",
+				"Id": "PhysicsSetting2",
 				"Name": "後ろ髪"
 			},
 			{
-				"Id": "PhysicsSetting5",
+				"Id": "PhysicsSetting3",
 				"Name": "リボン　髪"
 			},
 			{
-				"Id": "PhysicsSetting6",
+				"Id": "PhysicsSetting4",
 				"Name": "スカート　横揺れ"
 			},
 			{
-				"Id": "PhysicsSetting8",
+				"Id": "PhysicsSetting5",
 				"Name": "スカート　縦揺れ"
 			},
 			{
-				"Id": "PhysicsSetting9",
+				"Id": "PhysicsSetting6",
 				"Name": "リボン　体"
 			},
 			{
-				"Id": "PhysicsSetting10",
+				"Id": "PhysicsSetting7",
 				"Name": "胸揺れ"
 			},
 			{
-				"Id": "PhysicsSetting9",
+				"Id": "PhysicsSetting8",
 				"Name": "サイドアップ　右"
 			},
 			{
-				"Id": "PhysicsSetting10",
+				"Id": "PhysicsSetting9",
 				"Name": "サイドアップ　左"
 			},
 			{
-				"Id": "PhysicsSetting11",
+				"Id": "PhysicsSetting10",
 				"Name": "横髪　右"
 			},
 			{
-				"Id": "PhysicsSetting12",
+				"Id": "PhysicsSetting11",
 				"Name": "横髪　左"
 			}
 		]
 	},
 	"PhysicsSettings": [
 		{
-			"Id": "PhysicsSetting2",
+			"Id": "PhysicsSetting1",
 			"Input": [
 				{
 					"Source": {
@@ -152,7 +152,7 @@
 			}
 		},
 		{
-			"Id": "PhysicsSetting4",
+			"Id": "PhysicsSetting2",
 			"Input": [
 				{
 					"Source": {
@@ -240,7 +240,7 @@
 			}
 		},
 		{
-			"Id": "PhysicsSetting5",
+			"Id": "PhysicsSetting3",
 			"Input": [
 				{
 					"Source": {
@@ -328,7 +328,7 @@
 			}
 		},
 		{
-			"Id": "PhysicsSetting6",
+			"Id": "PhysicsSetting4",
 			"Input": [
 				{
 					"Source": {
@@ -398,7 +398,7 @@
 			}
 		},
 		{
-			"Id": "PhysicsSetting8",
+			"Id": "PhysicsSetting5",
 			"Input": [
 				{
 					"Source": {
@@ -459,7 +459,7 @@
 			}
 		},
 		{
-			"Id": "PhysicsSetting9",
+			"Id": "PhysicsSetting6",
 			"Input": [
 				{
 					"Source": {
@@ -529,7 +529,7 @@
 			}
 		},
 		{
-			"Id": "PhysicsSetting10",
+			"Id": "PhysicsSetting7",
 			"Input": [
 				{
 					"Source": {
@@ -590,7 +590,7 @@
 			}
 		},
 		{
-			"Id": "PhysicsSetting9",
+			"Id": "PhysicsSetting8",
 			"Input": [
 				{
 					"Source": {
@@ -834,7 +834,7 @@
 			}
 		},
 		{
-			"Id": "PhysicsSetting10",
+			"Id": "PhysicsSetting9",
 			"Input": [
 				{
 					"Source": {
@@ -1078,7 +1078,7 @@
 			}
 		},
 		{
-			"Id": "PhysicsSetting11",
+			"Id": "PhysicsSetting10",
 			"Input": [
 				{
 					"Source": {
@@ -1322,7 +1322,7 @@
 			}
 		},
 		{
-			"Id": "PhysicsSetting12",
+			"Id": "PhysicsSetting11",
 			"Input": [
 				{
 					"Source": {
