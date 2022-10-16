@@ -6,52 +6,22 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Hiyori</title>
-	<style>
-		body {
-			padding: 0px;
-			margin: 0px;
-			overflow: hidden;
-		}
-
-		.index-about .about-chara {
-			position: absolute;
-			top: -80px;
-			right: 0;
-		}
-
-		.index-about .about-chara .cubism-widget {
-			width: 550px;
-			height: 1700px;
-		}
-
-		.index-about .about-chara .cubism-widget>canvas {
-			width: 100%;
-			height: 100%;
-		}
-
-		.index-about {
-			position: relative;
-			background: #ff832c url(img/index-about-bg.jpg) center center no-repeat;
-			background-attachment: fixed;
-			background-size: cover;
-			width: 100%;
-			height: 1700px;
-		}
-
-		@media screen and (max-width: 1280px) {
-			.index-about {
-				background-attachment: scroll;
-			}
-		}
-	</style>
+	<link rel="stylesheet" href="css/styles-pc.css">
 </head>
 
 <body>
-	<div class="index-about">
-		<div class="about-chara">
-			<div class="cubism-widget" data-model3json="model/Hiyori/Hiyori.model3.json" data-x="0" data-y="0"
-				data-scale="4.5" data-width="550" data-height="1700" data-idle-motion-enabled="true"></div>
-		</div>
+	<div id="wrap">
+		<article class="index-about">
+			<section class="outside cf">
+				<div class="about-chara">
+					<div class="cubism-widget"
+						data-model3json="model/Hiyori/Hiyori.model3.json"
+						data-x="0" data-y="0" data-scale="4.5" data-width="550" data-height="1700"
+						data-idle-motion-enabled="true"></div>
+				</div>
+			</section>
+			<div class="back-point"></div>
+		</article>
 	</div>
 	<script src="js/lib/live2dcubismcore.min.js"></script>
 	<script src="js/lib/main.js"></script>

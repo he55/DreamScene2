@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+
+
+
+/* CSS STYLE */
+
+body {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
+
+/* SITEPARTS */
+
+#wrap {
+	position: relative;
+	width: 100%;
+	overflow-x: hidden;
+	z-index: 2;
+}
+
+.outside {
+	position: relative;
+	width: 100%;
+	max-width: 1320px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.index-about {
+	position: relative;
+	background: #ff832c url(../img/index-about-bg.jpg) center center no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+	width: 100%;
+	height: 1700px;
+}
+@media screen and (max-width: 1280px) {
+.index-about {
+	background-attachment: scroll;
+}
+}
+.index-about .back-point {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	z-index: 2;
+}
+.index-about .back-point:before {
+	content: "";
+	animation: stripe3 2s infinite linear;
+	display: block;
+	position: absolute;
+	top: -300px;
+	background-image: linear-gradient(
+		45deg,
+		#fff 25%,
+		transparent 25%,
+		transparent 50%,
+		#fff 50%,
+		#fff 75%,
+		transparent 75%,
+		transparent
+	);
+	background-size: 30px 30px;
+	width: 120%;
+	height: 400px;
+	margin: 0 -10%;
+	-webkit-transform: rotate(-7deg) translate3d(0, 0, 0);
+	-ms-transform: rotate(-7deg) translate3d(0, 0, 0);
+	transform: rotate(-7deg) translate3d(0, 0, 0);
+	-webkit-backface-visibility: hidden;
+	opacity: 0.3;
+	z-index: 1;
+}
+@keyframes stripe3 {
+	0% {  background-position-x: 0;  }
+	100% {  background-position-x: 30px;  }
+}
+
+.index-about section {
+	position: relative;
+	z-index: 3;
+}
+
+.index-about .about-chara {
+	position: absolute;
+	top: -80px;
+	right: 0;
+}
+.index-about .about-chara .cubism-widget {
+	width: 550px;
+	height: 1700px;
+}
+.index-about .about-chara .cubism-widget > canvas {
+	width: 100%;
+	height: 100%;
+}
