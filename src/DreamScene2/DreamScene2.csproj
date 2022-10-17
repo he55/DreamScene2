@@ -2,19 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>True</UseWPF>
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
-    <Platforms>x64;x86</Platforms>
+    <Platforms>x86;x64</Platforms>
+    <RuntimeIdentifiers>win7-x86;win7-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Resources\AppIcon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1210.39" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1370.28" />
   </ItemGroup>
 
   <ItemGroup>
