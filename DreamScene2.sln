@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DreamScene2", "src\DreamSce
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DS2Native", "src\DS2Native\DS2Native.vcxproj", "{3EB67CD9-3814-4A20-89D5-C1BD393DB163}"
 EndProject
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "DreamScene2 (Package)", "src\DreamScene2 (Package)\DreamScene2 (Package).wapproj", "{5DC72AB8-EF9D-4130-A690-04897977BFCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,18 @@ Global
 		{3EB67CD9-3814-4A20-89D5-C1BD393DB163}.Release|x64.Build.0 = Release|x64
 		{3EB67CD9-3814-4A20-89D5-C1BD393DB163}.Release|x86.ActiveCfg = Release|Win32
 		{3EB67CD9-3814-4A20-89D5-C1BD393DB163}.Release|x86.Build.0 = Release|Win32
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Debug|x64.ActiveCfg = Debug|x64
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Debug|x64.Build.0 = Debug|x64
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Debug|x64.Deploy.0 = Debug|x64
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Debug|x86.ActiveCfg = Debug|x86
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Debug|x86.Build.0 = Debug|x86
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Debug|x86.Deploy.0 = Debug|x86
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Release|x64.ActiveCfg = Release|x64
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Release|x64.Build.0 = Release|x64
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Release|x64.Deploy.0 = Release|x64
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Release|x86.ActiveCfg = Release|x86
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Release|x86.Build.0 = Release|x86
+		{5DC72AB8-EF9D-4130-A690-04897977BFCC}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
