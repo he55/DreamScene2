@@ -10,6 +10,10 @@
 ## 📦 Download
 https://github.com/he55/DreamScene2/releases/latest
 
+<a href="https://www.microsoft.com/store/apps/9PLPG9M93TLC">
+    <img src="https://getbadgecdn.azureedge.net/images/English_L.png" height="104">
+</a>
+
 
 ## 📫 Features
 - 支持视频播放
@@ -29,7 +33,7 @@ https://github.com/he55/DreamScene2/releases/latest
 - [ ] 更多视频格式
 - [ ] 重新设计 UI
 - [ ] 本地化
-- [ ] 发布到 Microsoft Store
+- [x] 发布到 Microsoft Store
 
 
 ## 💗 Thanks
