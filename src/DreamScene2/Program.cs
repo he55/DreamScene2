@@ -8,9 +8,12 @@ namespace DreamScene2
 {
     internal static class Program
     {
+        [DllImport("Kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        static extern IntPtr LoadLibrary(string lpFileName);
+
         [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetProcessDPIAware();
+        static extern bool SetProcessDPIAware();
 
         /// <summary>
         ///  The main entry point for the application.
@@ -26,6 +29,9 @@ namespace DreamScene2
                 PInvoke.SetForegroundWindow(hWnd);
                 return;
             }
+
+            string dllPath = Helper.GetPathForStartupFolder("DS2Native.dll");
+            LoadLibrary(dllPath);
 
 #if NETCOREAPP3_0_OR_GREATER
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
