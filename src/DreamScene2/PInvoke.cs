@@ -6,41 +6,41 @@ namespace DreamScene2
 {
     public static class PInvoke
     {
-        [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport("User32.dll")]
         public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
-        [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport("User32.dll")]
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport("User32.dll")]
         public static extern IntPtr FindWindowEx(IntPtr hWndParent, IntPtr hWndChildAfter, string lpszClass, string lpszWindow);
 
-        [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
+        [DllImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
+        [DllImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
+        [DllImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsWindowVisible(IntPtr hWnd);
 
-        [DllImport("User32.dll", SetLastError = true, ExactSpelling = true)]
+        [DllImport("User32.dll")]
         public static extern IntPtr GetParent(IntPtr hWnd);
 
-        [DllImport("User32.dll", SetLastError = true, ExactSpelling = true)]
+        [DllImport("User32.dll")]
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
-        [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
+        [DllImport("User32.dll")]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
-        [DllImport("User32.dll", SetLastError = true, ExactSpelling = true)]
+        [DllImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
-        [DllImport("User32.dll", SetLastError = true, ExactSpelling = true)]
+        [DllImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 

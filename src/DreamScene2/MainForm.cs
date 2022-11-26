@@ -26,8 +26,8 @@ namespace DreamScene2
         bool _isWebPlaying;
         uint _d3dRenderingSubProcessPid;
 
-        string[] HtmlFileTypes = new string[] { ".htm", ".html", ".mhtml" };
-        string[] VideoFileTypes = new string[] { ".mp4", ".mov" };
+        string[] _htmlFiles = new string[] { ".htm", ".html" };
+        string[] _videoFiles = new string[] { ".mp4", ".mov" };
 
         public MainForm()
         {
@@ -109,11 +109,21 @@ namespace DreamScene2
                     return;
                 }
 
-                if (HtmlFileTypes.Contains(Path.GetExtension(path).ToLower()))
+                if (_htmlFiles.Contains(Path.GetExtension(path).ToLower()))
                     OpenWeb(uri.AbsoluteUri);
                 else
                     OpenVideo(path);
             }
+        }
+
+        void EnableControl()
+        {
+            toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
+            toolStripMenuItem3.Enabled = checkMute.Enabled = true;
+            toolStripMenuItem5.Enabled = btnClose.Enabled = true;
+
+            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
+            timer1.Enabled = _settings.CanPause();
         }
 
         void OpenVideo(string path)
@@ -178,16 +188,6 @@ namespace DreamScene2
                     this.Invoke((Action)ForwardMessage);
                 });
             }
-        }
-
-        void EnableControl()
-        {
-            toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
-            toolStripMenuItem3.Enabled = checkMute.Enabled = true;
-            toolStripMenuItem5.Enabled = btnClose.Enabled = true;
-
-            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
-            timer1.Enabled = _settings.CanPause();
         }
 
         void SetWindow(IntPtr hWnd)
@@ -340,10 +340,9 @@ namespace DreamScene2
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            var htmlTypes = string.Join(";", HtmlFileTypes.Select(x => $"*{x}"));
-            var videoTypes = string.Join(";", VideoFileTypes.Select(x => $"*{x}"));
-            var allTypes = $"{videoTypes};{htmlTypes}";
-            openFileDialog.Filter = $"All Files|{allTypes}|Video Files|{videoTypes}|HTML Files|{htmlTypes}";
+            string html = string.Join(";", _htmlFiles.Select(x => $"*{x}"));
+            string video = string.Join(";", _videoFiles.Select(x => $"*{x}"));
+            openFileDialog.Filter = $"All Files|{video};{html}|Video Files|{video}|HTML Files|{html}";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 OpenFile(openFileDialog.FileName);
         }

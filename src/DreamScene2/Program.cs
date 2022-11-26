@@ -8,10 +8,10 @@ namespace DreamScene2
 {
     internal static class Program
     {
-        [DllImport("Kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [DllImport("Kernel32.dll")]
         static extern IntPtr LoadLibrary(string lpFileName);
 
-        [DllImport("User32.dll", SetLastError = false, ExactSpelling = true)]
+        [DllImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool SetProcessDPIAware();
 
@@ -21,12 +21,12 @@ namespace DreamScene2
         [STAThread]
         static void Main(string[] args)
         {
-            IntPtr hWnd = PInvoke.FindWindow(null, Constant.MainWindowTitle);
-            if (hWnd != IntPtr.Zero)
+            IntPtr hwnd = PInvoke.FindWindow(null, Constant.MainWindowTitle);
+            if (hwnd != IntPtr.Zero)
             {
                 const int SW_RESTORE = 9;
-                PInvoke.ShowWindow(hWnd, SW_RESTORE);
-                PInvoke.SetForegroundWindow(hWnd);
+                PInvoke.ShowWindow(hwnd, SW_RESTORE);
+                PInvoke.SetForegroundWindow(hwnd);
                 return;
             }
 
