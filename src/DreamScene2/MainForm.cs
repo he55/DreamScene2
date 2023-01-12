@@ -1,9 +1,7 @@
-using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,22 +10,15 @@ namespace DreamScene2
 {
     public partial class MainForm : Form
     {
-        VideoWindow _videoWindow;
-        WebWindow _webWindow;
+        IPlayer _player;
         IntPtr _desktopWindowHandle;
         List<string> _recentFiles;
-        bool _isPlaying;
         PerformanceCounter _performanceCounter;
         Settings _settings = Settings.Load();
         Screen _screen;
         int _screenIndex;
         IntPtr _windowHandle;
         HashSet<IntPtr> _hWndSet = new HashSet<IntPtr>();
-        bool _isWebPlaying;
-        uint _d3dRenderingSubProcessPid;
-
-        string[] _htmlFiles = new string[] { ".htm", ".html" };
-        string[] _videoFiles = new string[] { ".mp4", ".mov" };
 
         public MainForm()
         {
@@ -46,50 +37,16 @@ namespace DreamScene2
 
         #region 私有方法
 
-        static bool TryGetWebView2Version(out string version)
+        void Play_()
         {
-            try
-            {
-                version = CoreWebView2Environment.GetAvailableBrowserVersionString();
-                return true;
-            }
-            catch
-            {
-                version = null;
-                return false;
-            }
-        }
-
-        void PlayVideo()
-        {
-            _isPlaying = true;
-            _videoWindow.Play();
+            ((IPlayerControl)_player).Play();
             toolStripMenuItem2.Text = btnPlay.Text = "暂停";
         }
 
-        void PauseVideo()
+        void Pause_()
         {
-            _isPlaying = false;
-            _videoWindow.Pause();
+            ((IPlayerControl)_player).Pause();
             toolStripMenuItem2.Text = btnPlay.Text = "播放";
-        }
-
-        void PlayWeb()
-        {
-            PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 1);
-            _isWebPlaying = true;
-            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
-        }
-
-        void PauseWeb()
-        {
-            _d3dRenderingSubProcessPid = _webWindow.GetD3DRenderingSubProcessPid();
-            if (_d3dRenderingSubProcessPid != 0)
-            {
-                PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 0);
-                _isWebPlaying = false;
-                toolStripMenuItem2.Text = btnPlay.Text = "播放";
-            }
         }
 
         void OpenFile(string path)
@@ -109,7 +66,7 @@ namespace DreamScene2
                     return;
                 }
 
-                if (_htmlFiles.Contains(Path.GetExtension(path).ToLower()))
+                if (Path.GetExtension(path).ToLower() == ".html")
                     OpenWeb(uri.AbsoluteUri);
                 else
                     OpenVideo(path);
@@ -118,38 +75,42 @@ namespace DreamScene2
 
         void EnableControl()
         {
-            toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
-            toolStripMenuItem3.Enabled = checkMute.Enabled = true;
             toolStripMenuItem5.Enabled = btnClose.Enabled = true;
 
-            toolStripMenuItem2.Text = btnPlay.Text = "暂停";
-            timer1.Enabled = _settings.CanPause();
+            if (_player is IPlayerControl)
+            {
+                toolStripMenuItem2.Enabled = btnPlay.Enabled = true;
+                toolStripMenuItem3.Enabled = checkMute.Enabled = true;
+
+                toolStripMenuItem2.Text = btnPlay.Text = "暂停";
+                timer1.Enabled = _settings.CanPause();
+            }
         }
 
         void OpenVideo(string path)
         {
             CloseWindow(WindowType.Video);
 
-            if (_videoWindow == null)
+            if (_player == null)
             {
-                _videoWindow = new VideoWindow();
-                _videoWindow.IsMuted = _settings.IsMuted;
-                _videoWindow.SetPosition(_screen.Bounds);
-                _videoWindow.Show();
+                VideoWindow videoWindow = new VideoWindow();
+                _player = videoWindow;
+                videoWindow.IsMuted = _settings.IsMuted;
+                videoWindow.SetPosition(_screen.Bounds);
+                videoWindow.Show();
 
-                PInvoke.SetParent(_videoWindow.GetHandle(), _desktopWindowHandle);
+                PInvoke.SetParent(videoWindow.GetHandle(), _desktopWindowHandle);
             }
 
-            _videoWindow.Source = new Uri(path, UriKind.Absolute);
-            _videoWindow.Play();
+            ((IPlayerControl)_player).Source = new Uri(path, UriKind.Absolute);
+            ((IPlayerControl)_player).Play();
 
-            _isPlaying = true;
             EnableControl();
         }
 
         void OpenWeb(string url)
         {
-            if (!TryGetWebView2Version(out _))
+            if (!WebWindow.TryGetWebView2Version(out _))
             {
                 MessageBox.Show("打开网页功能需要 WebView2 支持。请在托盘图标找到 DreamScene2 然后右键菜单，依次点击 [打开 URL] > [安装 WebView2...] 安装。", Constant.ProjectName);
                 return;
@@ -157,30 +118,30 @@ namespace DreamScene2
 
             CloseWindow(WindowType.Web);
 
-            if (_webWindow == null)
+            if (_player == null)
             {
                 WebWindowOptions webWindowOptions = new WebWindowOptions();
                 webWindowOptions.UserDataFolder = Helper.GetPathForUserAppDataFolder("");
                 webWindowOptions.DisableWebSecurity = _settings.DisableWebSecurity;
                 webWindowOptions.IsMuted = _settings.IsMuted;
 
-                _webWindow = new WebWindow(webWindowOptions);
-                _webWindow.SetPosition(_screen.Bounds);
-                _webWindow.Show();
+                WebWindow webWindow = new WebWindow(webWindowOptions);
+                _player = webWindow;
+                webWindow.SetPosition(_screen.Bounds);
+                webWindow.Show();
 
-                PInvoke.SetParent(_webWindow.GetHandle(), _desktopWindowHandle);
+                PInvoke.SetParent(webWindow.GetHandle(), _desktopWindowHandle);
             }
 
-            _webWindow.Source = new Uri(url);
+            ((IPlayerControl)_player).Source = new Uri(url);
 
-            _isWebPlaying = true;
             EnableControl();
 
-            if (_webWindow.Source.Host.EndsWith("bilibili.com"))
+            if (((IPlayerControl)_player).Source.Host.EndsWith("bilibili.com"))
             {
                 toolStripMenuItem27.Enabled = false;
             }
-            else if (_settings.UseDesktopInteraction)
+            else if (_player is IPlayerInteractive && _settings.UseDesktopInteraction)
             {
                 Task.Run(async () =>
                 {
@@ -201,61 +162,32 @@ namespace DreamScene2
                 PInvoke.SetParent(hWnd, _desktopWindowHandle);
             }
 
-            toolStripMenuItem5.Enabled = btnClose.Enabled = true;
-        }
-
-        enum WindowType
-        {
-            None,
-            Video,
-            Web,
-            Window
+            EnableControl();
         }
 
         WindowType _lwt;
 
         void CloseWindow(WindowType wt)
         {
+            timer1.Enabled = false;
+            toolStripMenuItem2.Text = btnPlay.Text = "播放";
+
+            toolStripMenuItem2.Enabled = btnPlay.Enabled = false;
+            toolStripMenuItem3.Enabled = checkMute.Enabled = false;
             toolStripMenuItem5.Enabled = btnClose.Enabled = false;
+
             toolStripMenuItem27.Enabled = true;
 
-            if (_lwt == WindowType.Web)
+            if (_player is IPlayerInteractive && _settings.UseDesktopInteraction)
+                PInvoke.DS2_EndForwardMouseKeyboardMessage();
+
+            if (_lwt == WindowType.Web && !((IPlayerControl)_player).IsPlaying)
+                Play_();
+
+            if (_player != null && _lwt != wt)
             {
-                if (_settings.UseDesktopInteraction)
-                    PInvoke.DS2_EndForwardMouseKeyboardMessage();
-
-                if (!_isWebPlaying)
-                {
-                    PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 1);
-                    _isWebPlaying = true;
-                }
-            }
-
-            if (_lwt == WindowType.Video && _lwt != wt)
-            {
-                timer1.Enabled = false;
-                _isPlaying = false;
-                toolStripMenuItem2.Text = btnPlay.Text = "播放";
-
-                toolStripMenuItem2.Enabled = btnPlay.Enabled = false;
-                toolStripMenuItem3.Enabled = checkMute.Enabled = false;
-                toolStripMenuItem5.Enabled = btnClose.Enabled = false;
-
-                _videoWindow.Close();
-                _videoWindow = null;
-            }
-            else if (_lwt == WindowType.Web && _lwt != wt)
-            {
-                timer1.Enabled = false;
-                _isWebPlaying = false;
-                toolStripMenuItem2.Text = btnPlay.Text = "播放";
-
-                toolStripMenuItem2.Enabled = btnPlay.Enabled = false;
-                toolStripMenuItem3.Enabled = checkMute.Enabled = false;
-                toolStripMenuItem5.Enabled = btnClose.Enabled = false;
-
-                _webWindow.Close();
-                _webWindow = null;
+                _player.Shutdown();
+                _player = null;
             }
             else if (_lwt == WindowType.Window)
             {
@@ -271,7 +203,7 @@ namespace DreamScene2
 
         void ForwardMessage()
         {
-            IntPtr hWnd = _webWindow.GetChromeWidgetWin1Handle();
+            IntPtr hWnd = ((IPlayerInteractive)_player).GetMessageHandle();
             if (hWnd != IntPtr.Zero)
                 PInvoke.DS2_StartForwardMouseKeyboardMessage(hWnd);
         }
@@ -340,51 +272,29 @@ namespace DreamScene2
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            string html = string.Join(";", _htmlFiles.Select(x => $"*{x}"));
-            string video = string.Join(";", _videoFiles.Select(x => $"*{x}"));
-            openFileDialog.Filter = $"All Files|{video};{html}|Video Files|{video}|HTML Files|{html}";
+            openFileDialog.Filter = "All Files|*.mp4;*.mov;*.html|Video Files|*.mp4;*.mov|HTML Files|*.html";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 OpenFile(openFileDialog.FileName);
         }
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            if (_videoWindow != null)
+            if (((IPlayerControl)_player).IsPlaying)
             {
-                if (_isPlaying)
-                {
-                    timer1.Enabled = false;
-                    PauseVideo();
-                }
-                else
-                {
-                    PlayVideo();
-                    timer1.Enabled = _settings.CanPause();
-                }
+                timer1.Enabled = false;
+                Pause_();
             }
-            else if (_webWindow != null)
+            else
             {
-                if (_isWebPlaying)
-                {
-                    timer1.Enabled = false;
-                    PauseWeb();
-                }
-                else
-                {
-                    PlayWeb();
-                    timer1.Enabled = _settings.CanPause();
-                }
+                Play_();
+                timer1.Enabled = _settings.CanPause();
             }
         }
 
         private void checkMute_Click(object sender, EventArgs e)
         {
             _settings.IsMuted = toolStripMenuItem3.Checked = checkMute.Checked;
-
-            if (_videoWindow != null)
-                _videoWindow.IsMuted = _settings.IsMuted;
-            else if (_webWindow != null)
-                _webWindow.IsMuted = _settings.IsMuted;
+            ((IPlayerControl)_player).IsMuted = _settings.IsMuted;
         }
 
         private void checkAutoPlay_Click(object sender, EventArgs e)
@@ -439,10 +349,8 @@ namespace DreamScene2
                 fullScreen = PInvoke.DS2_TestScreen(_screen.WorkingArea.ToRECT()) == 0;
                 if (fullScreen)
                 {
-                    if (_isPlaying)
-                        PauseVideo();
-                    else if (_isWebPlaying)
-                        PauseWeb();
+                    if (((IPlayerControl)_player).IsPlaying)
+                        Pause_();
                     return;
                 }
             }
@@ -458,10 +366,8 @@ namespace DreamScene2
 
                 if (array_is_max(_cpuarr))
                 {
-                    if (_isPlaying)
-                        PauseVideo();
-                    else if (_isWebPlaying)
-                        PauseWeb();
+                    if (((IPlayerControl)_player).IsPlaying)
+                        Pause_();
                     return;
                 }
             }
@@ -477,10 +383,8 @@ namespace DreamScene2
 
                 if (array_is_max(_parr))
                 {
-                    if (_isPlaying)
-                        PauseVideo();
-                    else if (_isWebPlaying)
-                        PauseWeb();
+                    if (((IPlayerControl)_player).IsPlaying)
+                        Pause_();
                     return;
                 }
             }
@@ -489,12 +393,12 @@ namespace DreamScene2
                 array_push(_parr, 0);
             }
 
-            if (!fullScreen && !_isPlaying && array_sum(_cpuarr) == 0 && array_sum(_parr) == 0)
+            if (!fullScreen &&
+                !((IPlayerControl)_player).IsPlaying &&
+                array_sum(_cpuarr) == 0 &&
+                array_sum(_parr) == 0)
             {
-                if (_videoWindow != null)
-                    PlayVideo();
-                else if (_webWindow != null)
-                    PlayWeb();
+                Play_();
             }
         }
 
@@ -619,10 +523,8 @@ namespace DreamScene2
 
                     PInvoke.DS2_RefreshDesktop();
 
-                    if (_videoWindow != null)
-                        _videoWindow.SetPosition(bounds);
-                    else if (_webWindow != null)
-                        _webWindow.SetPosition(bounds);
+                    if (_player != null)
+                        _player.SetPosition(bounds);
                     else if (_windowHandle != IntPtr.Zero)
                         PInvoke.DS2_SetWindowPosition(_windowHandle, bounds.ToRECT());
                 };
@@ -665,7 +567,7 @@ namespace DreamScene2
         {
             toolStripMenuItem18.DropDownItems.Clear();
 
-            if (TryGetWebView2Version(out string version))
+            if (WebWindow.TryGetWebView2Version(out string version))
             {
                 toolStripMenuItem21.Text = $"WebView2 {version}";
                 toolStripMenuItem18.DropDownItems.Add(toolStripMenuItem21);
@@ -699,7 +601,7 @@ namespace DreamScene2
             else if (sender == toolStripMenuItem25)
                 _settings.AutoPause3 = toolStripMenuItem25.Checked = !toolStripMenuItem25.Checked;
 
-            if (_videoWindow != null)
+            if (_player is IPlayerControl)
             {
                 if (_settings.CanPause())
                 {
@@ -708,21 +610,8 @@ namespace DreamScene2
                 else
                 {
                     timer1.Enabled = false;
-                    if (!_isPlaying)
-                        PlayVideo();
-                }
-            }
-            else if (_webWindow != null)
-            {
-                if (_settings.CanPause())
-                {
-                    timer1.Enabled = true;
-                }
-                else
-                {
-                    timer1.Enabled = false;
-                    if (!_isWebPlaying)
-                        PlayWeb();
+                    if (!((IPlayerControl)_player).IsPlaying)
+                        Play_();
                 }
             }
         }
@@ -740,7 +629,7 @@ namespace DreamScene2
         private void toolStripMenuItem27_Click(object sender, EventArgs e)
         {
             _settings.UseDesktopInteraction = toolStripMenuItem27.Checked = !toolStripMenuItem27.Checked;
-            if (_webWindow != null)
+            if (_player is IPlayerInteractive)
             {
                 if (_settings.UseDesktopInteraction)
                     ForwardMessage();
@@ -760,7 +649,7 @@ namespace DreamScene2
 
             if (m.Msg == WM_DISPLAYCHANGE)
             {
-                if (_flag && (_videoWindow != null || _webWindow != null))
+                if (_flag && _player != null)
                 {
                     CloseWindow(WindowType.None);
                     OpenFile(_recentFiles[0]);

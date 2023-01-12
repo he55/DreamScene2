@@ -1,14 +1,39 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace DreamScene2
 {
-    public partial class VideoWindow : Window
+    public partial class VideoWindow : Window, IPlayer, IPlayerControl
     {
         public VideoWindow()
         {
             InitializeComponent();
         }
+
+        public IntPtr GetHandle()
+        {
+            WindowInteropHelper windowInteropHelper = new WindowInteropHelper(this);
+            return windowInteropHelper.Handle;
+        }
+
+        public void SetPosition(Rectangle rect)
+        {
+            this.WindowStyle = WindowStyle.None;
+            this.ResizeMode = ResizeMode.NoResize;
+            this.Left = rect.Left;
+            this.Top = rect.Top;
+            this.Width = rect.Width;
+            this.Height = rect.Height;
+        }
+
+        public void Shutdown()
+        {
+            this.Close();
+        }
+
+        public bool IsPlaying { get; private set; }
 
         public Uri Source
         {
@@ -28,9 +53,17 @@ namespace DreamScene2
             set => mediaElement.IsMuted = value;
         }
 
-        public void Play() => mediaElement.Play();
+        public void Play()
+        {
+            mediaElement.Play();
+            IsPlaying = true;
+        }
 
-        public void Pause() => mediaElement.Pause();
+        public void Pause()
+        {
+            mediaElement.Pause();
+            IsPlaying = false;
+        }
 
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
