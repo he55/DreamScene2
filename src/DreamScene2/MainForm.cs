@@ -17,7 +17,6 @@ namespace DreamScene2
         Settings _settings = Settings.Load();
         Screen _screen;
         int _screenIndex;
-        IntPtr _windowHandle;
         HashSet<IntPtr> _hWndSet = new HashSet<IntPtr>();
 
         public MainForm()
@@ -155,12 +154,10 @@ namespace DreamScene2
         {
             CloseWindow(WindowType.Window);
 
-            if (_windowHandle != hWnd)
-            {
-                _windowHandle = hWnd;
-                PInvoke.DS2_SetWindowPosition(hWnd, _screen.Bounds.ToRECT());
-                PInvoke.SetParent(hWnd, _desktopWindowHandle);
-            }
+            WindowPlayer windowPlayer = new WindowPlayer(hWnd);
+            _player = windowPlayer;
+            windowPlayer.SetPosition(_screen.Bounds);
+            PInvoke.SetParent(windowPlayer.GetHandle(), _desktopWindowHandle);
 
             EnableControl();
         }
@@ -169,6 +166,12 @@ namespace DreamScene2
 
         void CloseWindow(WindowType wt)
         {
+            if (_player == null)
+            {
+                _lwt = wt;
+                return;
+            }
+
             timer1.Enabled = false;
             toolStripMenuItem2.Text = btnPlay.Text = "播放";
 
@@ -184,15 +187,10 @@ namespace DreamScene2
             if (_lwt == WindowType.Web && !((IPlayerControl)_player).IsPlaying)
                 Play_();
 
-            if (_player != null && _lwt != wt)
+            if (_lwt != wt || wt == WindowType.Window)
             {
                 _player.Shutdown();
                 _player = null;
-            }
-            else if (_lwt == WindowType.Window)
-            {
-                _windowHandle = IntPtr.Zero;
-                PInvoke.DS2_RestoreLastWindowPosition();
             }
 
             _lwt = wt;
@@ -525,8 +523,6 @@ namespace DreamScene2
 
                     if (_player != null)
                         _player.SetPosition(bounds);
-                    else if (_windowHandle != IntPtr.Zero)
-                        PInvoke.DS2_SetWindowPosition(_windowHandle, bounds.ToRECT());
                 };
                 toolStripMenuItem10.DropDownItems.Add(toolStripMenuItem);
             }
@@ -553,7 +549,7 @@ namespace DreamScene2
 
                 ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem(title + (b ? "" : " (Invalidate)"));
                 toolStripMenuItem.Enabled = b;
-                toolStripMenuItem.Checked = _windowHandle == ptr;
+                toolStripMenuItem.Checked = _player?.GetHandle() == ptr;
                 toolStripMenuItem.Tag = val;
                 toolStripMenuItem.Click += (object sender_, EventArgs e_) =>
                 {
