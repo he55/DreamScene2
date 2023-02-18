@@ -51,6 +51,8 @@ namespace DreamScene2
             if (args[0] == Constant.Cmd)
             {
                 MainForm mainForm = new MainForm();
+                if (args.Length > 1)
+                    mainForm.PlayPath = args[1];
                 mainForm.Opacity = 0;
                 mainForm.Show();
 

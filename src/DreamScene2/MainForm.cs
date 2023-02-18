@@ -10,6 +10,7 @@ namespace DreamScene2
 {
     public partial class MainForm : Form
     {
+        public string PlayPath { get; set; }
         IPlayer _player;
         IntPtr _desktopWindowHandle;
         List<string> _recentFiles;
@@ -232,7 +233,9 @@ namespace DreamScene2
             _screen = Screen.PrimaryScreen;
             _recentFiles = RecentFile.Load();
 
-            if (_settings.AutoPlay && _recentFiles.Count != 0)
+            if (!string.IsNullOrEmpty(PlayPath))
+                OpenFile(PlayPath);
+            else if (_settings.AutoPlay && _recentFiles.Count != 0)
                 OpenFile(_recentFiles[0]);
 
             const int MOD_NOREPEAT = 0x4000;
