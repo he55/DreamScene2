@@ -21,6 +21,7 @@ https://github.com/he55/DreamScene2/releases/latest
 - 支持启动后自动播放
 - 支持设置显示器
 - 支持自动暂停播放
+- 支持命令行播放
 
 ![](images/settings.png)
 
