@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -70,28 +68,6 @@ namespace DreamScene2
             else if (args[0].StartsWith("/c:"))
             {
                 int p = int.Parse(args[0].Substring(3));
-            }
-        }
-
-        static void ExtractResources()
-        {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            string[] resourceNames = assembly.GetManifestResourceNames();
-            foreach (string resourceName in resourceNames)
-            {
-                if (resourceName.EndsWith(".dll"))
-                {
-                    string fileName = resourceName.Substring(nameof(DreamScene2).Length + 1);
-                    string filePath = Path.Combine(Application.StartupPath, fileName);
-                    if (!File.Exists(filePath))
-                    {
-                        using (FileStream fileStream = File.Create(filePath))
-                        {
-                            Stream stream = assembly.GetManifestResourceStream(resourceName);
-                            stream.CopyTo(fileStream);
-                        }
-                    }
-                }
             }
         }
     }
