@@ -46,7 +46,7 @@ namespace DreamScene2
                 return;
             }
 
-            if (args[0] == Constant.Cmd)
+            if (args[0] == "-b" || args[0] == "--background")
             {
                 MainForm mainForm = new MainForm();
                 if (args.Length > 1)
