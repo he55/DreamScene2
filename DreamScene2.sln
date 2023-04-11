@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DreamScene2", "src\DreamScene2\DreamScene2.csproj", "{59D51177-F47B-4B90-8366-0B96658114BC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3EB67CD9-3814-4A20-89D5-C1BD393DB163} = {3EB67CD9-3814-4A20-89D5-C1BD393DB163}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DS2Native", "src\DS2Native\DS2Native.vcxproj", "{3EB67CD9-3814-4A20-89D5-C1BD393DB163}"
 EndProject
