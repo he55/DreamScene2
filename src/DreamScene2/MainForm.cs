@@ -11,6 +11,7 @@ namespace DreamScene2
     public partial class MainForm : Form
     {
         public string PlayPath { get; set; }
+
         IPlayer _player;
         IntPtr _desktopWindowHandle;
         List<string> _recentFiles;
@@ -66,7 +67,7 @@ namespace DreamScene2
                     return;
                 }
 
-                if (Path.GetExtension(path).ToLower() == ".html")
+                if (path.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
                     OpenWeb(uri.AbsoluteUri);
                 else
                     OpenVideo(path);
