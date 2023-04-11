@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -269,6 +270,17 @@ namespace DreamScene2
             }
 
             Settings.Save();
+        }
+
+        private void MainForm_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.All;
+        }
+
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            StringCollection files = ((DataObject)e.Data).GetFileDropList();
+            OpenFile(files[0]);
         }
 
         private void btnOpenFile_Click(object sender, EventArgs e)
