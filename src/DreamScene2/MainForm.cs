@@ -277,8 +277,10 @@ namespace DreamScene2
             e.Effect = DragDropEffects.All;
         }
 
+        bool _drop;
         private void MainForm_DragDrop(object sender, DragEventArgs e)
         {
+            _drop = true;
             StringCollection files = ((DataObject)e.Data).GetFileDropList();
             OpenFile(files[0]);
         }
@@ -661,6 +663,12 @@ namespace DreamScene2
 
             if (m.Msg == WM_DISPLAYCHANGE)
             {
+                if (_drop)
+                {
+                    _drop = false;
+                    return;
+                }
+
                 if (_flag && _player != null)
                 {
                     CloseWindow(WindowType.None);
