@@ -274,7 +274,9 @@ namespace DreamScene2
 
         private void MainForm_DragEnter(object sender, DragEventArgs e)
         {
-            e.Effect = DragDropEffects.All;
+            StringCollection files = ((DataObject)e.Data).GetFileDropList();
+            if (files.Count > 0)
+                e.Effect = DragDropEffects.All;
         }
 
         bool _drop;
