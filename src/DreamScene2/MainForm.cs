@@ -21,10 +21,16 @@ namespace DreamScene2
         Screen _screen;
         int _screenIndex;
         HashSet<IntPtr> _hWndSet = new HashSet<IntPtr>();
+        Timer _timer1 = new Timer();
+        Timer _timer2 = new Timer();
 
         public MainForm()
         {
             InitializeComponent();
+            _timer1.Interval = 2000;
+            _timer1.Tick += timer1_Tick;
+            _timer2.Interval = 200;
+            _timer2.Tick += timer2_Tick;
             this.Text = Constant.MainWindowTitle;
             this.Icon = DreamScene2.Properties.Resources.AppIcon;
             notifyIcon1.Icon = this.Icon;
@@ -85,7 +91,7 @@ namespace DreamScene2
                 toolStripMenuItem3.Enabled = checkMute.Enabled = true;
 
                 toolStripMenuItem2.Text = btnPlay.Text = "暂停";
-                timer1.Enabled = _settings.CanPause();
+                _timer1.Enabled = _settings.CanPause();
             }
         }
 
@@ -175,7 +181,7 @@ namespace DreamScene2
                 return;
             }
 
-            timer1.Enabled = false;
+            _timer1.Enabled = false;
             toolStripMenuItem2.Text = btnPlay.Text = "播放";
 
             toolStripMenuItem2.Enabled = btnPlay.Enabled = false;
@@ -235,10 +241,33 @@ namespace DreamScene2
             _screen = Screen.PrimaryScreen;
             _recentFiles = RecentFile.Load();
 
+            object sender_ = null;
+            switch (_settings.PlayMode)
+            {
+                case 0:
+                    sender_ = toolStripMenuItem29;
+                    break;
+                case 1:
+                    sender_ = toolStripMenuItem30;
+                    break;
+                case 2:
+                    sender_ = toolStripMenuItem31;
+                    break;
+                case 3:
+                    sender_ = toolStripMenuItem32;
+                    break;
+            }
+            toolStripMenuItem29_Click(sender_, null);
+
             if (!string.IsNullOrEmpty(PlayPath))
+            {
                 OpenFile(PlayPath);
+            }
             else if (_settings.AutoPlay && _recentFiles.Count != 0)
+            {
                 OpenFile(_recentFiles[0]);
+                _timer2.Enabled = _settings.PlayMode != 0 && _recentFiles.Count > 1;
+            }
 
             const int MOD_NOREPEAT = 0x4000;
             const int MOD_CONTROL = 0x0002;
@@ -299,13 +328,13 @@ namespace DreamScene2
         {
             if (((IPlayerControl)_player).IsPlaying)
             {
-                timer1.Enabled = false;
+                _timer1.Enabled = false;
                 Pause_();
             }
             else
             {
                 Play_();
-                timer1.Enabled = _settings.CanPause();
+                _timer1.Enabled = _settings.CanPause();
             }
         }
 
@@ -621,11 +650,11 @@ namespace DreamScene2
             {
                 if (_settings.CanPause())
                 {
-                    timer1.Enabled = true;
+                    _timer1.Enabled = true;
                 }
                 else
                 {
-                    timer1.Enabled = false;
+                    _timer1.Enabled = false;
                     if (!((IPlayerControl)_player).IsPlaying)
                         Play_();
                 }
@@ -691,6 +720,49 @@ namespace DreamScene2
             }
 
             base.WndProc(ref m);
+        }
+
+        private void toolStripMenuItem29_Click(object sender, EventArgs e)
+        {
+            toolStripMenuItem29.Checked = toolStripMenuItem30.Checked = toolStripMenuItem31.Checked = toolStripMenuItem32.Checked = false;
+            ((ToolStripMenuItem)sender).Checked = true;
+
+            if (sender == toolStripMenuItem29)
+            {
+                _timer2.Enabled = false;
+                _settings.PlayMode = 0;
+                return;
+            }
+
+            if (sender == toolStripMenuItem30)
+            {
+                _timer2.Interval = 1 * 60000;
+                _settings.PlayMode = 1;
+            }
+            else if (sender == toolStripMenuItem31)
+            {
+                _timer2.Interval = 3 * 60000;
+                _settings.PlayMode = 2;
+            }
+            else if (sender == toolStripMenuItem32)
+            {
+                _timer2.Interval = 5 * 60000;
+                _settings.PlayMode = 3;
+            }
+
+            if (_player is IPlayerControl)
+                _timer2.Enabled = ((IPlayerControl)_player).IsPlaying && _recentFiles.Count > 1;
+            else
+                _timer2.Enabled = false;
+        }
+
+        int _idx = 1;
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            if (_idx == _recentFiles.Count)
+                _idx = 1;
+
+            OpenFile(_recentFiles[_idx++]);
         }
     }
 }
