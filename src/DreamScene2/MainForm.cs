@@ -329,12 +329,14 @@ namespace DreamScene2
             if (((IPlayerControl)_player).IsPlaying)
             {
                 _timer1.Enabled = false;
+                _timer2.Enabled = false;
                 Pause_();
             }
             else
             {
                 Play_();
                 _timer1.Enabled = _settings.CanPause();
+                _timer2.Enabled = _settings.PlayMode != 0 && _recentFiles.Count > 1;
             }
         }
 
@@ -351,6 +353,7 @@ namespace DreamScene2
 
         private void btnClose_Click(object sender, EventArgs e)
         {
+            _timer2.Enabled = false;
             CloseWindow(WindowType.None);
         }
 
@@ -523,6 +526,7 @@ namespace DreamScene2
 
         private void toolStripMenuItem8_Click(object sender, EventArgs e)
         {
+            _timer2.Enabled = false;
             RecentFile.Clean();
         }
 
