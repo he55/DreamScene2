@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -303,17 +302,23 @@ namespace DreamScene2
 
         private void MainForm_DragEnter(object sender, DragEventArgs e)
         {
-            StringCollection files = ((DataObject)e.Data).GetFileDropList();
-            if (files.Count > 0)
-                e.Effect = DragDropEffects.All;
+            DataObject dataObject = (DataObject)e.Data;
+            if (dataObject.ContainsFileDropList())
+                e.Effect = DragDropEffects.Copy;
+            else if (dataObject.ContainsText() && dataObject.GetText().StartsWith("http"))
+                e.Effect = DragDropEffects.Copy;
         }
 
         bool _drop;
         private void MainForm_DragDrop(object sender, DragEventArgs e)
         {
             _drop = true;
-            StringCollection files = ((DataObject)e.Data).GetFileDropList();
-            OpenFile(files[0]);
+
+            DataObject dataObject = (DataObject)e.Data;
+            if (dataObject.ContainsFileDropList())
+                OpenFile(dataObject.GetFileDropList()[0]);
+            else if (dataObject.ContainsText())
+                OpenFile(dataObject.GetText());
         }
 
         private void btnOpenFile_Click(object sender, EventArgs e)
