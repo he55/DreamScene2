@@ -29,20 +29,19 @@ namespace DreamScene2
 
         public static Settings Load()
         {
-            if (s_settings == null)
+            if (s_settings != null)
+                return s_settings;
+
+            if (!File.Exists(s_filePath))
             {
-                if (File.Exists(s_filePath))
-                {
-                    using (FileStream fileStream = File.OpenRead(s_filePath))
-                    {
-                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(Settings));
-                        s_settings = (Settings)xmlSerializer.Deserialize(fileStream);
-                    }
-                }
-                else
-                {
-                    s_settings = new Settings();
-                }
+                s_settings = new Settings();
+                return s_settings;
+            }
+
+            using (FileStream fileStream = File.OpenRead(s_filePath))
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Settings));
+                s_settings = (Settings)xmlSerializer.Deserialize(fileStream);
             }
             return s_settings;
         }

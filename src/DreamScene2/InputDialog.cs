@@ -16,25 +16,24 @@ namespace DreamScene2
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtUrl.Text))
-            {
-                try
-                {
-                    _ = new Uri(txtUrl.Text);
-                }
-                catch
-                {
-                    lblTipMsg.Text = "输入的 URL 无效";
-                    return;
-                }
-
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-            }
-            else
+            if (string.IsNullOrEmpty(txtUrl.Text))
             {
                 lblTipMsg.Text = "输入不能为空";
+                return;
             }
+
+            try
+            {
+                _ = new Uri(txtUrl.Text);
+            }
+            catch
+            {
+                lblTipMsg.Text = "输入的 URL 无效";
+                return;
+            }
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

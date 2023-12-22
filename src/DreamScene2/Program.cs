@@ -58,17 +58,6 @@ namespace DreamScene2
                 mainForm.Opacity = 1;
                 Application.Run();
             }
-            else if (args[0] == "/s")
-            {
-            }
-            else if (args[0] == "/p")
-            {
-                int p = int.Parse(args[1]);
-            }
-            else if (args[0].StartsWith("/c:"))
-            {
-                int p = int.Parse(args[0].Substring(3));
-            }
         }
     }
 }
