@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>True</UseWPF>
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
     <Platforms>x86;x64</Platforms>
     <RuntimeIdentifiers>win7-x86;win7-x64</RuntimeIdentifiers>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>

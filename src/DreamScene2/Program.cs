@@ -9,10 +9,6 @@ namespace DreamScene2
         [DllImport("Kernel32.dll")]
         static extern IntPtr LoadLibrary(string lpFileName);
 
-        [DllImport("User32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetProcessDPIAware();
-
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -33,8 +29,6 @@ namespace DreamScene2
 
 #if NETCOREAPP3_0_OR_GREATER
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
-#else
-            SetProcessDPIAware();
 #endif
 
             Application.EnableVisualStyles();
