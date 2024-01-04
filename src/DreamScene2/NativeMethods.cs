@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DreamScene2
 {
-    public static class PInvoke
+    public static class NativeMethods
     {
         [DllImport("User32.dll")]
         public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);

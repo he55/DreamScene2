@@ -15,12 +15,12 @@ namespace DreamScene2
         [STAThread]
         static void Main(string[] args)
         {
-            IntPtr hwnd = PInvoke.FindWindow(null, Constant.MainWindowTitle);
+            IntPtr hwnd = NativeMethods.FindWindow(null, Constant.MainWindowTitle);
             if (hwnd != IntPtr.Zero)
             {
                 const int SW_RESTORE = 9;
-                PInvoke.ShowWindow(hwnd, SW_RESTORE);
-                PInvoke.SetForegroundWindow(hwnd);
+                NativeMethods.ShowWindow(hwnd, SW_RESTORE);
+                NativeMethods.SetForegroundWindow(hwnd);
                 return;
             }
 

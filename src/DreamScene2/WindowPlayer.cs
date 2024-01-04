@@ -19,13 +19,13 @@ namespace DreamScene2
 
         public void SetPosition(Rectangle rect)
         {
-            PInvoke.DS2_SetWindowPosition(_windowHandle, rect.ToRECT());
+            NativeMethods.DS2_SetWindowPosition(_windowHandle, rect.ToRECT());
         }
 
         public void Shutdown()
         {
             _windowHandle = IntPtr.Zero;
-            PInvoke.DS2_RestoreLastWindowPosition();
+            NativeMethods.DS2_RestoreLastWindowPosition();
         }
     }
 }

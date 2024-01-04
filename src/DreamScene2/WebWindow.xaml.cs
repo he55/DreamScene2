@@ -73,23 +73,23 @@ namespace DreamScene2
 
         public void Play()
         {
-            PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 1);
+            NativeMethods.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 1);
             IsPlaying = true;
         }
 
         public void Pause()
         {
             _d3dRenderingSubProcessPid = GetD3DRenderingSubProcessPid();
-            PInvoke.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 0);
+            NativeMethods.DS2_ToggleProcess(_d3dRenderingSubProcessPid, 0);
             IsPlaying = false;
         }
 
         public IntPtr GetMessageHandle()
         {
-            IntPtr chrome_WidgetWin_0 = PInvoke.FindWindowEx(webView2.Handle, IntPtr.Zero, "Chrome_WidgetWin_0", null);
+            IntPtr chrome_WidgetWin_0 = NativeMethods.FindWindowEx(webView2.Handle, IntPtr.Zero, "Chrome_WidgetWin_0", null);
             if (chrome_WidgetWin_0 == IntPtr.Zero)
                 return IntPtr.Zero;
-            return PInvoke.FindWindowEx(chrome_WidgetWin_0, IntPtr.Zero, "Chrome_WidgetWin_1", null);
+            return NativeMethods.FindWindowEx(chrome_WidgetWin_0, IntPtr.Zero, "Chrome_WidgetWin_1", null);
         }
 
         public uint GetD3DRenderingSubProcessPid()
@@ -97,8 +97,8 @@ namespace DreamScene2
             IntPtr chrome_WidgetWin_1 = GetMessageHandle();
             if (chrome_WidgetWin_1 != IntPtr.Zero)
             {
-                IntPtr d3dWindowHandle = PInvoke.FindWindowEx(chrome_WidgetWin_1, IntPtr.Zero, "Intermediate D3D Window", null);
-                PInvoke.GetWindowThreadProcessId(d3dWindowHandle, out uint pid);
+                IntPtr d3dWindowHandle = NativeMethods.FindWindowEx(chrome_WidgetWin_1, IntPtr.Zero, "Intermediate D3D Window", null);
+                NativeMethods.GetWindowThreadProcessId(d3dWindowHandle, out uint pid);
                 return pid;
             }
             return 0;

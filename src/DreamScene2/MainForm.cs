@@ -106,7 +106,7 @@ namespace DreamScene2
                 videoWindow.SetPosition(_screen.Bounds);
                 videoWindow.Show();
 
-                PInvoke.SetParent(videoWindow.GetHandle(), _desktopWindowHandle);
+                NativeMethods.SetParent(videoWindow.GetHandle(), _desktopWindowHandle);
             }
 
             ((IPlayerControl)_player).Source = new Uri(path, UriKind.Absolute);
@@ -137,7 +137,7 @@ namespace DreamScene2
                 webWindow.SetPosition(_screen.Bounds);
                 webWindow.Show();
 
-                PInvoke.SetParent(webWindow.GetHandle(), _desktopWindowHandle);
+                NativeMethods.SetParent(webWindow.GetHandle(), _desktopWindowHandle);
             }
 
             ((IPlayerControl)_player).Source = new Uri(url);
@@ -165,7 +165,7 @@ namespace DreamScene2
             WindowPlayer windowPlayer = new WindowPlayer(hWnd);
             _player = windowPlayer;
             windowPlayer.SetPosition(_screen.Bounds);
-            PInvoke.SetParent(windowPlayer.GetHandle(), _desktopWindowHandle);
+            NativeMethods.SetParent(windowPlayer.GetHandle(), _desktopWindowHandle);
 
             EnableControl();
         }
@@ -190,7 +190,7 @@ namespace DreamScene2
             toolStripMenuItem27.Enabled = true;
 
             if (_player is IPlayerInteractive && _settings.UseDesktopInteraction)
-                PInvoke.DS2_EndForwardMouseKeyboardMessage();
+                NativeMethods.DS2_EndForwardMouseKeyboardMessage();
 
             if (_lwt == WindowType.Web && !((IPlayerControl)_player).IsPlaying)
                 Play_();
@@ -204,14 +204,14 @@ namespace DreamScene2
             _lwt = wt;
 
             GC.Collect();
-            PInvoke.DS2_RefreshDesktop();
+            NativeMethods.DS2_RefreshDesktop();
         }
 
         void ForwardMessage()
         {
             IntPtr hWnd = ((IPlayerInteractive)_player).GetMessageHandle();
             if (hWnd != IntPtr.Zero)
-                PInvoke.DS2_StartForwardMouseKeyboardMessage(hWnd);
+                NativeMethods.DS2_StartForwardMouseKeyboardMessage(hWnd);
         }
 
         #endregion
@@ -222,7 +222,7 @@ namespace DreamScene2
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _desktopWindowHandle = PInvoke.DS2_GetDesktopWindowHandle();
+            _desktopWindowHandle = NativeMethods.DS2_GetDesktopWindowHandle();
             if (_desktopWindowHandle == IntPtr.Zero)
             {
                 btnOpenFile.Enabled = false;
@@ -271,7 +271,7 @@ namespace DreamScene2
             const int MOD_NOREPEAT = 0x4000;
             const int MOD_CONTROL = 0x0002;
             const int MOD_ALT = 0x0001;
-            PInvoke.RegisterHotKey(this.Handle, PLAY_HOTKEY_ID, MOD_NOREPEAT | MOD_CONTROL | MOD_ALT, (int)'P');
+            NativeMethods.RegisterHotKey(this.Handle, PLAY_HOTKEY_ID, MOD_NOREPEAT | MOD_CONTROL | MOD_ALT, (int)'P');
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -293,7 +293,7 @@ namespace DreamScene2
             else
             {
                 notifyIcon1.Visible = false;
-                PInvoke.UnregisterHotKey(this.Handle, PLAY_HOTKEY_ID);
+                NativeMethods.UnregisterHotKey(this.Handle, PLAY_HOTKEY_ID);
                 CloseWindow(WindowType.None);
             }
 
@@ -401,7 +401,7 @@ namespace DreamScene2
             bool fullScreen;
             if (_settings.AutoPause3)
             {
-                fullScreen = PInvoke.DS2_TestScreen(_screen.WorkingArea.ToRECT()) == 0;
+                fullScreen = NativeMethods.DS2_TestScreen(_screen.WorkingArea.ToRECT()) == 0;
                 if (fullScreen)
                 {
                     if (((IPlayerControl)_player).IsPlaying)
@@ -433,7 +433,7 @@ namespace DreamScene2
 
             if (_settings.AutoPause1)
             {
-                bool val = PInvoke.DS2_GetLastInputTickCount() < 500;
+                bool val = NativeMethods.DS2_GetLastInputTickCount() < 500;
                 array_push(_parr, val ? 1 : 0);
 
                 if (array_is_max(_parr))
@@ -464,7 +464,7 @@ namespace DreamScene2
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             toolStripMenuItem12.Checked = Helper.CheckStartOnBoot();
-            int val = PInvoke.DS2_IsVisibleDesktopIcons();
+            int val = NativeMethods.DS2_IsVisibleDesktopIcons();
             toolStripMenuItem13.Text = val != 0 ? "隐藏桌面图标" : "显示桌面图标";
         }
 
@@ -577,7 +577,7 @@ namespace DreamScene2
                     _screen = Screen.AllScreens[_screenIndex];
                     System.Drawing.Rectangle bounds = _screen.Bounds;
 
-                    PInvoke.DS2_RefreshDesktop();
+                    NativeMethods.DS2_RefreshDesktop();
 
                     if (_player != null)
                         _player.SetPosition(bounds);
@@ -599,10 +599,10 @@ namespace DreamScene2
             foreach (var val in _hWndSet)
             {
                 IntPtr ptr = val;
-                bool b = PInvoke.IsWindowVisible(ptr);
+                bool b = NativeMethods.IsWindowVisible(ptr);
 
                 StringBuilder sb = new StringBuilder(128);
-                PInvoke.GetWindowText(ptr, sb, sb.Capacity);
+                NativeMethods.GetWindowText(ptr, sb, sb.Capacity);
                 string title = sb.ToString();
 
                 ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem(title + (b ? "" : " (Invalidate)"));
@@ -677,7 +677,7 @@ namespace DreamScene2
 
         private void toolStripMenuItem13_Click(object sender, EventArgs e)
         {
-            PInvoke.DS2_ToggleShowDesktopIcons();
+            NativeMethods.DS2_ToggleShowDesktopIcons();
         }
 
         private void toolStripMenuItem27_Click(object sender, EventArgs e)
@@ -688,7 +688,7 @@ namespace DreamScene2
                 if (_settings.UseDesktopInteraction)
                     ForwardMessage();
                 else
-                    PInvoke.DS2_EndForwardMouseKeyboardMessage();
+                    NativeMethods.DS2_EndForwardMouseKeyboardMessage();
             }
         }
 
