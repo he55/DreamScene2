@@ -30,7 +30,7 @@ namespace DreamScene2
             _timer1.Tick += timer1_Tick;
             _timer2.Interval = 200;
             _timer2.Tick += timer2_Tick;
-            this.Text = Constant.MainWindowTitle;
+            this.Text = Constants.MainWindowTitle;
             this.Icon = DreamScene2.Properties.Resources.AppIcon;
             notifyIcon1.Icon = this.Icon;
             toolStripMenuItem3.Checked = checkMute.Checked = _settings.IsMuted;
@@ -69,7 +69,7 @@ namespace DreamScene2
             {
                 if (!File.Exists(path))
                 {
-                    MessageBox.Show($"找不到文件 \"{path}\"", Constant.ProjectName);
+                    MessageBox.Show($"找不到文件 \"{path}\"", Constants.ProjectName);
                     return;
                 }
 
@@ -119,7 +119,7 @@ namespace DreamScene2
         {
             if (!WebWindow.TryGetWebView2Version(out _))
             {
-                MessageBox.Show("打开网页功能需要 WebView2 支持。请在托盘图标找到 DreamScene2 然后右键菜单，依次点击 [打开 URL] > [安装 WebView2...] 安装。", Constant.ProjectName);
+                MessageBox.Show($"打开网页功能需要 WebView2 支持。请在托盘图标找到 {Constants.ProjectName} 然后右键菜单，依次点击 [打开 URL] > [安装 WebView2...] 安装。", Constants.ProjectName);
                 return;
             }
 
@@ -286,7 +286,7 @@ namespace DreamScene2
 
                 if (_settings.FirstRun)
                 {
-                    notifyIcon1.ShowBalloonTip(1000, "", "DreamScene2 已被最小化到系统托盘。", ToolTipIcon.None);
+                    notifyIcon1.ShowBalloonTip(1000, "", $"{Constants.ProjectName} 已被最小化到系统托盘", ToolTipIcon.None);
                     _settings.FirstRun = false;
                 }
             }

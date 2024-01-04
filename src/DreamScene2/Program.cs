@@ -15,7 +15,7 @@ namespace DreamScene2
         [STAThread]
         static void Main(string[] args)
         {
-            IntPtr hwnd = NativeMethods.FindWindow(null, Constant.MainWindowTitle);
+            IntPtr hwnd = NativeMethods.FindWindow(null, Constants.MainWindowTitle);
             if (hwnd != IntPtr.Zero)
             {
                 const int SW_RESTORE = 9;
