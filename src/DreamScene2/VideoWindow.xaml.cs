@@ -14,8 +14,7 @@ namespace DreamScene2
 
         public IntPtr GetHandle()
         {
-            WindowInteropHelper windowInteropHelper = new WindowInteropHelper(this);
-            return windowInteropHelper.Handle;
+            return new WindowInteropHelper(this).Handle;
         }
 
         public void SetPosition(Rectangle rect)
@@ -75,7 +74,6 @@ namespace DreamScene2
         {
             mediaElement.Close();
             mediaElement = null;
-            base.OnClosed(e);
         }
     }
 }

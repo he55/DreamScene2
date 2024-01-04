@@ -31,20 +31,13 @@ namespace DreamScene2
 
             IsPlaying = true;
 
-            LoadScript();
-        }
-
-        async void LoadScript()
-        {
-            string fullPath = Helper.GetPathForStartupFolder("script.js");
-            string content = File.ReadAllText(fullPath);
-            await webView2.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(content);
+            string script = File.ReadAllText(Helper.GetPathForStartupFolder("script.js"));
+            await webView2.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(script);
         }
 
         public IntPtr GetHandle()
         {
-            WindowInteropHelper windowInteropHelper = new WindowInteropHelper(this);
-            return windowInteropHelper.Handle;
+            return new WindowInteropHelper(this).Handle;
         }
 
         public void SetPosition(Rectangle rect)
@@ -115,7 +108,6 @@ namespace DreamScene2
         {
             webView2.Dispose();
             webView2 = null;
-            base.OnClosed(e);
         }
 
         public static bool TryGetWebView2Version(out string version)
