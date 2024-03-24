@@ -362,10 +362,13 @@ namespace DreamScene2
             CloseWindow(WindowType.None);
         }
 
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
         {
-            this.Show();
-            this.Activate();
+            if (e.Button == MouseButtons.Left)
+            {
+                this.Show();
+                this.Activate();
+            }
         }
 
         void array_push(int[] arr, int val)
